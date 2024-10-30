@@ -55,9 +55,9 @@ namespace Duc.Splitt.MerchantApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<MerchantResponseDto>> GetMerchantDetailsById(GetMerchantRequestDto requestDto)
+        public async Task<ResponseDto<GetMerchantResponseDto>> GetMerchantDetailsById(GetMerchantRequestDto requestDto)
         {
-            ResponseDto<MerchantResponseDto> response = new ResponseDto<MerchantResponseDto>
+            ResponseDto<GetMerchantResponseDto> response = new ResponseDto<GetMerchantResponseDto>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
@@ -70,9 +70,8 @@ namespace Duc.Splitt.MerchantApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                response.Data = new MerchantResponseDto { };
-                response.Code = ResponseStatusCode.Success;
-                return response;
+                var obj = await _merchantService.GetMerchantDetailsById(validateRequest, requestDto);
+                return obj;
             }
             catch (Exception ex)
             {
@@ -85,9 +84,9 @@ namespace Duc.Splitt.MerchantApi.Controllers
         }
 
         [HttpPost]
-        public async Task<PagedResponseDto<PagedList<MerchantResponseDto>>> GetMerchantRequestList(SearchMerchantRequestDto requestDto)
+        public async Task<PagedResponseDto<PagedList<SearchMerchantResponseDto>>> GetMerchantRequestList(SearchMerchantRequestDto requestDto)
         {
-            PagedResponseDto<PagedList<MerchantResponseDto>> response = new PagedResponseDto<PagedList<MerchantResponseDto>>
+            PagedResponseDto<PagedList<SearchMerchantResponseDto>> response = new PagedResponseDto<PagedList<SearchMerchantResponseDto>>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
@@ -100,7 +99,11 @@ namespace Duc.Splitt.MerchantApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                response.Data = null;
+                var result = await _merchantService.SearchMerchantRequest(validateRequest, requestDto);
+                response.Data = result;
+                response.PageNumber = result.PageNumber;
+                response.PageSize = result.PageSize;
+                response.TotalRecords = result.TotalCount;
                 response.Code = ResponseStatusCode.Success;
                 return response;
             }

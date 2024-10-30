@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Duc.Splitt.Common.Dtos.Responses;
 using Duc.Splitt.Data.DataAccess.Models;
+using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
 namespace Duc.Splitt.Service
 {
@@ -22,6 +23,7 @@ namespace Duc.Splitt.Service
             CreateMap<UserType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             CreateMap<DocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             #endregion
+            CreateMap<MerchantRequest, GetMerchantResponseDto>();
         }
     }
     public static class ObjectMapperEn

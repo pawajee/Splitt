@@ -13,24 +13,47 @@ namespace Duc.Splitt.Common.Dtos.Responses
 
         }
 
-        public class MerchantResponseDto
-        {
-            public string RequestId { get; set; } = null!;
-            public string BusinessNameEnglish { get; set; } = null!;
-            public string BusinessNameArabic { get; set; } = null!;
-            public int CountryId { get; set; }
-            public int CategoryId { get; set; }
-            public int BusinessTypeId { get; set; }
-            public string BusinessEmail { get; set; } = null!;
-            public string MobileNumber { get; set; } = null!;
-            public int AnnualSalesId { get; set; }
-            public int AverageOrderId { get; set; }
-
-            public List<DocumentRequestDto>? Documents { get; set; }
-        }
-
         public class SearchMerchantResponseDto
         {
+            public Guid? Id { get; set; }
+            public string? RequestNo { get; set; }
+            public string? BusinessName { get; set; }
+            public string? MerchantCategory { get; set; }
+            public string? RequestStatus { get; set; }
+            public string? MerchantBusinessType { get; set; }
+            public string? MerchantAnnualSales { get; set; }
+            public string? MerchantAverageOrder { get; set; }
+            public string? RequestedBy { get; set; }
+            public DateTime? CreatedOn { get; set; }
+            public string? CreatedOnFormattedDate { get; set; }
+
+            public int TotalRecords { get; set; }
+        }
+
+        public class GetMerchantResponseDto
+        {
+            public Guid? Id { get; set; } = null!;
+            public string? RequestNo { get; set; } = null!;
+            public string? BusinessNameEnglish { get; set; }
+            public string? BusinessNameArabic { get; set; }
+            public string? BusinessEmail { get; set; }
+            public string MobileNumber { get; set; } = null!;
+            public int CountryId { get; set; }
+            public int MerchantCategoryId { get; set; }
+            public int MerchantBusinessTypeId { get; set; }
+            public int MerchantAnnualSalesId { get; set; }
+            public int MerchantAverageOrderId { get; set; }
+            public List<DocumentResponseDto>? Documents { get; set; }
+            public List<GetMerchantRequestHistory>? MerchantRequestHistory { get; set; }
+        }
+        public class GetMerchantRequestHistory
+        {
+            public string? RequestStatus { get; set; }
+            public string? Comment { get; set; }
+
+            public string? CreatedOn { get; set; }
+            public string? CreatedBy { get; set; }
+
         }
     }
 }

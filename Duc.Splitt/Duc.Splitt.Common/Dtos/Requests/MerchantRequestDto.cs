@@ -1,9 +1,9 @@
-﻿namespace Duc.Splitt.Common.Dtos.Requests
+﻿using Duc.Splitt.Common.Enums;
+
+namespace Duc.Splitt.Common.Dtos.Requests
 {
     public class MerchantRequestDto
     {
-
-
         public class CreaterMerchantRequestDto
         {
 
@@ -26,10 +26,28 @@
         public class SearchMerchantRequestDto : PagedRequestDto
         {
             public string? BusinessName { get; set; }
+            public string? MobileNo { get; set; }
             public string? BusinessEmail { get; set; }
-            public string? MobileNumber { get; set; }
-            public int? CategoryId { get; set; }
-            public int? BusinessTypeId { get; set; }
+            public string? RequestNo { get; set; }
+            public int? RequestStatusId { get; set; }
+            public int? MerchantCategoryId { get; set; }
+            public int? MerchantBusinessTypeId { get; set; }
+            public int? MerchantAnnualSalesId { get; set; }
+            public int? MerchantAverageOrderId { get; set; }
+            public DateTime? DateFrom { get; set; }
+            public DateTime? DateTo { get; set; }
+            public MerchantRequestSearchOrderBy OrderBy { get; set; }
+            public SortDirection OrderDirections { get; set; }
+
+        }
+        public enum MerchantRequestSearchOrderBy : byte
+        {
+            CreatedOn,
+            RequestNo,
+            ChargePointCount,
+            ConnectorCount,
+            AvgRating,
+            ConnectorStatuses
         }
     }
 }

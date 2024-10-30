@@ -2,6 +2,7 @@
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Respository.Repository
 {
@@ -12,6 +13,11 @@ namespace Duc.Splitt.Respository.Repository
         public MerchantRequestRepository(SplittAppContext context) : base(context)
         {
             _context = context;
+        }
+        public async Task<MerchantRequest?> GetMerchantRequest(Guid requestId)
+        {
+            var obj = _context.MerchantRequest.Include(t => t.MerchantRequestAttachment).Include(t => t.MerchantRequestHistory);
+            return await obj.FirstOrDefaultAsync();
         }
 
     }

@@ -10,7 +10,7 @@ namespace Duc.Splitt.Data.Dapper
         public DapperDBConnection(IConfiguration configuration)
         {
             _configuration = configuration;
-            var conString = _configuration.GetConnectionString("DbConnectionStringSPLITT");
+            var conString = _configuration.GetConnectionString("DbConnectionStringSplitt");
             if (!string.IsNullOrEmpty(conString))
             {
                 _connectionString = conString;
