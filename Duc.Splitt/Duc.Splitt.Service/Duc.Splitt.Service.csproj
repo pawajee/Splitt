@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf.netcore\20.2.0\contentFiles\any\any\Select.Html.dep" />
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf.netcore\20.2.0\contentFiles\any\any\Select.Tools.dep" />
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf.netcore\23.2.0\contentFiles\any\any\Select.Html.dep" />
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf.netcore\23.2.0\contentFiles\any\any\Select.Tools.dep" />
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf\23.2.0\contentFiles\any\any\Select.Html.dep" />
+    <Content Remove="C:\Users\Manish\.nuget\packages\select.pdf\23.2.0\contentFiles\any\any\Select.Tools.dep" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\APIMessages.ar-SA.Designer.cs">
+      <DependentUpon>APIMessages.ar-SA.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\APIMessages.Designer.cs">
+      <DependentUpon>APIMessages.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\APIMessages.ar-SA.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LastGenOutput>APIMessages.ar-SA.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\APIMessages.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LastGenOutput>APIMessages.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Select.Tools.dep">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="dlls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Duc.Splitt.Common\Duc.Splitt.Common.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.Core\Duc.Splitt.Core.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.Logger\Duc.Splitt.Logger.csproj" />
+  </ItemGroup>
+
+</Project>

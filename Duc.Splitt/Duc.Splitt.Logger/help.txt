@@ -1,0 +1,4 @@
+"Logger": {
+    "DbConnectionStringLogger": "Data Source=tcp:smartevdbserver.database.windows.net,1433;Initial Catalog=TasmuSmartEVLog;User ID=devadmin; Password=P@ssw0rd;Encrypt=false;TrustServerCertificate=false;",
+    "StoredProcedureName": "[dbo].[CsmsLogsAdd]"
+  },
