@@ -13,7 +13,7 @@ public partial class MerchantRequestHistory
 
     public Guid MerchantRequestId { get; set; }
 
-    public int RequestStatusId { get; set; }
+    public int MerchantRequestStatusId { get; set; }
 
     [StringLength(2000)]
     public string? Comment { get; set; }
@@ -39,7 +39,7 @@ public partial class MerchantRequestHistory
     [InverseProperty("MerchantRequestHistory")]
     public virtual MerchantRequest MerchantRequest { get; set; } = null!;
 
-    [ForeignKey("RequestStatusId")]
+    [ForeignKey("MerchantRequestStatusId")]
     [InverseProperty("MerchantRequestHistory")]
-    public virtual RequestStatus RequestStatus { get; set; } = null!;
+    public virtual MerchantRequestStatus MerchantRequestStatus { get; set; } = null!;
 }

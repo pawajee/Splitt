@@ -9,8 +9,9 @@ namespace Duc.Splitt.Common.Dtos.Responses
         public ResponseStatusCode Code { get; set; }
         public string? Message { get; set; }
         public T? Data { get; set; }
+
         [JsonIgnore]
-        public string? Details { get; set; }
+        public IEnumerable<string> Errors { get; set; }
 
     }
 }

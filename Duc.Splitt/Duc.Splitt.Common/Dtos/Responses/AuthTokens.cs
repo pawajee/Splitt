@@ -3,6 +3,7 @@
     public class AuthTokens
     {
         public string Token { get; set; } = null!;
-        public DateTime Expiration { get; set; }
+        public string? RefreshToken { get; set; } 
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 }

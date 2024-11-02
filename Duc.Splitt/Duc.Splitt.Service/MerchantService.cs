@@ -1,17 +1,15 @@
-﻿using Azure;
-using Dapper;
+﻿using Dapper;
+using Duc.Splitt.Common.Dtos.Requests;
 using Duc.Splitt.Common.Dtos.Responses;
 using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Common.Helpers;
-using Duc.Splitt.Common.Resources;
 using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using System.Data;
-using System.IO;
+using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
@@ -21,11 +19,13 @@ namespace Duc.Splitt.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDapperDBConnection _dapperDBConnection;
+        private readonly IAuthMerchantService _authMerchantService;
 
-        public MerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection)
+        public MerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection, IAuthMerchantService authMerchantService)
         {
             _unitOfWork = unitOfWork;
             _dapperDBConnection = dapperDBConnection;
+            _authMerchantService = authMerchantService;
         }
 
         public async Task<ResponseDto<CreateMerchantResponseDto>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto requestDto)
@@ -37,7 +37,7 @@ namespace Duc.Splitt.Service
             };
 
             MerchantRequest merchantRequest = new MerchantRequest();
-            merchantRequest.BusinessEmail = requestDto.BusinessEmail;
+
             merchantRequest.BusinessNameArabic = requestDto.BusinessNameArabic;
             merchantRequest.BusinessNameEnglish = requestDto.BusinessNameEnglish;
             merchantRequest.CountryId = requestDto.CountryId;
@@ -45,11 +45,12 @@ namespace Duc.Splitt.Service
             merchantRequest.MerchantAverageOrderId = requestDto.AverageOrderId;
             merchantRequest.MerchantBusinessTypeId = requestDto.BusinessTypeId;
             merchantRequest.MerchantCategoryId = requestDto.CategoryId;
-            merchantRequest.MobileNumber = requestDto.MobileNumber;
+            //merchantRequest.MobileNumber = requestDto.MobileNumber;
+            //merchantRequest.BusinessEmail = requestDto.BusinessEmail;
             merchantRequest.CreatedAt = (byte)requestHeader.LocationId;
             merchantRequest.CreatedOn = DateTime.Now;
             merchantRequest.CreatedBy = Utilities.AnonymousUserID;
-            merchantRequest.RequestStatusId = (int)RequestStatuses.InProgress;
+            merchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.InProgress;
             merchantRequest.RequestNo = GenerateRequestNumber();
             if (requestDto.Documents != null)
             {
@@ -90,7 +91,21 @@ namespace Duc.Splitt.Service
             }
             merchantRequest.MerchantRequestHistory.Add(new MerchantRequestHistory
             {
-                RequestStatusId = (int)RequestStatuses.InProgress,
+                MerchantRequestStatusId = (int)MerchantRequestStatuses.InProgress,
+                CreatedAt = (byte)requestHeader.LocationId,
+                CreatedOn = DateTime.Now,
+                CreatedBy = Utilities.AnonymousUserID,
+
+            });
+            _unitOfWork.MerchantRequest.AddAsync(merchantRequest);
+
+            merchantRequest.MerchantUser.Add(new MerchantUser
+            {
+                NameArabic = requestDto.BusinessNameArabic,
+                NameEnglish = requestDto.BusinessNameEnglish,
+                IsPrimary = true,
+                MobileNo = requestDto.MobileNumber,
+                BusinessEmail = requestDto.BusinessEmail,
                 CreatedAt = (byte)requestHeader.LocationId,
                 CreatedOn = DateTime.Now,
                 CreatedBy = Utilities.AnonymousUserID,
@@ -180,9 +195,9 @@ namespace Duc.Splitt.Service
                 MerchantAverageOrderId = merchantRequest.MerchantAverageOrderId,
                 MerchantBusinessTypeId = merchantRequest.MerchantBusinessTypeId,
                 MerchantCategoryId = merchantRequest.MerchantCategoryId,
-                MobileNumber = merchantRequest.MobileNumber,
+                //  MobileNumber = merchantRequest.MobileNumber,
                 RequestNo = merchantRequest.RequestNo,
-                BusinessEmail = merchantRequest.BusinessEmail
+                //BusinessEmail = merchantRequest.BusinessEmail
 
             };
             if (merchantRequest != null && merchantRequest.MerchantRequestAttachment?.Count > 0)
@@ -204,19 +219,67 @@ namespace Duc.Splitt.Service
                 temp.MerchantRequestHistory = new List<GetMerchantRequestHistory>();
                 foreach (var history in merchantRequest.MerchantRequestHistory)
                 {
-                    var user = await _unitOfWork.Users.GetAsync(history.CreatedBy);
-                    var status = await _unitOfWork.RequestStatuses.GetAsync(history.RequestStatusId);
+                    var user = await _unitOfWork.Users.GetUserById(history.CreatedBy);
+                    var status = await _unitOfWork.MerchantRequestStatuses.GetAsync(history.MerchantRequestStatusId);
                     temp.MerchantRequestHistory.Add(new GetMerchantRequestHistory
                     {
                         Comment = history.Comment,
-                        CreatedBy = user.Name,
+                        CreatedBy = requestHeader.IsArabic ? user.UserType.TitleArabic : user.UserType.TitleEnglish,
                         CreatedOn = history.CreatedOn.ToString("dd/MM/YYYY"),
-                        RequestStatus = requestHeader.IsArabic ? status.TitleArabic : status.TitleEnglish
+                        RequestStatus = requestHeader.IsArabic ? status.TitleArabic : status.TitleEnglish,
+                        RequestStatusDesc = requestHeader.IsArabic ? status.AdminStatusArabic : status.AdminStatusEnglish,
                     });
                 }
             }
             response.Data = temp;
             response.Code = ResponseStatusCode.Success;
+            return response;
+        }
+
+        public async Task<ResponseDto<string?>> ChangeMerchantStatus(RequestHeader requestHeader, AdminChangeUserStatus requestDto)
+        {
+
+            ResponseDto<string?> response = new ResponseDto<string?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestById(requestDto.RequestId);
+            if (merchantUser == null)
+            {
+                return response;
+            }
+
+            if (requestDto.RequestStatusId == (int)MerchantRequestStatuses.Approved)
+            {
+                RegisterDto registerDto = new RegisterDto
+                {
+                    Comments = requestDto.Comments,
+                    Email = merchantUser.BusinessEmail,
+                    UserName = merchantUser.BusinessEmail,
+                };
+                return await _authMerchantService.ApproveMerchantUser(requestHeader, registerDto);
+
+            }
+            else if (requestDto.RequestStatusId == (int)MerchantRequestStatuses.Rejected)
+            {
+                merchantUser.MerchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.Rejected;
+                merchantUser.ModifiedAt = (byte)requestHeader.LocationId;
+                merchantUser.ModifiedOn = DateTime.Now;
+                merchantUser.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
+                merchantUser.MerchantRequest.MerchantRequestHistory.Add(new MerchantRequestHistory
+                {
+                    MerchantRequestStatusId = (int)MerchantRequestStatuses.Rejected,
+                    CreatedAt = (byte)requestHeader.LocationId,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = Utilities.AnonymousUserID,
+                    Comment = requestDto.Comments
+
+                });
+                await _unitOfWork.CompleteAsync();
+                response.Data = merchantUser.MerchantRequest.RequestNo;
+                response.Code = ResponseStatusCode.Success;
+                return response;
+            }
             return response;
         }
 

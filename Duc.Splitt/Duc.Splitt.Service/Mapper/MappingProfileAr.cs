@@ -18,7 +18,7 @@ namespace Duc.Splitt.Service
             CreateMap<MerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<MerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<MerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<RequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<MerchantRequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<UserType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<DocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
 

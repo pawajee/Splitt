@@ -2,6 +2,7 @@
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Respository.Repository
 {
@@ -13,6 +14,10 @@ namespace Duc.Splitt.Respository.Repository
         {
             _context = context;
         }
-
+        public async Task<User?> GetUserById(Guid userId)
+        {
+            var obj =await _context.User.Include(t => t.UserType).Include(t => t.MerchantUserUser).Include(t=>t.BackOfficeUserUser).Include(t => t.ConsumerUserUser).Where(t => t.Id == userId).FirstOrDefaultAsync();
+            return  obj;
+        }
     }
 }

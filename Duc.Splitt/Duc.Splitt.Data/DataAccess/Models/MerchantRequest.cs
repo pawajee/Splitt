@@ -25,17 +25,9 @@ public partial class MerchantRequest
 
     public int MerchantCategoryId { get; set; }
 
-    public int RequestStatusId { get; set; }
+    public int MerchantRequestStatusId { get; set; }
 
     public int MerchantBusinessTypeId { get; set; }
-
-    [StringLength(100)]
-    [Unicode(false)]
-    public string BusinessEmail { get; set; } = null!;
-
-    [StringLength(8)]
-    [Unicode(false)]
-    public string MobileNumber { get; set; } = null!;
 
     public int MerchantAnnualSalesId { get; set; }
 
@@ -89,6 +81,13 @@ public partial class MerchantRequest
     [InverseProperty("MerchantRequest")]
     public virtual ICollection<MerchantRequestHistory> MerchantRequestHistory { get; set; } = new List<MerchantRequestHistory>();
 
+    [ForeignKey("MerchantRequestStatusId")]
+    [InverseProperty("MerchantRequest")]
+    public virtual MerchantRequestStatus MerchantRequestStatus { get; set; } = null!;
+
+    [InverseProperty("MerchantRequest")]
+    public virtual ICollection<MerchantUser> MerchantUser { get; set; } = new List<MerchantUser>();
+
     [ForeignKey("ModifiedAt")]
     [InverseProperty("MerchantRequestModifiedAtNavigation")]
     public virtual Location? ModifiedAtNavigation { get; set; }
@@ -96,8 +95,4 @@ public partial class MerchantRequest
     [ForeignKey("ModifiedBy")]
     [InverseProperty("MerchantRequestModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
-
-    [ForeignKey("RequestStatusId")]
-    [InverseProperty("MerchantRequest")]
-    public virtual RequestStatus RequestStatus { get; set; } = null!;
 }

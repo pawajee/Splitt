@@ -9,7 +9,31 @@ namespace Duc.Splitt.Logger
 {
     public class LoggerService : ILoggerService
     {
+        public  List<string> ConvertExceptionToStringList(Exception ex)
+        {
+            var exceptionMessages = new List<string>();
 
+            // Capture the main exception message
+            if (ex != null)
+            {
+                exceptionMessages.Add($"Exception Type: {ex.GetType().FullName}");
+                exceptionMessages.Add($"Message: {ex.Message}");
+                exceptionMessages.Add($"Stack Trace: {ex.StackTrace}");
+
+                // Capture inner exceptions if any
+                var innerException = ex.InnerException;
+                while (innerException != null)
+                {
+                    exceptionMessages.Add($"Inner Exception Type: {innerException.GetType().FullName}");
+                    exceptionMessages.Add($"Inner Exception Message: {innerException.Message}");
+                    exceptionMessages.Add($"Inner Exception Stack Trace: {innerException.StackTrace}");
+
+                    innerException = innerException.InnerException;
+                }
+            }
+
+            return exceptionMessages;
+        }
         public LoggerService()
         {
         }

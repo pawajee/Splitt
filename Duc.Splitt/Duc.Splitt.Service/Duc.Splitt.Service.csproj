@@ -61,6 +61,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Duc.Splitt.Common\Duc.Splitt.Common.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Core\Duc.Splitt.Core.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.Identity\Duc.Splitt.Identity.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Logger\Duc.Splitt.Logger.csproj" />
   </ItemGroup>
 

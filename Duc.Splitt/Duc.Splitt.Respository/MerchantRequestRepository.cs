@@ -16,7 +16,7 @@ namespace Duc.Splitt.Respository.Repository
         }
         public async Task<MerchantRequest?> GetMerchantRequest(Guid requestId)
         {
-            var obj = _context.MerchantRequest.Include(t => t.MerchantRequestAttachment).Include(t => t.MerchantRequestHistory);
+            var obj = _context.MerchantRequest.Include(t => t.MerchantRequestAttachment).Include(t => t.MerchantRequestHistory).Where(t => t.Id == requestId);
             return await obj.FirstOrDefaultAsync();
         }
 

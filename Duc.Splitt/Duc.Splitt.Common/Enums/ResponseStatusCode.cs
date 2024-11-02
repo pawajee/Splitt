@@ -14,6 +14,9 @@ namespace Duc.Splitt.Common.Enums
         [LocalizedDescription("NoDataFound", typeof(ResponseStatusCodeMessages))]
         NoDataFound = 404,
 
+        [LocalizedDescription("Unauthorized", typeof(ResponseStatusCodeMessages))]
+        Unauthorized = 4011,
+
         [LocalizedDescription("BadRequest", typeof(ResponseStatusCodeMessages))]
         BadRequest = 400,
 

@@ -19,6 +19,10 @@
     <Compile Include="Contracts\Repositories\IDocumentConfigurationRepository.cs" />
     <Compile Include="Contracts\Repositories\IGenderRepository.cs" />
     <Compile Include="Contracts\Repositories\ILanguageRepository.cs" />
+    <Compile Include="Contracts\Repositories\IBackOfficeUserRepository.cs" />
+    <Compile Include="Contracts\Repositories\IConsumerOtpRequestRepository.cs" />
+    <Compile Include="Contracts\Repositories\IConsumerUserRepository.cs" />
+    <Compile Include="Contracts\Repositories\IMerchantUserRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantAnnualSaleRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantAverageOrderRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantBusinessTypeRepository.cs" />
@@ -26,12 +30,15 @@
     <Compile Include="Contracts\Repositories\IMerchantRequestAttachmentRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantRequestHistoryRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantRequestRepository.cs" />
-    <Compile Include="Contracts\Repositories\IRequestStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\IMerchantRequestStatusRepository.cs" />
     <Compile Include="Contracts\Repositories\IUsersRepository.cs" />
     <Compile Include="Contracts\Repositories\IUserTypeRepository.cs" />
     <Compile Include="Contracts\Repositories\INationalityRepository.cs" />
     <Compile Include="Contracts\Repositories\ILocationRepository.cs" />
     <Compile Include="Contracts\Repositories\IDocumentCategoryRepository.cs" />
+    <Compile Include="Contracts\Services\IAuthConsumerService.cs" />
+    <Compile Include="Contracts\Services\IAuthMerchantService.cs" />
+    <Compile Include="Contracts\Services\IUtilitiesService.cs" />
     <Compile Include="Contracts\Services\IMerchantService.cs" />
     <Compile Include="Contracts\Services\ILookupService.cs" />
     <Compile Include="Contracts\Repositories\IRepository.cs" />
@@ -41,6 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Duc.Splitt.Common\Duc.Splitt.Common.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Data\Duc.Splitt.Data.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.Identity\Duc.Splitt.Identity.csproj" />
   </ItemGroup>
 
 </Project>

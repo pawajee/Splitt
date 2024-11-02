@@ -1,2 +1,22 @@
-﻿Add PAckages 
+﻿Search for and install the following packages:
 Microsoft.AspNetCore.Identity.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Tools (for migrations)
+
+Open Package Manager Console in Visual Studio.
+
+In the Default project drop-down list, select Duc.Splitt.Identity.
+
+Run your migration command again:
+Program.cs
+Add the MigrationsAssembly option to explicitly specify the project name (e.g., Duc.XXXX.Identity).
+
+services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("Duc.XXXXX.Identity") // Specify the migrations assembly
+    )
+);
+Open the Package Manager Console (Tools > NuGet Package Manager > Package Manager Console).
+Run the following commands to create and apply migrations:
+

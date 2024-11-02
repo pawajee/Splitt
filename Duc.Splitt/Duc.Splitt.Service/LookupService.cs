@@ -118,7 +118,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeRequestStatus(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.RequestStatuses.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.MerchantRequestStatuses.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));

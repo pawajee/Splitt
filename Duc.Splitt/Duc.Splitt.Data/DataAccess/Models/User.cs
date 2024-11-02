@@ -11,40 +11,49 @@ public partial class User
     [Key]
     public Guid Id { get; set; }
 
-    [StringLength(250)]
-    public string Name { get; set; } = null!;
-
-    [StringLength(50)]
-    [Unicode(false)]
-    public string Email { get; set; } = null!;
-
-    [StringLength(50)]
-    [Unicode(false)]
-    public string? Mobile { get; set; }
-
-    [StringLength(50)]
+    [StringLength(100)]
     [Unicode(false)]
     public string LoginId { get; set; } = null!;
 
-    public bool? IsDeleted { get; set; }
+    public int UserTypeId { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? ModifiedOn { get; set; }
-
     public Guid CreatedBy { get; set; }
-
-    public Guid? ModifiedBy { get; set; }
 
     public byte CreatedAt { get; set; }
 
     public byte? ModifiedAt { get; set; }
 
-    public bool? IsActivated { get; set; }
+    public Guid? ModifiedBy { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? ModifiedOn { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public bool? IsDeleted { get; set; }
 
     public bool? IsSystemAccount { get; set; }
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<BackOfficeUser> BackOfficeUserCreatedByNavigation { get; set; } = new List<BackOfficeUser>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<BackOfficeUser> BackOfficeUserModifiedByNavigation { get; set; } = new List<BackOfficeUser>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<BackOfficeUser> BackOfficeUserUser { get; set; } = new List<BackOfficeUser>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<ConsumerUser> ConsumerUserCreatedByNavigation { get; set; } = new List<ConsumerUser>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<ConsumerUser> ConsumerUserModifiedByNavigation { get; set; } = new List<ConsumerUser>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<ConsumerUser> ConsumerUserUser { get; set; } = new List<ConsumerUser>();
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("UserCreatedAtNavigation")]
@@ -75,6 +84,15 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<MerchantRequest> MerchantRequestModifiedByNavigation { get; set; } = new List<MerchantRequest>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<MerchantUser> MerchantUserCreatedByNavigation { get; set; } = new List<MerchantUser>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<MerchantUser> MerchantUserModifiedByNavigation { get; set; } = new List<MerchantUser>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<MerchantUser> MerchantUserUser { get; set; } = new List<MerchantUser>();
+
     [ForeignKey("ModifiedAt")]
     [InverseProperty("UserModifiedAtNavigation")]
     public virtual Location? ModifiedAtNavigation { get; set; }
@@ -82,4 +100,8 @@ public partial class User
     [ForeignKey("ModifiedBy")]
     [InverseProperty("InverseModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
+
+    [ForeignKey("UserTypeId")]
+    [InverseProperty("User")]
+    public virtual UserType UserType { get; set; } = null!;
 }

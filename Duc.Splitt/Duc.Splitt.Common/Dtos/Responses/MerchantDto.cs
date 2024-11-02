@@ -49,6 +49,7 @@ namespace Duc.Splitt.Common.Dtos.Responses
         public class GetMerchantRequestHistory
         {
             public string? RequestStatus { get; set; }
+            public string? RequestStatusDesc { get; set; }
             public string? Comment { get; set; }
 
             public string? CreatedOn { get; set; }

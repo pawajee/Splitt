@@ -24,10 +24,15 @@ namespace Duc.Splitt.Repository
         public IMerchantRequestHistoryRepository MerchantRequestHistory { get; private set; }
         public IMerchantRequestRepository MerchantRequest { get; private set; }
         public INationalityRepository Nationalities { get; private set; }
-        public IRequestStatusRepository RequestStatuses { get; private set; }
+        public IMerchantRequestStatusRepository MerchantRequestStatuses { get; private set; }
         public IUsersRepository Users { get; private set; }
         public IUserTypeRepository UserTypes { get; private set; }
         public IMerchantAnnualSaleRepository MerchantAnnualSales { get; private set; }
+
+        public IBackOfficeUserRepository BackOfficeUsers { get; private set; }
+        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; private set; }
+        public IConsumerUserRepository ConsumerUsers { get; private set; }
+        public IMerchantUserRepository MerchantUsers { get; private set; }
         public UnitOfWork(SplittAppContext context)
         {
             _context = context;
@@ -46,10 +51,16 @@ namespace Duc.Splitt.Repository
             MerchantRequestHistory = new MerchantRequestHistoryRepository(_context);
             MerchantRequest = new MerchantRequestRepository(_context);
             Nationalities = new NationalityRepository(_context);
-            RequestStatuses = new RequestStatusRepository(_context);
+            MerchantRequestStatuses = new MerchantRequestStatusRepository(_context);
             Users = new UsersRepository(_context);
             UserTypes = new UserTypeRepository(_context);
             MerchantAnnualSales = new MerchantAnnualSaleRepository(_context);
+            BackOfficeUsers = new BackOfficeUserRepository(_context);
+            ConsumerOtpRequests = new ConsumerOtpRequestRepository(_context);
+            ConsumerUsers = new ConsumerUserRepository(_context);
+            MerchantUsers = new MerchantUserRepository(_context);
+
+
         }
         public async Task<int> CompleteAsync()
         {

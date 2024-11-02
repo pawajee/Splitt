@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Duc.Splitt.MerchantApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:50063;http://localhost:50065",
+      "launchUrl": "swagger"
+    }
+  }
+}

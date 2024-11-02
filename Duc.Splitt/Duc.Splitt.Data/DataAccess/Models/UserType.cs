@@ -9,7 +9,7 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 public partial class UserType
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string TitleEnglish { get; set; } = null!;
@@ -23,4 +23,7 @@ public partial class UserType
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("UserType")]
+    public virtual ICollection<User> User { get; set; } = new List<User>();
 }

@@ -2,8 +2,7 @@
 
 namespace Duc.Splitt.Core.Contracts.Repositories
 {
-    public interface IRequestStatusRepository : IRepository<RequestStatus>
+    public interface IConsumerOtpRequestRepository : IRepository<ConsumerOtpRequest>
     {
-
     }
 }

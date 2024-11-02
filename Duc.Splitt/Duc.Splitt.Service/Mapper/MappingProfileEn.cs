@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Duc.Splitt.Common.Dtos.Responses;
+using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Data.DataAccess.Models;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
@@ -19,7 +20,7 @@ namespace Duc.Splitt.Service
             CreateMap<MerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             CreateMap<MerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             CreateMap<MerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<RequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<MerchantRequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             CreateMap<UserType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             CreateMap<DocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             #endregion

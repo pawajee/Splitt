@@ -4,7 +4,7 @@ namespace Duc.Splitt.Logger
 {
     public interface ILoggerService
     {
-
+       List<string> ConvertExceptionToStringList(Exception ex);
         void LogTrace(string message, Type? type = null, LoggerNames? loggerName = LoggerNames.writeToLog1);
         void LogInfo(string message, Type? type = null, LoggerNames? loggerName = LoggerNames.writeToLog1);
         void LogWarning(string message, Type? type = null, LoggerNames? loggerName = LoggerNames.writeToLog1);

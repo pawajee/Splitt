@@ -23,6 +23,12 @@ namespace Duc.Splitt.Common.Dtos.Requests
         {
             public required Guid RequestId { get; set; }
         }
+        public class AdminChangeUserStatus
+        {
+            public required Guid RequestId { get; set; }
+            public required int RequestStatusId { get; set; }
+            public string? Comments { get; set; }
+        }
         public class SearchMerchantRequestDto : PagedRequestDto
         {
             public string? BusinessName { get; set; }
@@ -40,6 +46,7 @@ namespace Duc.Splitt.Common.Dtos.Requests
             public SortDirection OrderDirections { get; set; }
 
         }
+
         public enum MerchantRequestSearchOrderBy : byte
         {
             CreatedOn,

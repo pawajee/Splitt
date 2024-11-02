@@ -16,12 +16,18 @@
         public IMerchantRequestHistoryRepository MerchantRequestHistory { get; }
         public IMerchantRequestRepository MerchantRequest { get; }
         public INationalityRepository Nationalities { get; }
-        public IRequestStatusRepository RequestStatuses { get; }
+        public IMerchantRequestStatusRepository MerchantRequestStatuses { get; }
         public IUsersRepository Users { get; }
         public IUserTypeRepository UserTypes { get; }
 
-        public IMerchantAnnualSaleRepository MerchantAnnualSales{ get; }
-    public Task<int> CompleteAsync();
+        public IMerchantAnnualSaleRepository MerchantAnnualSales { get; }
+
+        public IBackOfficeUserRepository BackOfficeUsers { get; }
+        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; }
+        public IConsumerUserRepository ConsumerUsers { get; }
+        public IMerchantUserRepository MerchantUsers { get; }
+
+        public Task<int> CompleteAsync();
 
     }
 }
