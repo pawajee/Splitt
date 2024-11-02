@@ -83,67 +83,6 @@ namespace Duc.Splitt.MerchantApi.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<PagedResponseDto<PagedList<SearchMerchantResponseDto>>> GetMerchantRequestList(SearchMerchantRequestDto requestDto)
-        {
-            PagedResponseDto<PagedList<SearchMerchantResponseDto>> response = new PagedResponseDto<PagedList<SearchMerchantResponseDto>>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var result = await _merchantService.SearchMerchantRequest(validateRequest, requestDto);
-                response.Data = result;
-                response.PageNumber = result.PageNumber;
-                response.PageSize = result.PageSize;
-                response.TotalRecords = result.TotalCount;
-                response.Code = ResponseStatusCode.Success;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
-        [HttpPost]
-        public async Task<ResponseDto<string?>> ChangeMerchantStatus(AdminChangeUserStatus requestDto)
-        {
-            ResponseDto<string?> response = new ResponseDto<string?>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var result = await _merchantService.ChangeMerchantStatus(validateRequest, requestDto);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
 
 
     }

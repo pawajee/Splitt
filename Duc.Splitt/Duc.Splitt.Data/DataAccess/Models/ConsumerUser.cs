@@ -14,14 +14,14 @@ public partial class ConsumerUser
     public Guid UserId { get; set; }
 
     [StringLength(250)]
-    public string NameEnglish { get; set; } = null!;
+    public string? NameEnglish { get; set; }
 
     [StringLength(250)]
-    public string NameArabic { get; set; } = null!;
+    public string? NameArabic { get; set; }
 
     [StringLength(100)]
     [Unicode(false)]
-    public string Email { get; set; } = null!;
+    public string? Email { get; set; }
 
     [StringLength(8)]
     [Unicode(false)]

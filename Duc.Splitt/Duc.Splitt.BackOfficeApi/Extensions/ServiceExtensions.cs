@@ -220,7 +220,7 @@ namespace Duc.Splitt.BackOfficeApi.Extensions
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen(s =>
                 {
-                    s.SwaggerDoc("v1", new OpenApiInfo { Title = "SPLITT App", Version = "v1", });
+                    s.SwaggerDoc("v1", new OpenApiInfo { Title = "Splitt BackOffice API", Version = "v1", });
                     s.OperationFilter<CustomHeaderSwaggerAttribute>();
                     s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {

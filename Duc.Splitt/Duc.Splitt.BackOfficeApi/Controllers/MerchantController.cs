@@ -26,64 +26,6 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<CreateMerchantResponseDto>> PostMerchant(CreaterMerchantRequestDto requestDto)
-        {
-            ResponseDto<CreateMerchantResponseDto> response = new ResponseDto<CreateMerchantResponseDto>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var result = await _merchantService.PostMerchant(validateRequest, requestDto);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
-
-        [HttpPost]
-        public async Task<ResponseDto<GetMerchantResponseDto>> GetMerchantDetailsById(GetMerchantRequestDto requestDto)
-        {
-            ResponseDto<GetMerchantResponseDto> response = new ResponseDto<GetMerchantResponseDto>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var obj = await _merchantService.GetMerchantDetailsById(validateRequest, requestDto);
-                return obj;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
-
-        [HttpPost]
         public async Task<PagedResponseDto<PagedList<SearchMerchantResponseDto>>> GetMerchantRequestList(SearchMerchantRequestDto requestDto)
         {
             PagedResponseDto<PagedList<SearchMerchantResponseDto>> response = new PagedResponseDto<PagedList<SearchMerchantResponseDto>>
@@ -144,6 +86,7 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
             }
 
         }
+
 
 
     }

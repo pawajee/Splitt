@@ -81,7 +81,8 @@ public partial class SplittAppContext : DbContext
 
         modelBuilder.Entity<ConsumerOtpRequest>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ExpiredOn).HasDefaultValueSql("(dateadd(minute,(5),getdate()))");
         });
 
         modelBuilder.Entity<ConsumerUser>(entity =>
@@ -344,6 +345,7 @@ public partial class SplittAppContext : DbContext
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.IsActive).HasDefaultValue(false);
+            entity.Property(e => e.IsSystemAccount).HasDefaultValue(false);
             entity.Property(e => e.LoginId).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.UserTypeId).HasDefaultValue(5);
 

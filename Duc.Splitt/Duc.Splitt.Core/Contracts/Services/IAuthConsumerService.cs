@@ -6,7 +6,7 @@ namespace Duc.Splitt.Core.Contracts.Services
     public interface IAuthConsumerService
     {
 
-        Task<ResponseDto<string?>> RequestConsumerUserOTP(RequestHeader requestHeader, RegisterDto request);
-          Task<ResponseDto<AuthTokens?>> VerifyConsumerUserOTP(VerifyOtpDto request);
+        Task<ResponseDto<bool?>> RequestConsumerUserOTP(RequestHeader requestHeader, RegisterDto request);
+          Task<ResponseDto<AuthTokens?>> VerifyConsumerUserOTP(RequestHeader requestHeader,VerifyOtpDto request);
     }
 }

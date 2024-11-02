@@ -26,6 +26,16 @@ public partial class ConsumerOtpRequest
     [StringLength(2000)]
     public string? Comments { get; set; }
 
+    [Column(TypeName = "datetime")]
+    public DateTime ExpiredOn { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? VerifiedOn { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string? Status { get; set; }
+
     public Guid CreatedBy { get; set; }
 
     [Column(TypeName = "datetime")]

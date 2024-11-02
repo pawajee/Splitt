@@ -1,24 +1,22 @@
-﻿using Duc.Splitt.ConsumerApi.ActionFilters;
+﻿using Duc.Splitt.Common.Helpers;
+using Duc.Splitt.ConsumerApi.ActionFilters;
 using Duc.Splitt.ConsumerApi.Helper;
-using Duc.Splitt.Common.Helpers;
 using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Context;
+using Duc.Splitt.Identity;
 using Duc.Splitt.Logger;
 using Duc.Splitt.Repository;
 using Duc.Splitt.Service;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.Identity;
-using Duc.Splitt.Identity;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace Duc.Splitt.ConsumerApi.Extensions
 {
@@ -109,10 +107,8 @@ namespace Duc.Splitt.ConsumerApi.Extensions
 
             builder.Services.AddIdentity<SplittIdentityUser, SplittIdentityRole>(options =>
             {
-                options.User.RequireUniqueEmail = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
+                options.User.RequireUniqueEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = true;
 
             })
                 .AddEntityFrameworkStores<SplittIdentityDbContext>()
@@ -220,7 +216,7 @@ namespace Duc.Splitt.ConsumerApi.Extensions
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen(s =>
                 {
-                    s.SwaggerDoc("v1", new OpenApiInfo { Title = "SPLITT App", Version = "v1", });
+                    s.SwaggerDoc("v1", new OpenApiInfo { Title = "Splitt Consumer API", Version = "v1", });
                     s.OperationFilter<CustomHeaderSwaggerAttribute>();
                     s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
@@ -264,8 +260,6 @@ namespace Duc.Splitt.ConsumerApi.Extensions
             builder.Services.AddTransient<ILocalizationService, LocalizationService>();
             builder.Services.AddTransient<IUtilsService, UtilsService>();
             builder.Services.AddTransient<ILookupService, LookupService>();
-            builder.Services.AddTransient<IMerchantService, MerchantService>();
-            builder.Services.AddTransient<IAuthMerchantService, AuthMerchantService>();
             builder.Services.AddTransient<IAuthConsumerService, AuthConsumerService>();
             builder.Services.AddTransient<IUtilitiesService, UtilitiesService>();
         }

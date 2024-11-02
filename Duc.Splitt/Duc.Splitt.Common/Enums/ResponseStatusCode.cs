@@ -3,7 +3,7 @@ using Duc.Splitt.Common.Extensions;
 
 namespace Duc.Splitt.Common.Enums
 {
-	public enum ResponseStatusCode
+    public enum ResponseStatusCode
     {
         [LocalizedDescription("Success", typeof(ResponseStatusCodeMessages))]
         Success = 200,
@@ -54,6 +54,8 @@ namespace Duc.Splitt.Common.Enums
         [LocalizedDescription("StratRemoteTransactionCustomMessage", typeof(ResponseStatusCodeMessages))]
         StratRemoteTransactionCustomMessage = 6010,
 
-
+        OTPExpired = 6233,
+        OTPMaxAttempts = 6234,
+        AlreadyUsed = 6235
     }
 }

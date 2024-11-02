@@ -217,38 +217,6 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
 
         }
 
-        [HttpGet()]
-        public async Task<ResponseDto<List<LookupDocumentDto>>> GeDocumentConfigurations(DocumentCategories documentCategories)
-        {
-            ResponseDto<List<LookupDocumentDto>> response = new ResponseDto<List<LookupDocumentDto>>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var obj = await _lookupService.GeDocumentConfigurations(validateRequest, documentCategories);
-
-                response.Data = obj;//
-
-                response.Code = ResponseStatusCode.Success;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
 
     }
 }

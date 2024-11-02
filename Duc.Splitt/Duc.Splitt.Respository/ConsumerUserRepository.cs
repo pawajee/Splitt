@@ -2,10 +2,11 @@
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Respository.Repository
 {
-	public class ConsumerUserRepository : Repository<ConsumerUser>, IConsumerUserRepository
+    public class ConsumerUserRepository : Repository<ConsumerUser>, IConsumerUserRepository
     {
         protected readonly SplittAppContext _context;
 
@@ -13,6 +14,10 @@ namespace Duc.Splitt.Respository.Repository
         {
             _context = context;
         }
-
+        public async Task<ConsumerUser?> GetConsumerUserByMobileNo(string mobileNo)
+        {
+            var obj = await _context.ConsumerUser.Include(t => t.User).Where(t => t.MobileNo == mobileNo).FirstOrDefaultAsync();
+            return obj;
+        }
     }
 }

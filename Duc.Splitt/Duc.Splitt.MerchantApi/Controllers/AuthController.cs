@@ -28,35 +28,6 @@ namespace Duc.Splitt.MerchantApi.Controllers
             _authMerchantService = authMerchantService;
         }
 
-
-        private async Task<ResponseDto<string?>> ApproveMerchantUser(RegisterDto requestDto)
-        {
-            ResponseDto<string?> response = new ResponseDto<string?>
-            {
-                Code = ResponseStatusCode.NoDataFound
-            };
-
-            try
-            {
-                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-                if (validateRequest == null)
-                {
-                    response.Code = ResponseStatusCode.InvalidToken;
-                    return response;
-                }
-                var result = await _authMerchantService.ApproveMerchantUser(validateRequest, requestDto);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex);
-                response.Code = ResponseStatusCode.ServerError;
-                response.Errors = _logger.ConvertExceptionToStringList(ex);
-                return response;
-            }
-
-        }
-
         [HttpPost]
         public async Task<ResponseDto<AuthTokens?>> ActivateMerchantUser(SetPasswordDto requestDto)
         {
