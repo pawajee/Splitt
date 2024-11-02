@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Duc.Splitt.MerchantApi": {
+    "Duc.Splitt.ConsumerApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

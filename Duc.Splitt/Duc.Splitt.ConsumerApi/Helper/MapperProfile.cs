@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 
-namespace Duc.Splitt.MerchantApi.Helper
+namespace Duc.Splitt.ConsumerApi.Helper
 {
     public class MapperProfile : Profile
     {

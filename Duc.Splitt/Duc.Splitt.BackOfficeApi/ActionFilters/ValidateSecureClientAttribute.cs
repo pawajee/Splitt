@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
-namespace Duc.Splitt.MerchantApi.ActionFilters
+namespace Duc.Splitt.BackOfficeApi.ActionFilters
 {
-    public sealed class ValidateAnonymousClientAttribute : ActionFilterAttribute
+    public sealed class ValidateSecureClientAttribute : ActionFilterAttribute
     {
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -22,6 +22,10 @@ namespace Duc.Splitt.MerchantApi.ActionFilters
         private static bool IsValidRequest(HttpRequest request)
         {
             if (request.Headers == null)
+            {
+                return false;
+            }
+            else if (!request.Headers.ContainsKey("Authorization"))
             {
                 return false;
             }

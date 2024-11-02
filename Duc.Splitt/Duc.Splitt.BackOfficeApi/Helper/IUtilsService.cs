@@ -1,7 +1,7 @@
 ﻿using Duc.Splitt.Common.Dtos.Responses;
 using System.Security.Claims;
 
-namespace Duc.Splitt.MerchantApi.Helper
+namespace Duc.Splitt.BackOfficeApi.Helper
 {
 
     public interface IUtilsService

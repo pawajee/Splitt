@@ -3,12 +3,12 @@ using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Logger;
-using Duc.Splitt.ConsumerApi.Helper;
+using Duc.Splitt.BackOfficeApi.Helper;
 using Microsoft.AspNetCore.Mvc;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
-namespace Duc.Splitt.ConsumerApi.Controllers
+namespace Duc.Splitt.BackOfficeApi.Controllers
 {
 
     public class MerchantController : BaseAnonymous

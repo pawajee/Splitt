@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Duc.Splitt.MerchantApi.ActionFilters
+namespace Duc.Splitt.ConsumerApi.ActionFilters
 {
     public class CustomHeaderSwaggerAttribute : IOperationFilter
     {

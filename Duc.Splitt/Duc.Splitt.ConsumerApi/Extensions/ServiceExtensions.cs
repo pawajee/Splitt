@@ -1,5 +1,5 @@
-﻿using Duc.Splitt.MerchantApi.ActionFilters;
-using Duc.Splitt.MerchantApi.Helper;
+﻿using Duc.Splitt.ConsumerApi.ActionFilters;
+using Duc.Splitt.ConsumerApi.Helper;
 using Duc.Splitt.Common.Helpers;
 using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Duc.Splitt.Identity;
 using Microsoft.AspNetCore.DataProtection;
 
-namespace Duc.Splitt.MerchantApi.Extensions
+namespace Duc.Splitt.ConsumerApi.Extensions
 {
     public static class ServiceExtensions
     {

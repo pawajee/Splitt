@@ -4,14 +4,14 @@ using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Logger;
-using Duc.Splitt.MerchantApi.Helper;
+using Duc.Splitt.ConsumerApi.Helper;
 using Duc.Splitt.Service;
 using Microsoft.AspNetCore.Mvc;
 using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
-namespace Duc.Splitt.MerchantApi.Controllers
+namespace Duc.Splitt.ConsumerApi.Controllers
 {
 
     public class AuthController : BaseAnonymous

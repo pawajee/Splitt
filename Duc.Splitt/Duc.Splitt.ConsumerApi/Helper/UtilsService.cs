@@ -4,7 +4,7 @@ using Duc.Splitt.Common.Helpers;
 using Duc.Splitt.Data.Dapper;
 using System.Security.Claims;
 
-namespace Duc.Splitt.MerchantApi.Helper
+namespace Duc.Splitt.ConsumerApi.Helper
 {
     public class UtilsService : IUtilsService
     {

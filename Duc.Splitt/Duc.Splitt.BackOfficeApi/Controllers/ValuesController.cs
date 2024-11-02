@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Duc.Splitt.MerchantApi.Controllers
+namespace Duc.Splitt.BackOfficeApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

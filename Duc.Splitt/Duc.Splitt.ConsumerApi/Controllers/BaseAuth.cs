@@ -1,9 +1,9 @@
-﻿using Duc.Splitt.MerchantApi.ActionFilters;
+﻿using Duc.Splitt.ConsumerApi.ActionFilters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace Duc.Splitt.MerchantApi.Controllers
+namespace Duc.Splitt.ConsumerApi.Controllers
 {
 
     [Route("api/[controller]/[action]")]

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
-namespace Duc.Splitt.MerchantApi.ActionFilters
+namespace Duc.Splitt.ConsumerApi.ActionFilters
 {
     public sealed class ValidateSecureClientAttribute : ActionFilterAttribute
     {

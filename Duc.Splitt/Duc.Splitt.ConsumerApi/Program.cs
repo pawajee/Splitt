@@ -1,4 +1,4 @@
-using Duc.Splitt.MerchantApi.Extensions;
+using Duc.Splitt.ConsumerApi.Extensions;
 using NLog;
 using NLog.Web;
 

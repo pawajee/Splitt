@@ -1,4 +1,4 @@
-﻿using Duc.Splitt.MerchantApi.Helper;
+﻿using Duc.Splitt.ConsumerApi.Helper;
 using Duc.Splitt.Common.Dtos.Responses;
 using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Core.Contracts.Services;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Azure.Core;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Duc.Splitt.MerchantApi.Controllers
+namespace Duc.Splitt.ConsumerApi.Controllers
 {
 
     public class LookupController : BaseAnonymous

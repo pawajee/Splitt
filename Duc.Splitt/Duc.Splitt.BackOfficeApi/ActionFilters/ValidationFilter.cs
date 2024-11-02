@@ -3,7 +3,7 @@ using Duc.Splitt.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Duc.Splitt.MerchantApi.ActionFilters
+namespace Duc.Splitt.BackOfficeApi.ActionFilters
 {
     public class ValidationFilter : IAsyncActionFilter
     {
