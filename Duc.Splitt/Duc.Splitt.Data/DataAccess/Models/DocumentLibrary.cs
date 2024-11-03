@@ -38,8 +38,8 @@ public partial class DocumentLibrary
 
     [ForeignKey("DocumentCategoryId")]
     [InverseProperty("DocumentLibrary")]
-    public virtual DocumentCategory? DocumentCategory { get; set; }
+    public virtual LkDocumentCategory? DocumentCategory { get; set; }
 
     [InverseProperty("DocumentLibrary")]
-    public virtual ICollection<MerchantRequestAttachment> MerchantRequestAttachment { get; set; } = new List<MerchantRequestAttachment>();
+    public virtual ICollection<MerchantAttachment> MerchantAttachment { get; set; } = new List<MerchantAttachment>();
 }

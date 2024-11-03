@@ -10,19 +10,19 @@ namespace Duc.Splitt.Service
         public MappingProfileAr()
         {
 
-            CreateMap<Nationality, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<Country, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<Gender, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<Language, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<MerchantAnnualSale, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic)); 
-            CreateMap<MerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<MerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<MerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<MerchantRequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<UserType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-            CreateMap<DocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkNationality, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkCountry, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkGender, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkLanguage, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkMerchantAnnualSale, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic)); 
+            CreateMap<LkMerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkMerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkMerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkMerchantStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkRole, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
+            CreateMap<LkDocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
 
-            CreateMap<MerchantRequest, GetMerchantResponseDto>();
+            CreateMap<Merchant, GetMerchantResponseDto>();
         }
 
     }

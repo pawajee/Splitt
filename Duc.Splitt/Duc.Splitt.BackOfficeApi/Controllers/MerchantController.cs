@@ -87,6 +87,34 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<ResponseDto<GetMerchantResponseDto>> GetMerchantDetailsById(GetMerchantRequestDto requestDto)
+        {
+            ResponseDto<GetMerchantResponseDto> response = new ResponseDto<GetMerchantResponseDto>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+                var obj = await _merchantService.GetMerchantDetailsById(validateRequest, requestDto);
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+
+        }
 
 
     }

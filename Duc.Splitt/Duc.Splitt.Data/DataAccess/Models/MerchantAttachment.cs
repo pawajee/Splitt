@@ -6,26 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Data.DataAccess.Models;
 
-public partial class BackOfficeUser
+public partial class MerchantAttachment
 {
     [Key]
     public Guid Id { get; set; }
 
-    public Guid UserId { get; set; }
+    public Guid MerchantRequestId { get; set; }
 
-    [StringLength(250)]
-    public string NameEnglish { get; set; } = null!;
+    public Guid DocumentLibraryId { get; set; }
 
-    [StringLength(250)]
-    public string NameArabic { get; set; } = null!;
+    public Guid DocumentConfigurationId { get; set; }
 
-    [StringLength(100)]
-    [Unicode(false)]
-    public string Email { get; set; } = null!;
-
-    [StringLength(8)]
-    [Unicode(false)]
-    public string MobileNo { get; set; } = null!;
+    public bool? IsDeleted { get; set; }
 
     public Guid CreatedBy { get; set; }
 
@@ -42,22 +34,30 @@ public partial class BackOfficeUser
     public byte? ModifiedAt { get; set; }
 
     [ForeignKey("CreatedAt")]
-    [InverseProperty("BackOfficeUserCreatedAtNavigation")]
+    [InverseProperty("MerchantAttachmentCreatedAtNavigation")]
     public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
 
     [ForeignKey("CreatedBy")]
-    [InverseProperty("BackOfficeUserCreatedByNavigation")]
+    [InverseProperty("MerchantAttachmentCreatedByNavigation")]
     public virtual User CreatedByNavigation { get; set; } = null!;
 
+    [ForeignKey("DocumentConfigurationId")]
+    [InverseProperty("MerchantAttachment")]
+    public virtual LkDocumentConfiguration DocumentConfiguration { get; set; } = null!;
+
+    [ForeignKey("DocumentLibraryId")]
+    [InverseProperty("MerchantAttachment")]
+    public virtual DocumentLibrary DocumentLibrary { get; set; } = null!;
+
+    [ForeignKey("MerchantRequestId")]
+    [InverseProperty("MerchantAttachment")]
+    public virtual Merchant MerchantRequest { get; set; } = null!;
+
     [ForeignKey("ModifiedAt")]
-    [InverseProperty("BackOfficeUserModifiedAtNavigation")]
+    [InverseProperty("MerchantAttachmentModifiedAtNavigation")]
     public virtual LkLocation? ModifiedAtNavigation { get; set; }
 
     [ForeignKey("ModifiedBy")]
-    [InverseProperty("BackOfficeUserModifiedByNavigation")]
+    [InverseProperty("MerchantAttachmentModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
-
-    [ForeignKey("UserId")]
-    [InverseProperty("BackOfficeUserUser")]
-    public virtual User User { get; set; } = null!;
 }

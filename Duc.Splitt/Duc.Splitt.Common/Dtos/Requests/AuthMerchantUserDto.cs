@@ -6,11 +6,11 @@ namespace Duc.Splitt.Common.Dtos.Requests
     {
         public class RegisterDto
         {
-           
+
             [Required(ErrorMessage = "User Name is required")]
             public string UserName { get; set; } = null!;
 
-            
+
             [Required(ErrorMessage = "Email is required")]
             public string Email { get; set; } = null!;
 
@@ -39,6 +39,34 @@ namespace Duc.Splitt.Common.Dtos.Requests
             public string Password { get; set; } = null!;
 
         }
+        public class ChangePasswordDto
+        {
+            [Required(ErrorMessage = "email is required")]
+            [EmailAddress]
+            public string Email { get; set; } = null!;
+
+            [Required(ErrorMessage = "Current Password is required")]
+            public string CurrentPassword { get; set; } = null!;
+
+            [Required(ErrorMessage = "New Password is required")]
+            public string NewPassword { get; set; } = null!;
+        }
+        public class ResetPasswordDto
+        {
+            [Required]
+            public string Token { get; set; } = null!;
+
+            [Required]
+            [EmailAddress]
+            public string Email { get; set; } = null!;
+
+            [Required]
+            public string NewPassword { get; set; } = null!;
+
+            [Required]
+            public string ConfirmPassword { get; set; } = null!;
+        }
+
     }
 
 }

@@ -36,7 +36,7 @@ namespace Duc.Splitt.Service
                 Code = ResponseStatusCode.NoDataFound
             };
 
-            MerchantRequest merchantRequest = new MerchantRequest();
+            Merchant merchantRequest = new Merchant();
 
             merchantRequest.BusinessNameArabic = requestDto.BusinessNameArabic;
             merchantRequest.BusinessNameEnglish = requestDto.BusinessNameEnglish;
@@ -54,7 +54,7 @@ namespace Duc.Splitt.Service
             merchantRequest.RequestNo = GenerateRequestNumber();
             if (requestDto.Documents != null)
             {
-                var documentCategories = await _unitOfWork.DocumentCategories.GetAsync(1);//ToDO
+                var documentCategories = await _unitOfWork.LkDocumentCategories.GetAsync(1);//ToDO
                 foreach (var x in requestDto.Documents)
                 {
                     var fileGUid = Guid.NewGuid();
@@ -66,8 +66,8 @@ namespace Duc.Splitt.Service
                     }
                     File.WriteAllBytes(Path.Combine(directoryPath, FileNameGenerator.GenerateFileName(x.MineType, fileGUid)), x.AttachmentByte);
 
-                    merchantRequest.MerchantRequestAttachment.Add(
-                        new MerchantRequestAttachment
+                    merchantRequest.MerchantAttachment.Add(
+                        new MerchantAttachment
                         {
 
                             DocumentLibrary = new DocumentLibrary
@@ -89,7 +89,7 @@ namespace Duc.Splitt.Service
 
                 }
             }
-            merchantRequest.MerchantRequestHistory.Add(new MerchantRequestHistory
+            merchantRequest.MerchantHistory.Add(new MerchantHistory
             {
                 MerchantRequestStatusId = (int)MerchantRequestStatuses.InProgress,
                 CreatedAt = (byte)requestHeader.LocationId,
@@ -97,7 +97,7 @@ namespace Duc.Splitt.Service
                 CreatedBy = Utilities.AnonymousUserID,
 
             });
-            _unitOfWork.MerchantRequest.AddAsync(merchantRequest);
+            _unitOfWork.Merchants.AddAsync(merchantRequest);
 
             merchantRequest.MerchantUser.Add(new MerchantUser
             {
@@ -111,7 +111,7 @@ namespace Duc.Splitt.Service
                 CreatedBy = Utilities.AnonymousUserID,
 
             });
-            _unitOfWork.MerchantRequest.AddAsync(merchantRequest);
+            _unitOfWork.Merchants.AddAsync(merchantRequest);
             await _unitOfWork.CompleteAsync();
             response.Data = new CreateMerchantResponseDto { RequestNo = merchantRequest.RequestNo };
             response.Code = ResponseStatusCode.Success;
@@ -179,7 +179,7 @@ namespace Duc.Splitt.Service
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-            var merchantRequest = await _unitOfWork.MerchantRequest.GetMerchantRequest(requestDto.RequestId);
+            var merchantRequest = await _unitOfWork.Merchants.GetMerchantRequest(requestDto.RequestId);
             if (merchantRequest == null)
             {
                 return response;
@@ -200,12 +200,12 @@ namespace Duc.Splitt.Service
                 //BusinessEmail = merchantRequest.BusinessEmail
 
             };
-            if (merchantRequest != null && merchantRequest.MerchantRequestAttachment?.Count > 0)
+            if (merchantRequest != null && merchantRequest.MerchantAttachment?.Count > 0)
             {
                 temp.Documents = new List<DocumentResponseDto>();
-                foreach (var attch in merchantRequest.MerchantRequestAttachment)
+                foreach (var attch in merchantRequest.MerchantAttachment)
                 {
-                    var docConfig = await _unitOfWork.DocumentConfigurations.GetAsync(attch.DocumentConfigurationId);
+                    var docConfig = await _unitOfWork.LkDocumentConfigurations.GetAsync(attch.DocumentConfigurationId);
                     temp.Documents.Add(new DocumentResponseDto
                     {
                         DocumentConfigurationName = requestHeader.IsArabic ? docConfig.TitleArabic : docConfig.TitleEnglish,
@@ -214,13 +214,13 @@ namespace Duc.Splitt.Service
                     });
                 }
             }
-            if (merchantRequest != null && merchantRequest.MerchantRequestHistory?.Count > 0)
+            if (merchantRequest != null && merchantRequest.MerchantHistory?.Count > 0)
             {
                 temp.MerchantRequestHistory = new List<GetMerchantRequestHistory>();
-                foreach (var history in merchantRequest.MerchantRequestHistory)
+                foreach (var history in merchantRequest.MerchantHistory)
                 {
                     var user = await _unitOfWork.Users.GetUserById(history.CreatedBy);
-                    var status = await _unitOfWork.MerchantRequestStatuses.GetAsync(history.MerchantRequestStatusId);
+                    var status = await _unitOfWork.LkMerchantStatuses.GetAsync(history.MerchantRequestStatusId);
                     temp.MerchantRequestHistory.Add(new GetMerchantRequestHistory
                     {
                         Comment = history.Comment,
@@ -266,7 +266,7 @@ namespace Duc.Splitt.Service
                 merchantUser.ModifiedAt = (byte)requestHeader.LocationId;
                 merchantUser.ModifiedOn = DateTime.Now;
                 merchantUser.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
-                merchantUser.MerchantRequest.MerchantRequestHistory.Add(new MerchantRequestHistory
+                merchantUser.MerchantRequest.MerchantHistory.Add(new MerchantHistory
                 {
                     MerchantRequestStatusId = (int)MerchantRequestStatuses.Rejected,
                     CreatedAt = (byte)requestHeader.LocationId,

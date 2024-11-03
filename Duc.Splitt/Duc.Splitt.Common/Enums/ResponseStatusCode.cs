@@ -56,6 +56,7 @@ namespace Duc.Splitt.Common.Enums
 
         OTPExpired = 6233,
         OTPMaxAttempts = 6234,
-        AlreadyUsed = 6235
+        AlreadyUsed = 6235,
+        EmailNotSent=6236
     }
 }

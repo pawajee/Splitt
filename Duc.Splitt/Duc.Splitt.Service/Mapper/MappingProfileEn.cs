@@ -12,19 +12,19 @@ namespace Duc.Splitt.Service
         {
             #region LookUp
            
-            CreateMap<Nationality, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<Country, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<Gender, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<Language, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<MerchantAnnualSale, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<MerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<MerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<MerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<MerchantRequestStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<UserType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
-            CreateMap<DocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkNationality, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkCountry, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkGender, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkLanguage, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkMerchantAnnualSale, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkMerchantAverageOrder, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkMerchantBusinessType, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkMerchantCategory, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkMerchantStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkRole, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
+            CreateMap<LkDocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleEnglish));
             #endregion
-            CreateMap<MerchantRequest, GetMerchantResponseDto>();
+            CreateMap<Merchant, GetMerchantResponseDto>();
         }
     }
     public static class ObjectMapperEn

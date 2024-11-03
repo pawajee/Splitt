@@ -43,7 +43,7 @@ public partial class ConsumerUser
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("ConsumerUserCreatedAtNavigation")]
-    public virtual Location CreatedAtNavigation { get; set; } = null!;
+    public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
 
     [ForeignKey("CreatedBy")]
     [InverseProperty("ConsumerUserCreatedByNavigation")]
@@ -51,7 +51,7 @@ public partial class ConsumerUser
 
     [ForeignKey("ModifiedAt")]
     [InverseProperty("ConsumerUserModifiedAtNavigation")]
-    public virtual Location? ModifiedAtNavigation { get; set; }
+    public virtual LkLocation? ModifiedAtNavigation { get; set; }
 
     [ForeignKey("ModifiedBy")]
     [InverseProperty("ConsumerUserModifiedByNavigation")]

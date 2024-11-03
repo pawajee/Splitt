@@ -22,7 +22,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GetNationalities(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.Nationalities.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkNationalities.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -34,7 +34,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GetCountries(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.Countries.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkCountries.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -46,7 +46,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GetGenders(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.Genders.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkGenders.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -58,7 +58,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GetLanguages(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.Languages.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkLanguages.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -70,7 +70,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeMerchantAnnualSales(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.MerchantAnnualSales.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkMerchantAnnualSales.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -82,7 +82,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeMerchantAverageOrders(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.MerchantAverageOrders.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkMerchantAverageOrders.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -94,7 +94,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeMerchantBusinessTypes(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.MerchantBusinessTypes.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkMerchantBusinessTypes.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -106,7 +106,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeMerchantCategories(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.MerchantCategories.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkMerchantCategories.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -118,7 +118,7 @@ namespace Duc.Splitt.Service
         }
         public async Task<List<LookupDto>> GeRequestStatus(RequestHeader requestHeader)
         {
-            var obj = await _unitOfWork.MerchantRequestStatuses.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            var obj = await _unitOfWork.LkMerchantStatuses.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
             if (requestHeader.IsArabic)
             {
                 return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
@@ -131,7 +131,7 @@ namespace Duc.Splitt.Service
         public async Task<List<LookupDocumentDto>> GeDocumentConfigurations(RequestHeader requestHeader, DocumentCategories documentCategories)
         {
             List<LookupDocumentDto> lst = null;
-            var obj = await _unitOfWork.DocumentConfigurations.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true) && t.DocumentCategoryId == (int)documentCategories);//ToDO
+            var obj = await _unitOfWork.LkDocumentConfigurations.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true) && t.DocumentCategoryId == (int)documentCategories);//ToDO
             if (obj != null && obj.Count() > 0)
             {
                 lst = new List<LookupDocumentDto>();

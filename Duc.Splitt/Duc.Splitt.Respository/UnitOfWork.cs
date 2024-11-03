@@ -1,4 +1,5 @@
-﻿using Duc.Splitt.Core.Contracts.Repositories;
+﻿using Duc.Splitt.Common.Enums;
+using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Respository.Repository;
@@ -10,51 +11,57 @@ namespace Duc.Splitt.Repository
         protected readonly SplittAppContext _context;
 
 
-        public ICountryRepository Countries { get; private set; }
+        public ILkCountryRepository LkCountries { get; private set; }
         public IDocumentLibraryRepository DocumentLibrarys { get; private set; }
-        public IDocumentConfigurationRepository DocumentConfigurations { get; private set; }
-        public IDocumentCategoryRepository DocumentCategories { get; private set; }
-        public IGenderRepository Genders { get; private set; }
-        public ILanguageRepository Languages { get; private set; }
-        public ILocationRepository Locations { get; private set; }
-        public IMerchantAverageOrderRepository MerchantAverageOrders { get; private set; }
-        public IMerchantBusinessTypeRepository MerchantBusinessTypes { get; private set; }
-        public IMerchantCategoryRepository MerchantCategories { get; private set; }
-        public IMerchantRequestAttachmentRepository MerchantRequestAttachments { get; }
-        public IMerchantRequestHistoryRepository MerchantRequestHistory { get; private set; }
-        public IMerchantRequestRepository MerchantRequest { get; private set; }
-        public INationalityRepository Nationalities { get; private set; }
-        public IMerchantRequestStatusRepository MerchantRequestStatuses { get; private set; }
-        public IUsersRepository Users { get; private set; }
-        public IUserTypeRepository UserTypes { get; private set; }
-        public IMerchantAnnualSaleRepository MerchantAnnualSales { get; private set; }
+        public ILkDocumentConfigurationRepository LkDocumentConfigurations { get; private set; }
+        public ILkDocumentCategoryRepository LkDocumentCategories { get; private set; }
+        public ILkGenderRepository LkGenders { get; private set; }
+        public ILkLanguageRepository LkLanguages { get; private set; }
+        public ILkLocationRepository LkLocations { get; private set; }
+        public ILkMerchantAverageOrderRepository LkMerchantAverageOrders { get; private set; }
+        public ILkMerchantBusinessTypeRepository LkMerchantBusinessTypes { get; private set; }
+        public ILkMerchantCategoryRepository LkMerchantCategories { get; private set; }
+        public ILkMerchantStatusRepository LkMerchantStatuses { get; private set; }
+        public ILkNationalityRepository LkNationalities { get; private set; }
+        public ILkMerchantAnnualSaleRepository LkMerchantAnnualSales { get; private set; }
+        public ILkRoleRepository LkRoles { get; private set; }
 
-        public IBackOfficeUserRepository BackOfficeUsers { get; private set; }
-        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; private set; }
+
+        public IMerchantRepository Merchants { get; private set; }
+        public IMerchantAttachmentRepository MerchantAttachments { get; }
+        public IMerchantHistoryRepository MerchantHistories { get; private set; }
+
+        public IUserRepository Users { get; private set; }
+
+        public IBackOfficeUserRepository BackOfficeUsers { get; private set; }      
         public IConsumerUserRepository ConsumerUsers { get; private set; }
         public IMerchantUserRepository MerchantUsers { get; private set; }
+
+        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; private set; }
         public UnitOfWork(SplittAppContext context)
         {
             _context = context;
 
-            Countries = new CountryRepository(_context);
+            LkCountries = new LkCountryRepository(_context);
             DocumentLibrarys = new DocumentLibraryRepository(_context);
-            DocumentConfigurations = new DocumentConfigurationRepository(_context);
-            DocumentCategories = new DocumentCategoryRepository(_context);
-            Genders = new GenderRepository(_context);
-            Languages = new LanguageRepository(_context);
-            Locations = new LocationRepository(_context);
-            MerchantAverageOrders = new MerchantAverageOrderRepository(_context);
-            MerchantBusinessTypes = new MerchantBusinessTypeRepository(_context);
-            MerchantCategories = new MerchantCategoryRepository(_context);
-            MerchantRequestAttachments = new MerchantRequestAttachmentRepository(_context);
-            MerchantRequestHistory = new MerchantRequestHistoryRepository(_context);
-            MerchantRequest = new MerchantRequestRepository(_context);
-            Nationalities = new NationalityRepository(_context);
-            MerchantRequestStatuses = new MerchantRequestStatusRepository(_context);
-            Users = new UsersRepository(_context);
-            UserTypes = new UserTypeRepository(_context);
-            MerchantAnnualSales = new MerchantAnnualSaleRepository(_context);
+            LkDocumentConfigurations = new LkDocumentConfigurationRepository(_context);
+            LkDocumentCategories = new LkDocumentCategoryRepository(_context);
+            LkGenders = new LkGenderRepository(_context);
+            LkLanguages = new LkLanguageRepository(_context);
+            LkLocations = new LkLocationRepository(_context);
+            LkNationalities = new LkNationalityRepository(_context);
+            LkMerchantStatuses = new LkMerchantStatusRepository(_context);
+
+            LkMerchantAverageOrders = new LkMerchantAverageOrderRepository(_context);
+            LkMerchantBusinessTypes = new LkMerchantBusinessTypeRepository(_context);
+            LkMerchantCategories = new LkMerchantCategoryRepository(_context);
+            MerchantAttachments = new MerchantAttachmentRepository(_context);
+            MerchantHistories = new MerchantHistoryRepository(_context);
+            Merchants = new MerchantRepository(_context);
+
+            Users = new UserRepository(_context);
+            LkRoles = new LkRoleRepository(_context);
+            LkMerchantAnnualSales = new LkMerchantAnnualSaleRepository(_context);
             BackOfficeUsers = new BackOfficeUserRepository(_context);
             ConsumerOtpRequests = new ConsumerOtpRequestRepository(_context);
             ConsumerUsers = new ConsumerUserRepository(_context);

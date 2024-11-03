@@ -47,7 +47,7 @@ public partial class MerchantUser
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("MerchantUserCreatedAtNavigation")]
-    public virtual Location CreatedAtNavigation { get; set; } = null!;
+    public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
 
     [ForeignKey("CreatedBy")]
     [InverseProperty("MerchantUserCreatedByNavigation")]
@@ -55,11 +55,11 @@ public partial class MerchantUser
 
     [ForeignKey("MerchantRequestId")]
     [InverseProperty("MerchantUser")]
-    public virtual MerchantRequest MerchantRequest { get; set; } = null!;
+    public virtual Merchant MerchantRequest { get; set; } = null!;
 
     [ForeignKey("ModifiedAt")]
     [InverseProperty("MerchantUserModifiedAtNavigation")]
-    public virtual Location? ModifiedAtNavigation { get; set; }
+    public virtual LkLocation? ModifiedAtNavigation { get; set; }
 
     [ForeignKey("ModifiedBy")]
     [InverseProperty("MerchantUserModifiedByNavigation")]
