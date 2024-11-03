@@ -21,7 +21,7 @@ namespace Duc.Splitt.Service
             CreateMap<LkMerchantStatus, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<LkRole, LookupDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
             CreateMap<LkDocumentConfiguration, LookupDocumentDto>().ForMember(dest => dest.Name, source => source.MapFrom(src => src.TitleArabic));
-
+            
             CreateMap<Merchant, GetMerchantResponseDto>();
         }
 

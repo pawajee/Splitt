@@ -39,6 +39,12 @@ public partial class LkLocation
     public virtual ICollection<ConsumerUser> ConsumerUserModifiedAtNavigation { get; set; } = new List<ConsumerUser>();
 
     [InverseProperty("CreatedAtNavigation")]
+    public virtual ICollection<LkNotificationTemplate> LkNotificationTemplateCreatedAtNavigation { get; set; } = new List<LkNotificationTemplate>();
+
+    [InverseProperty("ModifiedAtNavigation")]
+    public virtual ICollection<LkNotificationTemplate> LkNotificationTemplateModifiedAtNavigation { get; set; } = new List<LkNotificationTemplate>();
+
+    [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<MerchantAttachment> MerchantAttachmentCreatedAtNavigation { get; set; } = new List<MerchantAttachment>();
 
     [InverseProperty("ModifiedAtNavigation")]

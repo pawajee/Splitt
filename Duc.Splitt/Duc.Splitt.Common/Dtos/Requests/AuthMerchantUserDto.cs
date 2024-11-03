@@ -20,10 +20,9 @@ namespace Duc.Splitt.Common.Dtos.Requests
         public class SetPasswordDto
         {
 
-            public string UserId { get; set; } = null!;
+            public string Identifier { get; set; } = null!;
             public string Token { get; set; } = null!;
             public string Password { get; set; } = null!;
-            public string? Comments { get; set; }
         }
         public class LoginDto
         {

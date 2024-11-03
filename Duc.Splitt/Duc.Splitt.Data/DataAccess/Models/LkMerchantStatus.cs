@@ -38,7 +38,7 @@ public partial class LkMerchantStatus
     [StringLength(150)]
     public string? AdminStatusArabic { get; set; }
 
-    [InverseProperty("MerchantRequestStatus")]
+    [InverseProperty("MerchantStatus")]
     public virtual ICollection<Merchant> Merchant { get; set; } = new List<Merchant>();
 
     [InverseProperty("MerchantRequestStatus")]

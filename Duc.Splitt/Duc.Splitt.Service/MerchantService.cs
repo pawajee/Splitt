@@ -9,6 +9,7 @@ using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Models;
 using System.Data;
+using System.Diagnostics.Metrics;
 using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
@@ -50,7 +51,7 @@ namespace Duc.Splitt.Service
             merchantRequest.CreatedAt = (byte)requestHeader.LocationId;
             merchantRequest.CreatedOn = DateTime.Now;
             merchantRequest.CreatedBy = Utilities.AnonymousUserID;
-            merchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.InProgress;
+            merchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.InProgress;
             merchantRequest.RequestNo = GenerateRequestNumber();
             if (requestDto.Documents != null)
             {
@@ -195,10 +196,15 @@ namespace Duc.Splitt.Service
                 MerchantAverageOrderId = merchantRequest.MerchantAverageOrderId,
                 MerchantBusinessTypeId = merchantRequest.MerchantBusinessTypeId,
                 MerchantCategoryId = merchantRequest.MerchantCategoryId,
-                //  MobileNumber = merchantRequest.MobileNumber,
                 RequestNo = merchantRequest.RequestNo,
-                //BusinessEmail = merchantRequest.BusinessEmail
-
+                MobileNumber = merchantRequest.MerchantUser?.FirstOrDefault()?.MobileNo,
+                BusinessEmail = merchantRequest.MerchantUser?.FirstOrDefault()?.BusinessEmail,
+                MerchantAnnualSales = requestHeader.IsArabic ? merchantRequest.MerchantAnnualSales.TitleArabic : merchantRequest.MerchantAnnualSales.TitleEnglish,
+                MerchantAverageOrder = requestHeader.IsArabic ? merchantRequest.MerchantAverageOrder.TitleArabic : merchantRequest.MerchantAverageOrder.TitleEnglish,
+                MerchantCategory = requestHeader.IsArabic ? merchantRequest.MerchantCategory.TitleArabic : merchantRequest.MerchantCategory.TitleEnglish,
+                MerchantBusinessType = requestHeader.IsArabic ? merchantRequest.MerchantBusinessType.TitleArabic : merchantRequest.MerchantBusinessType.TitleEnglish,
+                RequestStatus = requestHeader.IsArabic ? merchantRequest.MerchantStatus.TitleArabic : merchantRequest.MerchantStatus.TitleEnglish,
+                Country = requestHeader.IsArabic ? merchantRequest.Country.TitleArabic : merchantRequest.Country.TitleEnglish,
             };
             if (merchantRequest != null && merchantRequest.MerchantAttachment?.Count > 0)
             {
@@ -262,7 +268,7 @@ namespace Duc.Splitt.Service
             }
             else if (requestDto.RequestStatusId == (int)MerchantRequestStatuses.Rejected)
             {
-                merchantUser.MerchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.Rejected;
+                merchantUser.MerchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.Rejected;
                 merchantUser.ModifiedAt = (byte)requestHeader.LocationId;
                 merchantUser.ModifiedOn = DateTime.Now;
                 merchantUser.ModifiedBy = Utilities.AnonymousUserID; //ToDoM

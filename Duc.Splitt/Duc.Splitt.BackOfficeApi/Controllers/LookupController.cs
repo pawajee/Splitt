@@ -217,6 +217,37 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
 
         }
 
+        [HttpGet()]
+        public async Task<ResponseDto<List<LookupDto>>> GetMerchantStatuses()
+        {
+            ResponseDto<List<LookupDto>> response = new ResponseDto<List<LookupDto>>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+
+                var obj = await _lookupService.GetMerchantStatuses(validateRequest);
+                response.Data = obj;// new List<LookupDto> { new LookupDto { Id = 1, Name = "100-200" }, new LookupDto { Id = 1, Name = "200-300" } };
+                response.Code = ResponseStatusCode.Success;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+
+        }
 
     }
 }

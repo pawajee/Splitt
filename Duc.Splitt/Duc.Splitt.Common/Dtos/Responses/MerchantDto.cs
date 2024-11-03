@@ -24,7 +24,7 @@ namespace Duc.Splitt.Common.Dtos.Responses
             public string? MerchantAnnualSales { get; set; }
             public string? MerchantAverageOrder { get; set; }
             public string? RequestedBy { get; set; }
-            public DateTime? CreatedOn { get; set; }
+            //public DateTime? CreatedOn { get; set; }
             public string? CreatedOnFormattedDate { get; set; }
 
             public int TotalRecords { get; set; }
@@ -43,6 +43,13 @@ namespace Duc.Splitt.Common.Dtos.Responses
             public int MerchantBusinessTypeId { get; set; }
             public int MerchantAnnualSalesId { get; set; }
             public int MerchantAverageOrderId { get; set; }
+
+            public string? MerchantCategory { get; set; }
+            public string? RequestStatus { get; set; }
+            public string? MerchantBusinessType { get; set; }
+            public string? MerchantAnnualSales { get; set; }
+            public string? MerchantAverageOrder { get; set; }
+            public string? Country { get; set; }
             public List<DocumentResponseDto>? Documents { get; set; }
             public List<GetMerchantRequestHistory>? MerchantRequestHistory { get; set; }
         }

@@ -25,7 +25,7 @@ public partial class Merchant
 
     public int MerchantCategoryId { get; set; }
 
-    public int MerchantRequestStatusId { get; set; }
+    public int MerchantStatusId { get; set; }
 
     public int MerchantBusinessTypeId { get; set; }
 
@@ -81,9 +81,9 @@ public partial class Merchant
     [InverseProperty("MerchantRequest")]
     public virtual ICollection<MerchantHistory> MerchantHistory { get; set; } = new List<MerchantHistory>();
 
-    [ForeignKey("MerchantRequestStatusId")]
+    [ForeignKey("MerchantStatusId")]
     [InverseProperty("Merchant")]
-    public virtual LkMerchantStatus MerchantRequestStatus { get; set; } = null!;
+    public virtual LkMerchantStatus MerchantStatus { get; set; } = null!;
 
     [InverseProperty("MerchantRequest")]
     public virtual ICollection<MerchantUser> MerchantUser { get; set; } = new List<MerchantUser>();

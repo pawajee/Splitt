@@ -44,6 +44,16 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<LkNationality> LkNationality { get; set; }
 
+    public virtual DbSet<LkNotificationCategory> LkNotificationCategory { get; set; }
+
+    public virtual DbSet<LkNotificationChannel> LkNotificationChannel { get; set; }
+
+    public virtual DbSet<LkNotificationStatus> LkNotificationStatus { get; set; }
+
+    public virtual DbSet<LkNotificationTemplate> LkNotificationTemplate { get; set; }
+
+    public virtual DbSet<LkNotificationType> LkNotificationType { get; set; }
+
     public virtual DbSet<LkRole> LkRole { get; set; }
 
     public virtual DbSet<Merchant> Merchant { get; set; }
@@ -219,6 +229,22 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
+        modelBuilder.Entity<LkNotificationStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_NotificationStatus");
+        });
+
+        modelBuilder.Entity<LkNotificationTemplate>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.LkNotificationTemplateCreatedAtNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NLkotificationTemplate_LkLocation");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.LkNotificationTemplateModifiedAtNavigation).HasConstraintName("FK_LkNotificationTemplate_LkLocation1");
+        });
+
         modelBuilder.Entity<LkRole>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
@@ -262,7 +288,7 @@ public partial class SplittAppContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Merchant_LKMerchantCategory");
 
-            entity.HasOne(d => d.MerchantRequestStatus).WithMany(p => p.Merchant)
+            entity.HasOne(d => d.MerchantStatus).WithMany(p => p.Merchant)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Merchant_LkMerchantStatus");
 

@@ -32,6 +32,18 @@ namespace Duc.Splitt.Service
                 return ObjectMapperEn.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleEnglish));
             }
         }
+        public async Task<List<LookupDto>> GetMerchantStatuses(RequestHeader requestHeader)
+        {
+            var obj = await _unitOfWork.LkMerchantStatuses.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));
+            if (requestHeader.IsArabic)
+            {
+                return ObjectMapperAr.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleArabic));
+            }
+            else
+            {
+                return ObjectMapperEn.Mapper().Map<List<LookupDto>>(obj.OrderBy(t => t.SortOrder).OrderBy(t => t.TitleEnglish));
+            }
+        }
         public async Task<List<LookupDto>> GetCountries(RequestHeader requestHeader)
         {
             var obj = await _unitOfWork.LkCountries.FindAsync(t => t.IsDeleted == null || (t.IsDeleted.HasValue && t.IsDeleted.Value != true));

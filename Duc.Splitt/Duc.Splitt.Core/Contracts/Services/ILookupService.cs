@@ -16,5 +16,6 @@ namespace Duc.Splitt.Core.Contracts.Services
         Task<List<LookupDto>> GeMerchantCategories(RequestHeader requestHeader);
         Task<List<LookupDto>> GeRequestStatus(RequestHeader requestHeader);
         Task<List<LookupDocumentDto>> GeDocumentConfigurations(RequestHeader requestHeader, DocumentCategories documentCategories);
+        Task<List<LookupDto>> GetMerchantStatuses(RequestHeader requestHeader);
     }
 }

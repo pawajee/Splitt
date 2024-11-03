@@ -71,13 +71,13 @@ namespace Duc.Splitt.Service
                     Errors = new List<string> { $"{request.Email} Email Not Available in Request" }
                 };
             }
-            if (merchantUser != null && merchantUser.MerchantRequest.MerchantRequestStatusId != (int)MerchantRequestStatuses.InProgress)
+            if (merchantUser != null && merchantUser.MerchantRequest.MerchantStatusId != (int)MerchantRequestStatuses.InProgress)
             {
                 return new ResponseDto<string?>
                 {
                     Code = ResponseStatusCode.Conflict,
-                    Message = $" {merchantUser.MerchantRequest.MerchantRequestStatusId} Request Status is not valid for Approve",
-                    Errors = new List<string> { $"{merchantUser.MerchantRequest.MerchantRequestStatusId}.RequestStatusId Request Status is not valid for Approve" }
+                    Message = $" {merchantUser.MerchantRequest.MerchantStatusId} Request Status is not valid for Approve",
+                    Errors = new List<string> { $"{merchantUser.MerchantRequest.MerchantStatusId}.RequestStatusId Request Status is not valid for Approve" }
                 };
             }
             if (merchantUser != null)
@@ -98,11 +98,11 @@ namespace Duc.Splitt.Service
                 string languageText = requestHeader.IsArabic ? "ar" : "en";
                 var activationLink = $"{_configuration["Jwt:MerchantVerify"]}?identifier={splittIdentityUser.Id}&token={token}?lang={languageText}";//toDO
 
-                merchantUser.MerchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.Approved;
+                merchantUser.MerchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.Approved;
                 merchantUser.MerchantRequest.ModifiedAt = (byte)requestHeader.LocationId;
                 merchantUser.MerchantRequest.ModifiedOn = DateTime.Now;
                 merchantUser.MerchantRequest.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
-               
+
                 merchantUser.MerchantRequest.MerchantHistory.Add(new MerchantHistory
                 {
                     MerchantRequestStatusId = (int)MerchantRequestStatuses.Approved,
@@ -138,14 +138,14 @@ namespace Duc.Splitt.Service
         public async Task<ResponseDto<AuthTokens?>> ActivateMerchantUser(RequestHeader requestHeader, SetPasswordDto request)
         {
 
-            var user = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.Identifier);
             if (user == null)
             {
                 return new ResponseDto<AuthTokens?>
                 {
                     Code = ResponseStatusCode.Conflict,
                     Message = "User not exists",
-                    Errors = new List<string> { $"{request.UserId} is not available" }
+                    Errors = new List<string> { $"{request.Identifier} is not available" }
                 };
             }
             var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(user.Email);
@@ -195,7 +195,7 @@ namespace Duc.Splitt.Service
             };
 
             _unitOfWork.Users.AddAsync(userMerchant);
-            merchantUser.MerchantRequest.MerchantRequestStatusId = (int)MerchantRequestStatuses.Active;
+            merchantUser.MerchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.Active;
             merchantUser.ModifiedAt = (byte)requestHeader.LocationId;
             merchantUser.ModifiedOn = DateTime.Now;
             merchantUser.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
@@ -204,8 +204,7 @@ namespace Duc.Splitt.Service
                 MerchantRequestStatusId = (int)MerchantRequestStatuses.Active,
                 CreatedAt = (byte)requestHeader.LocationId,
                 CreatedOn = DateTime.Now,
-                CreatedBy = Utilities.AnonymousUserID,
-                Comment = request.Comments,
+                CreatedBy = Utilities.AnonymousUserID
 
 
             });
