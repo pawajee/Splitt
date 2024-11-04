@@ -128,7 +128,7 @@ namespace Duc.Splitt.Service
 
                     }
                 }
-
+               
                 var consumerUser = await _unitOfWork.ConsumerUsers.GetConsumerUserByMobileNo(request.MobileNo);
                 if (consumerUser == null)
                 {

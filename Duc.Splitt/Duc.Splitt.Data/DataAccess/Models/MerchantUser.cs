@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Data.DataAccess.Models;
 
+[Index("UserId", Name = "IX_MerchantUser", IsUnique = true)]
 public partial class MerchantUser
 {
     [Key]
@@ -13,7 +14,7 @@ public partial class MerchantUser
 
     public Guid MerchantRequestId { get; set; }
 
-    public Guid? UserId { get; set; }
+    public Guid UserId { get; set; }
 
     [StringLength(250)]
     public string NameEnglish { get; set; } = null!;
@@ -67,5 +68,5 @@ public partial class MerchantUser
 
     [ForeignKey("UserId")]
     [InverseProperty("MerchantUserUser")]
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 }

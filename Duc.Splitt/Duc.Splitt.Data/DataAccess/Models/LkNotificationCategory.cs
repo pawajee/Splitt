@@ -9,7 +9,7 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 public partial class LkNotificationCategory
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string TitleEnglish { get; set; } = null!;
@@ -23,4 +23,10 @@ public partial class LkNotificationCategory
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("NotificationCategory")]
+    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
+
+    [InverseProperty("NotificationCategory")]
+    public virtual ICollection<LkNotificationTemplate> LkNotificationTemplate { get; set; } = new List<LkNotificationTemplate>();
 }

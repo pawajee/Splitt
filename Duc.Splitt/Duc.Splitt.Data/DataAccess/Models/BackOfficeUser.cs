@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Data.DataAccess.Models;
 
+[Index("UserId", Name = "IX_BackOfficeUser", IsUnique = true)]
 public partial class BackOfficeUser
 {
     [Key]

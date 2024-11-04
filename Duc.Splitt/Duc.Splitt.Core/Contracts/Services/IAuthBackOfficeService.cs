@@ -1,16 +1,16 @@
-﻿using Duc.Splitt.Common.Dtos.Requests;
-using Duc.Splitt.Common.Dtos.Responses;
-using Duc.Splitt.Core.Helper;
-using System.Threading.Tasks;
-using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
-using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
-using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
+﻿using Duc.Splitt.Common.Dtos.Responses;
+using static Duc.Splitt.Common.Dtos.Requests.AuthBackOfficeUserDto;
 
 namespace Duc.Splitt.Core.Contracts.Services
 {
     public interface IAuthBackOfficeService
     {
-
-        Task<ResponseDto<AuthTokens?>> Login(RequestHeader requestHeader, LoginDto model);
+        Task<ResponseDto<string?>> ApproveMerchantUserByAdmin(RequestHeader requestHeader, RegisterDto request);
+        Task<ResponseDto<bool?>> ChangePassword(RequestHeader requestHeader, ChangePasswordDto request);
+        Task<ResponseDto<AuthTokens?>> Login(RequestHeader requestHeader, LoginDto request);
+        Task<ResponseDto<bool?>> ForgetPassword(RequestHeader requestHeader, ForgetPasswordDto request);
+        Task<ResponseDto<bool?>> ResetPassword(RequestHeader requestHeader, ResetPasswordDto request);
+        Task<ResponseDto<bool?>> CreateUser(RequestHeader requestHeader, CreateAdminUserDto request);
+        Task<ResponseDto<bool?>> Logout(RequestHeader requestHeader);
     }
 }

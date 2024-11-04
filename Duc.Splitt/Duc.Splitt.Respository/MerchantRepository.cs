@@ -22,6 +22,17 @@ namespace Duc.Splitt.Respository.Repository
                   Include(t => t.MerchantAverageOrder).Include(t => t.Country).
                 Where(t => t.Id == requestId);
             return await obj.FirstOrDefaultAsync();
+
+        }
+        public async Task<Merchant?> GetMerchantRequestByEmail(string emailId)
+        {
+            var obj = _context.Merchant.Include(t => t.MerchantAttachment).Include(t => t.MerchantHistory).Include(t => t.MerchantUser.Where(t => t.IsPrimary == true)).
+                Include(t => t.MerchantBusinessType).Include(t => t.MerchantAnnualSales).
+                 Include(t => t.MerchantCategory).Include(t => t.MerchantStatus).
+                  Include(t => t.MerchantAverageOrder).Include(t => t.Country).
+                Where(t => t.BusinessEmail == emailId);
+            return await obj.FirstOrDefaultAsync();
+
         }
 
     }

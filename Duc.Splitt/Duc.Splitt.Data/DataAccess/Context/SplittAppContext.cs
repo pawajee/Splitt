@@ -12,13 +12,29 @@ public partial class SplittAppContext : DbContext
     {
     }
 
+    public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+
+    public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+
     public virtual DbSet<BackOfficeUser> BackOfficeUser { get; set; }
 
     public virtual DbSet<ConsumerOtpRequest> ConsumerOtpRequest { get; set; }
 
     public virtual DbSet<ConsumerUser> ConsumerUser { get; set; }
 
+    public virtual DbSet<DataProtectionKeys> DataProtectionKeys { get; set; }
+
     public virtual DbSet<DocumentLibrary> DocumentLibrary { get; set; }
+
+    public virtual DbSet<EmailNotification> EmailNotification { get; set; }
 
     public virtual DbSet<LkCountry> LkCountry { get; set; }
 
@@ -46,7 +62,7 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<LkNotificationCategory> LkNotificationCategory { get; set; }
 
-    public virtual DbSet<LkNotificationChannel> LkNotificationChannel { get; set; }
+    public virtual DbSet<LkNotificationPriority> LkNotificationPriority { get; set; }
 
     public virtual DbSet<LkNotificationStatus> LkNotificationStatus { get; set; }
 
@@ -64,13 +80,46 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<MerchantUser> MerchantUser { get; set; }
 
+    public virtual DbSet<PushNotification> PushNotification { get; set; }
+
+    public virtual DbSet<SmsNotification> SmsNotification { get; set; }
+
     public virtual DbSet<User> User { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AspNetRoles>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedName] IS NOT NULL)");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<AspNetUsers>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                .IsUnique()
+                .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasMany(d => d.Role).WithMany(p => p.User)
+                .UsingEntity<Dictionary<string, object>>(
+                    "AspNetUserRoles",
+                    r => r.HasOne<AspNetRoles>().WithMany().HasForeignKey("RoleId"),
+                    l => l.HasOne<AspNetUsers>().WithMany().HasForeignKey("UserId"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId");
+                        j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
+                    });
+        });
+
         modelBuilder.Entity<BackOfficeUser>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
             entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.BackOfficeUserCreatedAtNavigation)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -84,7 +133,7 @@ public partial class SplittAppContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.BackOfficeUserModifiedByNavigation).HasConstraintName("FK_BackOfficeUser_User2");
 
-            entity.HasOne(d => d.User).WithMany(p => p.BackOfficeUserUser)
+            entity.HasOne(d => d.User).WithOne(p => p.BackOfficeUserUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BackOfficeUser_User");
         });
@@ -97,7 +146,7 @@ public partial class SplittAppContext : DbContext
 
         modelBuilder.Entity<ConsumerUser>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Email).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.MobileNo).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.NameArabic).UseCollation("Latin1_General_CI_AS");
@@ -115,7 +164,7 @@ public partial class SplittAppContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ConsumerUserModifiedByNavigation).HasConstraintName("FK_ConsumerUser_User2");
 
-            entity.HasOne(d => d.User).WithMany(p => p.ConsumerUserUser)
+            entity.HasOne(d => d.User).WithOne(p => p.ConsumerUserUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ConsumerUser_User");
         });
@@ -127,6 +176,25 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.MineType).UseCollation("Latin1_General_CI_AS");
 
             entity.HasOne(d => d.DocumentCategory).WithMany(p => p.DocumentLibrary).HasConstraintName("FK_DocumentLibrary_DocumentCategory");
+        });
+
+        modelBuilder.Entity<EmailNotification>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_EmailNotification_1");
+
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.EmailNotificationCreatedAtNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EmailNotification_LkLocation");
+
+            entity.HasOne(d => d.Language).WithMany(p => p.EmailNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EmailNotification_LkLanguage");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.EmailNotificationModifiedAtNavigation).HasConstraintName("FK_EmailNotification_LkLocation1");
+
+            entity.HasOne(d => d.NotificationCategory).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkNotificationCategory");
+
+            entity.HasOne(d => d.Priority).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkPriority");
         });
 
         modelBuilder.Entity<LkCountry>(entity =>
@@ -229,20 +297,33 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
+        modelBuilder.Entity<LkNotificationCategory>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<LkNotificationPriority>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
         modelBuilder.Entity<LkNotificationStatus>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_NotificationStatus");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<LkNotificationTemplate>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.LkNotificationTemplateCreatedAtNavigation)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_NLkotificationTemplate_LkLocation");
+            entity.HasOne(d => d.NotificationCategory).WithMany(p => p.LkNotificationTemplate).HasConstraintName("FK_LkNotificationTemplate_LkNotificationCategory");
+        });
 
-            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.LkNotificationTemplateModifiedAtNavigation).HasConstraintName("FK_LkNotificationTemplate_LkLocation1");
+        modelBuilder.Entity<LkNotificationType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<LkRole>(entity =>
@@ -256,8 +337,10 @@ public partial class SplittAppContext : DbContext
         modelBuilder.Entity<Merchant>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.BusinessEmail).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.BusinessNameArabic).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.BusinessNameEnglish).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.MobileNo).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.RequestNo).UseCollation("Latin1_General_CI_AS");
 
             entity.HasOne(d => d.Country).WithMany(p => p.Merchant)
@@ -299,6 +382,7 @@ public partial class SplittAppContext : DbContext
 
         modelBuilder.Entity<MerchantAttachment>(entity =>
         {
+            entity.Property(e => e.DocumentLibraryId).ValueGeneratedNever();
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
             entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.MerchantAttachmentCreatedAtNavigation)
@@ -313,7 +397,7 @@ public partial class SplittAppContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MerchantAttachment_LkDocumentConfiguration");
 
-            entity.HasOne(d => d.DocumentLibrary).WithMany(p => p.MerchantAttachment)
+            entity.HasOne(d => d.DocumentLibrary).WithOne(p => p.MerchantAttachment)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MerchantAttachment_DocumentLibrary");
 
@@ -372,7 +456,22 @@ public partial class SplittAppContext : DbContext
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.MerchantUserModifiedByNavigation).HasConstraintName("FK_MerchantUser_User1");
 
-            entity.HasOne(d => d.User).WithMany(p => p.MerchantUserUser).HasConstraintName("FK_MerchantUser_User2");
+            entity.HasOne(d => d.User).WithOne(p => p.MerchantUserUser)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MerchantUser_User2");
+        });
+
+        modelBuilder.Entity<SmsNotification>(entity =>
+        {
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.SmsNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SmsNotification_LkLocation");
+
+            entity.HasOne(d => d.Language).WithMany(p => p.SmsNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SmsNotification_LkLanguage");
+
+            entity.HasOne(d => d.Priority).WithMany(p => p.SmsNotification).HasConstraintName("FK_SmsNotification_LkPriority");
         });
 
         modelBuilder.Entity<User>(entity =>

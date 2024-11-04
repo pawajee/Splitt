@@ -23,6 +23,10 @@ namespace Duc.Splitt.Common.Dtos.Requests
         {
             public required Guid RequestId { get; set; }
         }
+        public class DownloadAttachmentRequestDto
+        {
+            public required Guid AttcahmentId { get; set; }
+        }
         public class AdminChangeUserStatus
         {
             public required Guid RequestId { get; set; }

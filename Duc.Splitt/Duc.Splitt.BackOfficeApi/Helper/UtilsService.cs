@@ -36,10 +36,7 @@ namespace Duc.Splitt.BackOfficeApi.Helper
                 {
                     requestHeader.DeviceTypeId = (DeviceTypes)Enum.Parse(typeof(DeviceTypes), Convert.ToString(request.Headers["DeviceTypeId"]));
                 }
-                //if (request.Headers.ContainsKey("TokenId") && !string.IsNullOrWhiteSpace(request.Headers["TokenId"]))
-                //{
-                //    requestHeader.TokenId = Convert.ToString(request.Headers["TokenId"]);
-                //}
+                var x = user;
                 requestHeader.LocationId = Locations.MerchantPortal;
 
 

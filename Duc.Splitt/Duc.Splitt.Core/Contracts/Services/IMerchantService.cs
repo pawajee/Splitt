@@ -13,6 +13,8 @@ namespace Duc.Splitt.Core.Contracts.Services
         Task<PagedList<SearchMerchantResponseDto>> SearchMerchantRequest(RequestHeader requestHeader,
           SearchMerchantRequestDto searchRequestDto);
         Task<ResponseDto<GetMerchantResponseDto>> GetMerchantDetailsById(RequestHeader requestHeader, GetMerchantRequestDto requestDto);
-        Task<ResponseDto<string?>> ChangeMerchantStatus(RequestHeader requestHeader, AdminChangeUserStatus requestDto);
+        Task<ResponseDto<DownloadAttachmentResponseDto?>> DownloadAttchemnts(RequestHeader requestHeader, DownloadAttachmentRequestDto requestDto);
+
+
     }
 }

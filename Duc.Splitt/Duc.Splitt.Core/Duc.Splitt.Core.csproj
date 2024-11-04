@@ -39,6 +39,7 @@
     <Compile Include="Contracts\Services\IAuthConsumerService.cs" />
     <Compile Include="Contracts\Services\IAuthBackOfficeService.cs" />
     <Compile Include="Contracts\Services\IAuthMerchantService.cs" />
+    <Compile Include="Contracts\Services\IBackOfficeMerchantService.cs" />
     <Compile Include="Contracts\Services\IUtilitiesService.cs" />
     <Compile Include="Contracts\Services\IMerchantService.cs" />
     <Compile Include="Contracts\Services\ILookupService.cs" />

@@ -44,7 +44,7 @@ namespace Duc.Splitt.MerchantApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                var obj = await _authMerchantService.ActivateMerchantUser(validateRequest, requestDto);
+                var obj = await _authMerchantService.ActivateMerchantByUser(validateRequest, requestDto);
                 return obj;
             }
             catch (Exception ex)
@@ -74,6 +74,66 @@ namespace Duc.Splitt.MerchantApi.Controllers
                     return response;
                 }
                 var result = await _authMerchantService.Login(validateRequest, requestDto);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ResponseDto<bool?>> ResetPassword(ResetPasswordDto requestDto)
+        {
+            ResponseDto<bool?> response = new ResponseDto<bool?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+                var result = await _authMerchantService.ResetPassword(validateRequest, requestDto);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<ResponseDto<bool?>> ForgetPassword(ForgetPasswordDto requestDto)
+        {
+            ResponseDto<bool?> response = new ResponseDto<bool?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+                var result = await _authMerchantService.ForgetPassword(validateRequest, requestDto);
                 return result;
 
             }

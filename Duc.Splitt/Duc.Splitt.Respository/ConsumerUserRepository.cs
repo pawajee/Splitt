@@ -16,6 +16,7 @@ namespace Duc.Splitt.Respository.Repository
         }
         public async Task<ConsumerUser?> GetConsumerUserByMobileNo(string mobileNo)
         {
+
             var obj = await _context.ConsumerUser.Include(t => t.User).Where(t => t.MobileNo == mobileNo).FirstOrDefaultAsync();
             return obj;
         }

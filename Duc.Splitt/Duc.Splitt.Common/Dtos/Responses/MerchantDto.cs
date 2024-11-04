@@ -26,8 +26,16 @@ namespace Duc.Splitt.Common.Dtos.Responses
             public string? RequestedBy { get; set; }
             //public DateTime? CreatedOn { get; set; }
             public string? CreatedOnFormattedDate { get; set; }
-
+            public int MerchantStatusId { get; set; }
+            public string? MobileNo { get; set; }
+            public string? BusinessEmail { get; set; }
             public int TotalRecords { get; set; }
+        }
+        public class DownloadAttachmentResponseDto
+        {
+            public string? MineType { get; set; }
+
+            public byte[]? AttachmentByte { get; set; }
         }
 
         public class GetMerchantResponseDto
@@ -39,6 +47,7 @@ namespace Duc.Splitt.Common.Dtos.Responses
             public string? BusinessEmail { get; set; }
             public string MobileNumber { get; set; } = null!;
             public int CountryId { get; set; }
+            public int MerchantStatusId { get; set; }
             public int MerchantCategoryId { get; set; }
             public int MerchantBusinessTypeId { get; set; }
             public int MerchantAnnualSalesId { get; set; }

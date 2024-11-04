@@ -19,6 +19,8 @@ using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
 using Duc.Splitt.Identity;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Duc.Splitt.MerchantApi.Extensions
 {
@@ -38,7 +40,7 @@ namespace Duc.Splitt.MerchantApi.Extensions
             // builder.Services.AddControllersWithViews();
             // builder.Services.AddRazorPages();
             builder.Services.AddControllers();
-
+            builder.ConfigureIdentityDbContext();
             builder.Services.AddScoped<ValidateSecureClientAttribute>();
             builder.Services.AddScoped<ValidateAnonymousClientAttribute>();
             builder.ConfigureSwagger();
@@ -101,10 +103,10 @@ namespace Duc.Splitt.MerchantApi.Extensions
 
 
 
-        public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+        public static void ConfigureIdentityDbContext(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<SplittIdentityDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplittIdentity"),
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplitt"),
             b => b.MigrationsAssembly("Duc.Splitt.Identity")));
 
             builder.Services.AddIdentity<SplittIdentityUser, SplittIdentityRole>(options =>
@@ -122,6 +124,32 @@ namespace Duc.Splitt.MerchantApi.Extensions
                         .SetApplicationName("SplittApplication");
 
 
+        }
+        public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+
+                //options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    RequireExpirationTime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
         public static void ConfigureSqlDbContext(this WebApplicationBuilder builder)
         {

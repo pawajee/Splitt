@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Data.DataAccess.Models;
 
-public partial class LkNotificationChannel
+public partial class LkNotificationPriority
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string TitleEnglish { get; set; } = null!;
@@ -23,4 +23,10 @@ public partial class LkNotificationChannel
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("Priority")]
+    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
+
+    [InverseProperty("Priority")]
+    public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
 }

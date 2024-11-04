@@ -4,7 +4,10 @@
     {
         public string? DocumentConfigurationName { get; set; }
         public Guid? DocumentLibraryId { get; set; }
-        public string? URL { get; set; }
-        public byte[]? AttachmentByte { get; set; }
+
+        public string? MineType { get; set; }
+
+        // public string? URL { get; set; }
+        // public byte[]? AttachmentByte { get; set; }
     }
 }

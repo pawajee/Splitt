@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Duc.Splitt.Identity.Migrations
 {
     [DbContext(typeof(SplittIdentityDbContext))]
-    [Migration("20241102002416_InitialCreate")]
+    [Migration("20241103120818_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

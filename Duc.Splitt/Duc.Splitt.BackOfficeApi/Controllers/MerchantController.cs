@@ -7,22 +7,24 @@ using Duc.Splitt.BackOfficeApi.Helper;
 using Microsoft.AspNetCore.Mvc;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
+using Duc.Splitt.Service;
 
 namespace Duc.Splitt.BackOfficeApi.Controllers
 {
 
-    public class MerchantController : BaseAnonymous
+    public class MerchantController : BaseAuth
     {
         private readonly IMerchantService _merchantService;
+        private readonly IBackOfficeMerchantService _backOfficeMerchantService;
         private readonly ILoggerService _logger;
         private IUtilsService _utilsService;
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        public MerchantController(ILookupService lookupService, ILoggerService logger, IUtilsService utilsService, IMerchantService merchantService)
+        public MerchantController(ILookupService lookupService, ILoggerService logger, IUtilsService utilsService, IMerchantService merchantService, IBackOfficeMerchantService backOfficeMerchantService)
         {
-
             _logger = logger;
             _utilsService = utilsService;
             _merchantService = merchantService;
+            _backOfficeMerchantService = backOfficeMerchantService;
         }
 
         [HttpPost]
@@ -74,7 +76,7 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                var result = await _merchantService.ChangeMerchantStatus(validateRequest, requestDto);
+                var result = await _backOfficeMerchantService.ChangeMerchantStatus(validateRequest, requestDto);
                 return result;
             }
             catch (Exception ex)
@@ -104,6 +106,34 @@ namespace Duc.Splitt.BackOfficeApi.Controllers
                     return response;
                 }
                 var obj = await _merchantService.GetMerchantDetailsById(validateRequest, requestDto);
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+
+        }
+        [HttpPost]
+        public async Task<ResponseDto<DownloadAttachmentResponseDto?>> DownloadAttchemnts(DownloadAttachmentRequestDto requestDto)
+        {
+            ResponseDto<DownloadAttachmentResponseDto?> response = new ResponseDto<DownloadAttachmentResponseDto?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+                var obj = await _merchantService.DownloadAttchemnts(validateRequest, requestDto);
                 return obj;
             }
             catch (Exception ex)

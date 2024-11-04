@@ -8,11 +8,11 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 
 public partial class MerchantAttachment
 {
-    [Key]
     public Guid Id { get; set; }
 
     public Guid MerchantRequestId { get; set; }
 
+    [Key]
     public Guid DocumentLibraryId { get; set; }
 
     public Guid DocumentConfigurationId { get; set; }

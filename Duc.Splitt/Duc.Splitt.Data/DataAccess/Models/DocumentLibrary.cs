@@ -41,5 +41,5 @@ public partial class DocumentLibrary
     public virtual LkDocumentCategory? DocumentCategory { get; set; }
 
     [InverseProperty("DocumentLibrary")]
-    public virtual ICollection<MerchantAttachment> MerchantAttachment { get; set; } = new List<MerchantAttachment>();
+    public virtual MerchantAttachment? MerchantAttachment { get; set; }
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Data.DataAccess.Models;
 
+[Index("UserId", Name = "IX_ConsumerUser", IsUnique = true)]
 public partial class ConsumerUser
 {
     [Key]

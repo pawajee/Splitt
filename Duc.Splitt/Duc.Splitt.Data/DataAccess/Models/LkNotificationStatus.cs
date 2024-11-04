@@ -9,7 +9,7 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 public partial class LkNotificationStatus
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string TitleEnglish { get; set; } = null!;

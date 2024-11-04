@@ -11,6 +11,10 @@ public partial class LkNotificationTemplate
     [Key]
     public int Id { get; set; }
 
+    public int? NotificationCategoryId { get; set; }
+
+    public byte NotificationTypeId { get; set; }
+
     [StringLength(60)]
     public string MessageCode { get; set; } = null!;
 
@@ -24,29 +28,9 @@ public partial class LkNotificationTemplate
 
     public string MessageArabic { get; set; } = null!;
 
-    public byte NotificationTypeId { get; set; }
-
     public bool? IsDeleted { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime CreatedOn { get; set; }
-
-    [Column(TypeName = "datetime")]
-    public DateTime? ModifiedOn { get; set; }
-
-    public Guid CreatedBy { get; set; }
-
-    public Guid? ModifiedBy { get; set; }
-
-    public byte CreatedAt { get; set; }
-
-    public byte? ModifiedAt { get; set; }
-
-    [ForeignKey("CreatedAt")]
-    [InverseProperty("LkNotificationTemplateCreatedAtNavigation")]
-    public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
-
-    [ForeignKey("ModifiedAt")]
-    [InverseProperty("LkNotificationTemplateModifiedAtNavigation")]
-    public virtual LkLocation? ModifiedAtNavigation { get; set; }
+    [ForeignKey("NotificationCategoryId")]
+    [InverseProperty("LkNotificationTemplate")]
+    public virtual LkNotificationCategory? NotificationCategory { get; set; }
 }

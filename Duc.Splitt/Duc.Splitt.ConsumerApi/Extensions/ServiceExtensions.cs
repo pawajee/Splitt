@@ -102,7 +102,7 @@ namespace Duc.Splitt.ConsumerApi.Extensions
         public static void ConfigureAuthentication(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<SplittIdentityDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplittIdentity"),
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplitt"),
             b => b.MigrationsAssembly("Duc.Splitt.Identity")));
 
             builder.Services.AddIdentity<SplittIdentityUser, SplittIdentityRole>(options =>

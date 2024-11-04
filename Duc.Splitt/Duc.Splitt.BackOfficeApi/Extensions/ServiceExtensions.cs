@@ -5,20 +5,21 @@ using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Context;
+using Duc.Splitt.Identity;
 using Duc.Splitt.Logger;
 using Duc.Splitt.Repository;
 using Duc.Splitt.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
+using System.Text;
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.Identity;
-using Duc.Splitt.Identity;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace Duc.Splitt.BackOfficeApi.Extensions
 {
@@ -38,7 +39,7 @@ namespace Duc.Splitt.BackOfficeApi.Extensions
             // builder.Services.AddControllersWithViews();
             // builder.Services.AddRazorPages();
             builder.Services.AddControllers();
-
+            builder.ConfigureIdentityDbContext();
             builder.Services.AddScoped<ValidateSecureClientAttribute>();
             builder.Services.AddScoped<ValidateAnonymousClientAttribute>();
             builder.ConfigureSwagger();
@@ -101,10 +102,10 @@ namespace Duc.Splitt.BackOfficeApi.Extensions
 
 
 
-        public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+        public static void ConfigureIdentityDbContext(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<SplittIdentityDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplittIdentity"),
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionStringSplitt"),
             b => b.MigrationsAssembly("Duc.Splitt.Identity")));
 
             builder.Services.AddIdentity<SplittIdentityUser, SplittIdentityRole>(options =>
@@ -122,6 +123,32 @@ namespace Duc.Splitt.BackOfficeApi.Extensions
                         .SetApplicationName("SplittApplication");
 
 
+        }
+        public static void ConfigureAuthentication(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+
+                //options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    RequireExpirationTime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
         public static void ConfigureSqlDbContext(this WebApplicationBuilder builder)
         {
@@ -265,9 +292,9 @@ namespace Duc.Splitt.BackOfficeApi.Extensions
             builder.Services.AddTransient<IUtilsService, UtilsService>();
             builder.Services.AddTransient<ILookupService, LookupService>();
             builder.Services.AddTransient<IMerchantService, MerchantService>();
-            builder.Services.AddTransient<IAuthMerchantService, AuthMerchantService>();
-            builder.Services.AddTransient<IAuthConsumerService, AuthConsumerService>();
+            builder.Services.AddTransient<IBackOfficeMerchantService, BackOfficeMerchantService>();
             builder.Services.AddTransient<IUtilitiesService, UtilitiesService>();
+            builder.Services.AddTransient<IAuthBackOfficeService, AuthBackOfficeService>();
         }
         public static void ConfigureLocalization(this WebApplicationBuilder builder)
         {

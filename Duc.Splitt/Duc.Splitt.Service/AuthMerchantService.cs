@@ -7,6 +7,7 @@ using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using System.Text;
@@ -22,7 +23,9 @@ namespace Duc.Splitt.Service
         private readonly RoleManager<SplittIdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly IUtilitiesService _utilitiesService;
-        public AuthMerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection, UserManager<SplittIdentityUser> userManager, RoleManager<SplittIdentityRole> roleManager, IConfiguration configuration, IUtilitiesService utilitiesService)
+        private readonly SignInManager<SplittIdentityUser> _signInManager;
+
+        public AuthMerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection, UserManager<SplittIdentityUser> userManager, RoleManager<SplittIdentityRole> roleManager, IConfiguration configuration, IUtilitiesService utilitiesService, SignInManager<SplittIdentityUser> signInManager)
         {
             _unitOfWork = unitOfWork;
             _dapperDBConnection = dapperDBConnection;
@@ -30,112 +33,71 @@ namespace Duc.Splitt.Service
             _roleManager = roleManager;
             _configuration = configuration;
             _utilitiesService = utilitiesService;
+            _signInManager = signInManager;
         }
 
-        public async Task<ResponseDto<string?>> ApproveMerchantUser(RequestHeader requestHeader, RegisterDto request)
+
+
+        public async Task<ResponseDto<bool?>> ChangePassword(RequestHeader requestHeader, ChangePasswordDto request)
         {
-            SplittIdentityUser splittIdentityUser = new SplittIdentityUser
-            {
-                Email = request.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = request.UserName
-            };
+            if (request == null)
+                throw new NullReferenceException("ChangePassword Model is null");
 
-            var userExistsbyName = await _userManager.FindByNameAsync(request.UserName);
-            if (userExistsbyName != null)
-            {
-                return new ResponseDto<string?>
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+                return new ResponseDto<bool?>
                 {
-                    Code = ResponseStatusCode.Conflict,
-                    Message = "User already exists",
-                    Errors = new List<string> { $"{request.UserName} User already exists  in User" }
+                    Code = ResponseStatusCode.NoDataFound,
+                    Message = "Cannot find a user associated with the email",
+                    Errors = new List<string> { "Cannot find a user associated with the email" }
                 };
-            }
-            var userExistsByEmail = await _userManager.FindByEmailAsync(request.Email);
-            if (userExistsByEmail != null)
-            {
-                return new ResponseDto<string?>
+
+            var login = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
+
+            if (!login)
+                return new ResponseDto<bool?>
                 {
-                    Code = ResponseStatusCode.Conflict,
-                    Message = "User already exists",
-                    Errors = new List<string> { $"{request.Email} User already exists in User" }
+                    Code = ResponseStatusCode.BadRequest,
+                    Message = "Invalid current password",
+                    Errors = new List<string> { "Invalid current password" }
                 };
-            }
-            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(request.Email);
-            if (merchantUser == null)
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword,
+                request.NewPassword);
+
+            if (result.Succeeded)
             {
-                return new ResponseDto<string?>
+                return new ResponseDto<bool?>
                 {
-                    Code = ResponseStatusCode.Conflict,
-                    Message = "Email Not Available in Request",
-                    Errors = new List<string> { $"{request.Email} Email Not Available in Request" }
-                };
-            }
-            if (merchantUser != null && merchantUser.MerchantRequest.MerchantStatusId != (int)MerchantRequestStatuses.InProgress)
-            {
-                return new ResponseDto<string?>
-                {
-                    Code = ResponseStatusCode.Conflict,
-                    Message = $" {merchantUser.MerchantRequest.MerchantStatusId} Request Status is not valid for Approve",
-                    Errors = new List<string> { $"{merchantUser.MerchantRequest.MerchantStatusId}.RequestStatusId Request Status is not valid for Approve" }
-                };
-            }
-            if (merchantUser != null)
-            {
-                var result = await _userManager.CreateAsync(splittIdentityUser);
-                if (!result.Succeeded)
-                {
-                    return new ResponseDto<string?>
-                    {
-                        Code = ResponseStatusCode.ServerError,
-                        Message = $"User Creation failed",
-                        Errors = _utilitiesService.GetErrorMessages(result)
-                    };
-
-                }
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(splittIdentityUser);
-
-                string languageText = requestHeader.IsArabic ? "ar" : "en";
-                var activationLink = $"{_configuration["Jwt:MerchantVerify"]}?identifier={splittIdentityUser.Id}&token={token}?lang={languageText}";//toDO
-
-                merchantUser.MerchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.Approved;
-                merchantUser.MerchantRequest.ModifiedAt = (byte)requestHeader.LocationId;
-                merchantUser.MerchantRequest.ModifiedOn = DateTime.Now;
-                merchantUser.MerchantRequest.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
-
-                merchantUser.MerchantRequest.MerchantHistory.Add(new MerchantHistory
-                {
-                    MerchantRequestStatusId = (int)MerchantRequestStatuses.Approved,
-                    CreatedAt = (byte)requestHeader.LocationId,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = Utilities.AnonymousUserID,//ToDo
-                    Comment = request.Comments
-                });
-                await _unitOfWork.CompleteAsync();
-
-                // Send Welcome EMail//TODoM
-                return new ResponseDto<string?>
-                {
-                    Message = activationLink,
+                    Data = true,
                     Code = ResponseStatusCode.Success,
-                    Data = merchantUser.MerchantRequest.RequestNo,
-
+                    Message = "Password has been changed successfully!",
                 };
-
             }
-            else
+
+            return new ResponseDto<bool?>
             {
-                return new ResponseDto<string?>
-                {
-                    Code = ResponseStatusCode.ServerError,
-                    Message = "Could not register user!",
-                    Errors = new List<string> { "Could not register user!" }
-                };
-            }
-
+                Code = ResponseStatusCode.ServerError,
+                Message = "Something went wrong!",
+                Errors = result.Errors.Select(e => e.Description),
+            };
         }
 
-        public async Task<ResponseDto<AuthTokens?>> ActivateMerchantUser(RequestHeader requestHeader, SetPasswordDto request)
+        [HttpPost]
+        public async Task<ResponseDto<bool?>> Logout(RequestHeader requestHeader)
+        {
+            await _signInManager.SignOutAsync();
+            return new ResponseDto<bool?>
+            {
+                Data = true,
+                Code = ResponseStatusCode.Success,
+                Message = "Logout  successfully!",
+            };
+        }
+
+        #region Anonymous API 
+        public async Task<ResponseDto<AuthTokens?>> ActivateMerchantByUser(RequestHeader requestHeader, SetPasswordDto request)
         {
 
             var user = await _userManager.FindByIdAsync(request.Identifier);
@@ -158,9 +120,11 @@ namespace Duc.Splitt.Service
                     Errors = new List<string> { $"{merchantUser.BusinessEmail} Email Not Available in Request" }
                 };
             }
+            var decodedToken = WebEncoders.Base64UrlDecode(request.Token);
+            var normalToken = Encoding.UTF8.GetString(decodedToken);
 
             // Confirm email with the provided token
-            var result = await _userManager.ConfirmEmailAsync(user, request.Token);
+            var result = await _userManager.ConfirmEmailAsync(user, normalToken);
             if (!result.Succeeded)
             {
                 return new ResponseDto<AuthTokens?>
@@ -219,7 +183,6 @@ namespace Duc.Splitt.Service
             };
 
         }
-
         public async Task<ResponseDto<AuthTokens?>> Login(RequestHeader requestHeader, LoginDto request)
         {
             var user = await _userManager.FindByEmailAsync(request.UserName);
@@ -242,55 +205,9 @@ namespace Duc.Splitt.Service
 
         }
 
-        public async Task<ResponseDto<bool?>> ChangePassword(ChangePasswordDto request)
+        public async Task<ResponseDto<bool?>> ForgetPassword(RequestHeader requestHeader, ForgetPasswordDto request)
         {
-            if (request == null)
-                throw new NullReferenceException("ChangePassword Model is null");
-
             var user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (user == null)
-                return new ResponseDto<bool?>
-                {
-                    Code = ResponseStatusCode.NoDataFound,
-                    Message = "Cannot find a user associated with the email",
-                    Errors = new List<string> { "Cannot find a user associated with the email" }
-                };
-
-            var login = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
-
-            if (!login)
-                return new ResponseDto<bool?>
-                {
-                    Code = ResponseStatusCode.BadRequest,
-                    Message = "Invalid current password",
-                    Errors = new List<string> { "Invalid current password" }
-                };
-
-            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword,
-                request.NewPassword);
-
-            if (result.Succeeded)
-            {
-                return new ResponseDto<bool?>
-                {
-                    Data = true,
-                    Code = ResponseStatusCode.Success,
-                    Message = "Password has been changed successfully!",
-                };
-            }
-
-            return new ResponseDto<bool?>
-            {
-                Code = ResponseStatusCode.ServerError,
-                Message = "Something went wrong!",
-                Errors = result.Errors.Select(e => e.Description),
-            };
-        }
-
-        public async Task<ResponseDto<bool?>> ForgetPassword(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
                 return new ResponseDto<bool?>
@@ -305,7 +222,7 @@ namespace Duc.Splitt.Service
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            var url = $"{_configuration["ClientAppUrl"]}/ResetPassword?email={email}&token={validToken}";
+            var url = $"/ResetPassword?email={request.Email}&token={validToken}";
 
             //Send Email for Forget password
             bool mailSent = true;// _mailService.SendResetPasswordEmail(email, url);
@@ -326,7 +243,7 @@ namespace Duc.Splitt.Service
                 Data = true
             };
         }
-        public async Task<ResponseDto<bool?>> ResetPasswordAsync(ResetPasswordDto request)
+        public async Task<ResponseDto<bool?>> ResetPassword(RequestHeader requestHeader, ResetPasswordDto request)
         {
             if (request == null)
                 throw new NullReferenceException("ResetPassword Model is null");
@@ -366,7 +283,7 @@ namespace Duc.Splitt.Service
                 Errors = result.Errors.Select(e => e.Description),
             };
         }
-
+        #endregion 
     }
 
 }

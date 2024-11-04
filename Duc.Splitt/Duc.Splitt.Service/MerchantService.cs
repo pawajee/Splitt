@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Duc.Splitt.Common.Dtos.Requests;
 using Duc.Splitt.Common.Dtos.Responses;
 using Duc.Splitt.Common.Enums;
 using Duc.Splitt.Common.Helpers;
@@ -8,8 +7,9 @@ using Duc.Splitt.Core.Contracts.Services;
 using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Models;
+using Duc.Splitt.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.Data;
-using System.Diagnostics.Metrics;
 using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
@@ -20,25 +20,52 @@ namespace Duc.Splitt.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDapperDBConnection _dapperDBConnection;
-        private readonly IAuthMerchantService _authMerchantService;
-
-        public MerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection, IAuthMerchantService authMerchantService)
+        private readonly UserManager<SplittIdentityUser> _userManager;
+        public MerchantService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection, UserManager<SplittIdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
             _dapperDBConnection = dapperDBConnection;
-            _authMerchantService = authMerchantService;
         }
 
-        public async Task<ResponseDto<CreateMerchantResponseDto>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto requestDto)
+        public async Task<ResponseDto<CreateMerchantResponseDto?>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto requestDto)
         {
 
-            ResponseDto<CreateMerchantResponseDto> response = new ResponseDto<CreateMerchantResponseDto>
+            ResponseDto<CreateMerchantResponseDto?> response = new ResponseDto<CreateMerchantResponseDto?>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-
+            var userExistsbyName = await _userManager.FindByNameAsync(requestDto.BusinessEmail);
+            if (userExistsbyName != null)
+            {
+                return new ResponseDto<CreateMerchantResponseDto?>
+                {
+                    Code = ResponseStatusCode.Conflict,
+                    Message = "User already exists",
+                    Errors = new List<string> { $"{requestDto.BusinessEmail} User already exists  in User" }
+                };
+            }
+            var userExistsByEmail = await _userManager.FindByEmailAsync(requestDto.BusinessEmail);
+            if (userExistsByEmail != null)
+            {
+                return new ResponseDto<CreateMerchantResponseDto?>
+                {
+                    Code = ResponseStatusCode.Conflict,
+                    Message = "User already exists",
+                    Errors = new List<string> { $"{requestDto.BusinessEmail} User already exists in User" }
+                };
+            }
+            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(requestDto.BusinessEmail);
+            if (merchantUser != null)
+            {
+                return new ResponseDto<CreateMerchantResponseDto?>
+                {
+                    Code = ResponseStatusCode.Conflict,
+                    Message = "User already exists",
+                    Errors = new List<string> { $"{requestDto.BusinessEmail} User already exists" }
+                };
+            }
             Merchant merchantRequest = new Merchant();
-
             merchantRequest.BusinessNameArabic = requestDto.BusinessNameArabic;
             merchantRequest.BusinessNameEnglish = requestDto.BusinessNameEnglish;
             merchantRequest.CountryId = requestDto.CountryId;
@@ -46,8 +73,8 @@ namespace Duc.Splitt.Service
             merchantRequest.MerchantAverageOrderId = requestDto.AverageOrderId;
             merchantRequest.MerchantBusinessTypeId = requestDto.BusinessTypeId;
             merchantRequest.MerchantCategoryId = requestDto.CategoryId;
-            //merchantRequest.MobileNumber = requestDto.MobileNumber;
-            //merchantRequest.BusinessEmail = requestDto.BusinessEmail;
+            merchantRequest.MobileNo = requestDto.MobileNumber;
+            merchantRequest.BusinessEmail = requestDto.BusinessEmail;
             merchantRequest.CreatedAt = (byte)requestHeader.LocationId;
             merchantRequest.CreatedOn = DateTime.Now;
             merchantRequest.CreatedBy = Utilities.AnonymousUserID;
@@ -59,7 +86,6 @@ namespace Duc.Splitt.Service
                 foreach (var x in requestDto.Documents)
                 {
                     var fileGUid = Guid.NewGuid();
-
                     var directoryPath = documentCategories.BaseUrl;
                     if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
                     {
@@ -93,20 +119,6 @@ namespace Duc.Splitt.Service
             merchantRequest.MerchantHistory.Add(new MerchantHistory
             {
                 MerchantRequestStatusId = (int)MerchantRequestStatuses.InProgress,
-                CreatedAt = (byte)requestHeader.LocationId,
-                CreatedOn = DateTime.Now,
-                CreatedBy = Utilities.AnonymousUserID,
-
-            });
-            _unitOfWork.Merchants.AddAsync(merchantRequest);
-
-            merchantRequest.MerchantUser.Add(new MerchantUser
-            {
-                NameArabic = requestDto.BusinessNameArabic,
-                NameEnglish = requestDto.BusinessNameEnglish,
-                IsPrimary = true,
-                MobileNo = requestDto.MobileNumber,
-                BusinessEmail = requestDto.BusinessEmail,
                 CreatedAt = (byte)requestHeader.LocationId,
                 CreatedOn = DateTime.Now,
                 CreatedBy = Utilities.AnonymousUserID,
@@ -196,9 +208,10 @@ namespace Duc.Splitt.Service
                 MerchantAverageOrderId = merchantRequest.MerchantAverageOrderId,
                 MerchantBusinessTypeId = merchantRequest.MerchantBusinessTypeId,
                 MerchantCategoryId = merchantRequest.MerchantCategoryId,
+                MerchantStatusId = merchantRequest.MerchantStatusId,
                 RequestNo = merchantRequest.RequestNo,
-                MobileNumber = merchantRequest.MerchantUser?.FirstOrDefault()?.MobileNo,
-                BusinessEmail = merchantRequest.MerchantUser?.FirstOrDefault()?.BusinessEmail,
+                MobileNumber = merchantRequest.MobileNo,
+                BusinessEmail = merchantRequest.BusinessEmail,
                 MerchantAnnualSales = requestHeader.IsArabic ? merchantRequest.MerchantAnnualSales.TitleArabic : merchantRequest.MerchantAnnualSales.TitleEnglish,
                 MerchantAverageOrder = requestHeader.IsArabic ? merchantRequest.MerchantAverageOrder.TitleArabic : merchantRequest.MerchantAverageOrder.TitleEnglish,
                 MerchantCategory = requestHeader.IsArabic ? merchantRequest.MerchantCategory.TitleArabic : merchantRequest.MerchantCategory.TitleEnglish,
@@ -215,7 +228,6 @@ namespace Duc.Splitt.Service
                     temp.Documents.Add(new DocumentResponseDto
                     {
                         DocumentConfigurationName = requestHeader.IsArabic ? docConfig.TitleArabic : docConfig.TitleEnglish,
-                        URL = "",
                         DocumentLibraryId = attch.DocumentLibraryId
                     });
                 }
@@ -242,50 +254,21 @@ namespace Duc.Splitt.Service
             return response;
         }
 
-        public async Task<ResponseDto<string?>> ChangeMerchantStatus(RequestHeader requestHeader, AdminChangeUserStatus requestDto)
+        public async Task<ResponseDto<DownloadAttachmentResponseDto?>> DownloadAttchemnts(RequestHeader requestHeader, DownloadAttachmentRequestDto requestDto)
         {
 
-            ResponseDto<string?> response = new ResponseDto<string?>
+            ResponseDto<DownloadAttachmentResponseDto?> response = new ResponseDto<DownloadAttachmentResponseDto?>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestById(requestDto.RequestId);
-            if (merchantUser == null)
+            var attch = await _unitOfWork.DocumentLibrarys.GetAsync(requestDto.AttcahmentId);
+            if (attch == null)
             {
                 return response;
             }
 
-            if (requestDto.RequestStatusId == (int)MerchantRequestStatuses.Approved)
-            {
-                RegisterDto registerDto = new RegisterDto
-                {
-                    Comments = requestDto.Comments,
-                    Email = merchantUser.BusinessEmail,
-                    UserName = merchantUser.BusinessEmail,
-                };
-                return await _authMerchantService.ApproveMerchantUser(requestHeader, registerDto);
-
-            }
-            else if (requestDto.RequestStatusId == (int)MerchantRequestStatuses.Rejected)
-            {
-                merchantUser.MerchantRequest.MerchantStatusId = (int)MerchantRequestStatuses.Rejected;
-                merchantUser.ModifiedAt = (byte)requestHeader.LocationId;
-                merchantUser.ModifiedOn = DateTime.Now;
-                merchantUser.ModifiedBy = Utilities.AnonymousUserID; //ToDoM
-                merchantUser.MerchantRequest.MerchantHistory.Add(new MerchantHistory
-                {
-                    MerchantRequestStatusId = (int)MerchantRequestStatuses.Rejected,
-                    CreatedAt = (byte)requestHeader.LocationId,
-                    CreatedOn = DateTime.Now,
-                    CreatedBy = Utilities.AnonymousUserID,
-                    Comment = requestDto.Comments
-
-                });
-                await _unitOfWork.CompleteAsync();
-                response.Data = merchantUser.MerchantRequest.RequestNo;
-                response.Code = ResponseStatusCode.Success;
-                return response;
-            }
+            response.Data = new DownloadAttachmentResponseDto { AttachmentByte = attch.Attachment, MineType = attch.MineType };
+            response.Code = ResponseStatusCode.Success;
             return response;
         }
 

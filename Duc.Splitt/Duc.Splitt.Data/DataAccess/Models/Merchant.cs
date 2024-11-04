@@ -17,6 +17,14 @@ public partial class Merchant
     [StringLength(250)]
     public string BusinessNameArabic { get; set; } = null!;
 
+    [StringLength(100)]
+    [Unicode(false)]
+    public string BusinessEmail { get; set; } = null!;
+
+    [StringLength(8)]
+    [Unicode(false)]
+    public string MobileNo { get; set; } = null!;
+
     public int CountryId { get; set; }
 
     [StringLength(20)]

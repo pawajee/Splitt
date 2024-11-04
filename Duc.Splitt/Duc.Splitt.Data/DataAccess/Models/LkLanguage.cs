@@ -25,4 +25,10 @@ public partial class LkLanguage
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("Language")]
+    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
+
+    [InverseProperty("Language")]
+    public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Duc.Splitt.Identity
 {
@@ -18,9 +19,6 @@ namespace Duc.Splitt.Identity
     public class SplittIdentityRole : IdentityRole<Guid>
     {
 
-        //public const string Admin = "Admin";
-
-        //public const string User = "User";
     }
     public class SplittIdentityDbContext : IdentityDbContext<SplittIdentityUser, SplittIdentityRole, Guid>, IDataProtectionKeyContext
     {
@@ -45,6 +43,17 @@ namespace Duc.Splitt.Identity
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 
+        }
+    }
+
+    public class SplittIdentityDbContextFactory : IDesignTimeDbContextFactory<SplittIdentityDbContext>
+    {
+        public SplittIdentityDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<SplittIdentityDbContext>();
+            optionsBuilder.UseSqlServer("Data Source=172.20.4.145;Initial Catalog=SplittDB;User ID=sa;Password=P@ssw0rd;Encrypt=False;Trust Server Certificate=False;");
+
+            return new SplittIdentityDbContext(optionsBuilder.Options);
         }
     }
 }

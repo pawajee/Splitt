@@ -44,7 +44,7 @@ public partial class User
     public virtual ICollection<BackOfficeUser> BackOfficeUserModifiedByNavigation { get; set; } = new List<BackOfficeUser>();
 
     [InverseProperty("User")]
-    public virtual ICollection<BackOfficeUser> BackOfficeUserUser { get; set; } = new List<BackOfficeUser>();
+    public virtual BackOfficeUser? BackOfficeUserUser { get; set; }
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<ConsumerUser> ConsumerUserCreatedByNavigation { get; set; } = new List<ConsumerUser>();
@@ -53,7 +53,7 @@ public partial class User
     public virtual ICollection<ConsumerUser> ConsumerUserModifiedByNavigation { get; set; } = new List<ConsumerUser>();
 
     [InverseProperty("User")]
-    public virtual ICollection<ConsumerUser> ConsumerUserUser { get; set; } = new List<ConsumerUser>();
+    public virtual ConsumerUser? ConsumerUserUser { get; set; }
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("UserCreatedAtNavigation")]
@@ -91,7 +91,7 @@ public partial class User
     public virtual ICollection<MerchantUser> MerchantUserModifiedByNavigation { get; set; } = new List<MerchantUser>();
 
     [InverseProperty("User")]
-    public virtual ICollection<MerchantUser> MerchantUserUser { get; set; } = new List<MerchantUser>();
+    public virtual MerchantUser? MerchantUserUser { get; set; }
 
     [ForeignKey("ModifiedAt")]
     [InverseProperty("UserModifiedAtNavigation")]
