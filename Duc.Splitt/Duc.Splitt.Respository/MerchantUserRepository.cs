@@ -6,22 +6,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Respository.Repository
 {
-    public class MerchantUserRepository : Repository<MerchantUser>, IMerchantUserRepository
+    public class MerchantContactRepository : Repository<MerchantContact>, IMerchantContactRepository
     {
         protected readonly SplittAppContext _context;
 
-        public MerchantUserRepository(SplittAppContext context) : base(context)
+        public MerchantContactRepository(SplittAppContext context) : base(context)
         {
             _context = context;
         }
-        public async Task<MerchantUser?> GetMerchantRequestByEmail(string email)
+        public async Task<MerchantContact?> GetMerchantRequestByEmail(string email)
         {
-            var obj = await _context.MerchantUser.Include(t => t.MerchantRequest).Where(t => t.BusinessEmail == email).FirstOrDefaultAsync();
+            var obj = await _context.MerchantContact.Include(t => t.MerchantRequest).Where(t => t.BusinessEmail == email).FirstOrDefaultAsync();
             return obj;
         }
-        public async Task<MerchantUser?> GetMerchantRequestById(Guid Id)
+        public async Task<MerchantContact?> GetMerchantRequestById(Guid Id)
         {
-            var obj = await _context.MerchantUser.Include(t => t.MerchantRequest).Where(t => t.MerchantRequestId == Id).FirstOrDefaultAsync();
+            var obj = await _context.MerchantContact.Include(t => t.MerchantRequest).Where(t => t.MerchantRequestId == Id).FirstOrDefaultAsync();
             return obj;
         }
     }

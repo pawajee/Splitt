@@ -55,7 +55,7 @@ namespace Duc.Splitt.Service
                     Errors = new List<string> { $"{requestDto.BusinessEmail} User already exists in User" }
                 };
             }
-            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(requestDto.BusinessEmail);
+            var merchantUser = await _unitOfWork.MerchantContacts.GetMerchantRequestByEmail(requestDto.BusinessEmail);
             if (merchantUser != null)
             {
                 return new ResponseDto<CreateMerchantResponseDto?>

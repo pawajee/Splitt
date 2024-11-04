@@ -17,7 +17,7 @@ public partial class SmsNotification
     [StringLength(20)]
     public string? Recipient { get; set; }
 
-    public byte LanguageId { get; set; }
+    public int LanguageId { get; set; }
 
     public byte NotificationStatusId { get; set; }
 
@@ -35,7 +35,7 @@ public partial class SmsNotification
 
     public Guid? ModifiedBy { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     public byte? ModifiedAt { get; set; }
 

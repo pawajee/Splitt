@@ -17,6 +17,11 @@ public partial class Merchant
     [StringLength(250)]
     public string BusinessNameArabic { get; set; } = null!;
 
+    [Column("ERPReferenceNumber")]
+    [StringLength(15)]
+    [Unicode(false)]
+    public string? ErpreferenceNumber { get; set; }
+
     [StringLength(100)]
     [Unicode(false)]
     public string BusinessEmail { get; set; } = null!;
@@ -46,14 +51,14 @@ public partial class Merchant
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     public Guid? ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
 
     [ForeignKey("CountryId")]
     [InverseProperty("Merchant")]
@@ -87,14 +92,14 @@ public partial class Merchant
     public virtual LkMerchantCategory MerchantCategory { get; set; } = null!;
 
     [InverseProperty("MerchantRequest")]
+    public virtual ICollection<MerchantContact> MerchantContact { get; set; } = new List<MerchantContact>();
+
+    [InverseProperty("MerchantRequest")]
     public virtual ICollection<MerchantHistory> MerchantHistory { get; set; } = new List<MerchantHistory>();
 
     [ForeignKey("MerchantStatusId")]
     [InverseProperty("Merchant")]
     public virtual LkMerchantStatus MerchantStatus { get; set; } = null!;
-
-    [InverseProperty("MerchantRequest")]
-    public virtual ICollection<MerchantUser> MerchantUser { get; set; } = new List<MerchantUser>();
 
     [ForeignKey("ModifiedAt")]
     [InverseProperty("MerchantModifiedAtNavigation")]
@@ -103,4 +108,7 @@ public partial class Merchant
     [ForeignKey("ModifiedBy")]
     [InverseProperty("MerchantModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
+
+    [InverseProperty("Merchant")]
+    public virtual ICollection<Order> Order { get; set; } = new List<Order>();
 }

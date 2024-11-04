@@ -2,8 +2,8 @@
 
 namespace Duc.Splitt.Core.Contracts.Repositories
 {
-    public interface IConsumerOtpRequestRepository : IRepository<ConsumerOtpRequest>
+    public interface IOtpRequestRepository : IRepository<OtpRequest>
     {
-        Task<ConsumerOtpRequest?> GetLatestOtpRequestByMobileNo(string mobileNo);
+        Task<OtpRequest?> GetLatestOtpRequestByMobileNo(string mobileNo);
     }
 }

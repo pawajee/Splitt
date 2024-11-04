@@ -9,7 +9,7 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 public partial class LkLocation
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
@@ -33,10 +33,10 @@ public partial class LkLocation
     public virtual ICollection<BackOfficeUser> BackOfficeUserModifiedAtNavigation { get; set; } = new List<BackOfficeUser>();
 
     [InverseProperty("CreatedAtNavigation")]
-    public virtual ICollection<ConsumerUser> ConsumerUserCreatedAtNavigation { get; set; } = new List<ConsumerUser>();
+    public virtual ICollection<Customer> CustomerCreatedAtNavigation { get; set; } = new List<Customer>();
 
     [InverseProperty("ModifiedAtNavigation")]
-    public virtual ICollection<ConsumerUser> ConsumerUserModifiedAtNavigation { get; set; } = new List<ConsumerUser>();
+    public virtual ICollection<Customer> CustomerModifiedAtNavigation { get; set; } = new List<Customer>();
 
     [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<EmailNotification> EmailNotificationCreatedAtNavigation { get; set; } = new List<EmailNotification>();
@@ -51,6 +51,12 @@ public partial class LkLocation
     public virtual ICollection<MerchantAttachment> MerchantAttachmentModifiedAtNavigation { get; set; } = new List<MerchantAttachment>();
 
     [InverseProperty("CreatedAtNavigation")]
+    public virtual ICollection<MerchantContact> MerchantContactCreatedAtNavigation { get; set; } = new List<MerchantContact>();
+
+    [InverseProperty("ModifiedAtNavigation")]
+    public virtual ICollection<MerchantContact> MerchantContactModifiedAtNavigation { get; set; } = new List<MerchantContact>();
+
+    [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<Merchant> MerchantCreatedAtNavigation { get; set; } = new List<Merchant>();
 
     [InverseProperty("CreatedAtNavigation")]
@@ -58,12 +64,6 @@ public partial class LkLocation
 
     [InverseProperty("ModifiedAtNavigation")]
     public virtual ICollection<Merchant> MerchantModifiedAtNavigation { get; set; } = new List<Merchant>();
-
-    [InverseProperty("CreatedAtNavigation")]
-    public virtual ICollection<MerchantUser> MerchantUserCreatedAtNavigation { get; set; } = new List<MerchantUser>();
-
-    [InverseProperty("ModifiedAtNavigation")]
-    public virtual ICollection<MerchantUser> MerchantUserModifiedAtNavigation { get; set; } = new List<MerchantUser>();
 
     [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();

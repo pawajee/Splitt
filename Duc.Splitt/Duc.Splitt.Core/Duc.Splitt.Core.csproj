@@ -21,8 +21,8 @@
     <Compile Include="Contracts\Repositories\ILkLanguageRepository.cs" />
     <Compile Include="Contracts\Repositories\IBackOfficeUserRepository.cs" />
     <Compile Include="Contracts\Repositories\IConsumerOtpRequestRepository.cs" />
-    <Compile Include="Contracts\Repositories\IConsumerUserRepository.cs" />
-    <Compile Include="Contracts\Repositories\IMerchantUserRepository.cs" />
+    <Compile Include="Contracts\Repositories\ICustomerRepository.cs" />
+    <Compile Include="Contracts\Repositories\IMerchantContactRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkMerchantAnnualSaleRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkMerchantAverageOrderRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkMerchantBusinessTypeRepository.cs" />

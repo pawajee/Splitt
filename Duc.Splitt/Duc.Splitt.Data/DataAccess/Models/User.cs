@@ -22,9 +22,9 @@ public partial class User
 
     public Guid CreatedBy { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
 
     public Guid? ModifiedBy { get; set; }
 
@@ -46,15 +46,6 @@ public partial class User
     [InverseProperty("User")]
     public virtual BackOfficeUser? BackOfficeUserUser { get; set; }
 
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<ConsumerUser> ConsumerUserCreatedByNavigation { get; set; } = new List<ConsumerUser>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<ConsumerUser> ConsumerUserModifiedByNavigation { get; set; } = new List<ConsumerUser>();
-
-    [InverseProperty("User")]
-    public virtual ConsumerUser? ConsumerUserUser { get; set; }
-
     [ForeignKey("CreatedAt")]
     [InverseProperty("UserCreatedAtNavigation")]
     public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
@@ -62,6 +53,15 @@ public partial class User
     [ForeignKey("CreatedBy")]
     [InverseProperty("InverseCreatedByNavigation")]
     public virtual User CreatedByNavigation { get; set; } = null!;
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<Customer> CustomerCreatedByNavigation { get; set; } = new List<Customer>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<Customer> CustomerModifiedByNavigation { get; set; } = new List<Customer>();
+
+    [InverseProperty("User")]
+    public virtual Customer? CustomerUser { get; set; }
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<User> InverseCreatedByNavigation { get; set; } = new List<User>();
@@ -76,6 +76,15 @@ public partial class User
     public virtual ICollection<MerchantAttachment> MerchantAttachmentModifiedByNavigation { get; set; } = new List<MerchantAttachment>();
 
     [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<MerchantContact> MerchantContactCreatedByNavigation { get; set; } = new List<MerchantContact>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<MerchantContact> MerchantContactModifiedByNavigation { get; set; } = new List<MerchantContact>();
+
+    [InverseProperty("User")]
+    public virtual MerchantContact? MerchantContactUser { get; set; }
+
+    [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<Merchant> MerchantCreatedByNavigation { get; set; } = new List<Merchant>();
 
     [InverseProperty("CreatedByNavigation")]
@@ -84,15 +93,6 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Merchant> MerchantModifiedByNavigation { get; set; } = new List<Merchant>();
 
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<MerchantUser> MerchantUserCreatedByNavigation { get; set; } = new List<MerchantUser>();
-
-    [InverseProperty("ModifiedByNavigation")]
-    public virtual ICollection<MerchantUser> MerchantUserModifiedByNavigation { get; set; } = new List<MerchantUser>();
-
-    [InverseProperty("User")]
-    public virtual MerchantUser? MerchantUserUser { get; set; }
-
     [ForeignKey("ModifiedAt")]
     [InverseProperty("UserModifiedAtNavigation")]
     public virtual LkLocation? ModifiedAtNavigation { get; set; }
@@ -100,6 +100,12 @@ public partial class User
     [ForeignKey("ModifiedBy")]
     [InverseProperty("InverseModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
+
+    [InverseProperty("User")]
+    public virtual ICollection<Payment> Payment { get; set; } = new List<Payment>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<PrePayment> PrePayment { get; set; } = new List<PrePayment>();
 
     [ForeignKey("UserTypeId")]
     [InverseProperty("User")]

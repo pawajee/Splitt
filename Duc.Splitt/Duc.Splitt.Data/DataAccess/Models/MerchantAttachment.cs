@@ -24,14 +24,14 @@ public partial class MerchantAttachment
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     public Guid? ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("MerchantAttachmentCreatedAtNavigation")]

@@ -25,10 +25,12 @@
         public IUserRepository Users { get; }
 
         public IBackOfficeUserRepository BackOfficeUsers { get; }
-        public IConsumerUserRepository ConsumerUsers { get; }
-        public IMerchantUserRepository MerchantUsers { get; }
+        public ICustomerRepository Customers { get; }
+        public IMerchantContactRepository MerchantContacts { get; }
 
-        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; }
+        public IOtpRequestRepository OtpRequests { get; }
+
+       
 
         public Task<int> CompleteAsync();
 

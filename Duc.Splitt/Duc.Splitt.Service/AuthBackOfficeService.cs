@@ -75,7 +75,7 @@ namespace Duc.Splitt.Service
                 };
             }
 
-            var merchantUserCheck = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(request.Email);
+            var merchantUserCheck = await _unitOfWork.MerchantContacts.GetMerchantRequestByEmail(request.Email);
             if (merchantUserCheck != null)
             {
                 return new ResponseDto<string?>
@@ -127,7 +127,7 @@ namespace Duc.Splitt.Service
                     CreatedBy = Utilities.AnonymousUserID,//ToDo
                     Comment = request.Comments
                 });
-                var merchantUser = new MerchantUser
+                var merchantUser = new MerchantContact
                 {
                     NameArabic = merchant.BusinessNameArabic,
                     NameEnglish = merchant.BusinessNameEnglish,
@@ -147,7 +147,7 @@ namespace Duc.Splitt.Service
                         CreatedBy = Utilities.AnonymousUserID,
                     }
                 };
-                merchant.MerchantUser.Add(merchantUser);
+                merchant.MerchantContact.Add(merchantUser);
                 await _unitOfWork.CompleteAsync();
 
                 // Send Welcome EMail//TODoM

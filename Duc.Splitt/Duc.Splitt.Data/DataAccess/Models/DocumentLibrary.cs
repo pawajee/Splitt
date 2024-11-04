@@ -42,4 +42,7 @@ public partial class DocumentLibrary
 
     [InverseProperty("DocumentLibrary")]
     public virtual MerchantAttachment? MerchantAttachment { get; set; }
+
+    [InverseProperty("PaymentRecepitDocumentLibrary")]
+    public virtual ICollection<Payment> Payment { get; set; } = new List<Payment>();
 }

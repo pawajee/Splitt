@@ -19,7 +19,7 @@ public partial class EmailNotification
     [StringLength(50)]
     public string? Recipient { get; set; }
 
-    public byte LanguageId { get; set; }
+    public int LanguageId { get; set; }
 
     public byte NotificationStatusId { get; set; }
 
@@ -37,9 +37,9 @@ public partial class EmailNotification
 
     public Guid? ModifiedBy { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
 
     public int? NotificationCategoryId { get; set; }
 

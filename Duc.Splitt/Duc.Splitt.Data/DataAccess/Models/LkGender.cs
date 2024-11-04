@@ -9,7 +9,7 @@ namespace Duc.Splitt.Data.DataAccess.Models;
 public partial class LkGender
 {
     [Key]
-    public byte Id { get; set; }
+    public int Id { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
@@ -25,4 +25,7 @@ public partial class LkGender
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("Gender")]
+    public virtual ICollection<Customer> Customer { get; set; } = new List<Customer>();
 }

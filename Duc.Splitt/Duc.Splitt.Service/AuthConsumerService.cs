@@ -44,11 +44,11 @@ namespace Duc.Splitt.Service
         {
             // Generate OTP and send SMS
             var otp = _UtilitiesService.GenerateOtp();
-            _unitOfWork.ConsumerOtpRequests.AddAsync(new ConsumerOtpRequest
+            _unitOfWork.OtpRequests.AddAsync(new OtpRequest
             {
                 MobileNo = request.MobileNo,
                 Otp = otp,
-                Attempts = 1,
+                NumberofAttempts = 1,
                 CreatedAt = (byte)requestHeader.LocationId,
                 CreatedOn = DateTime.Now,
                 CreatedBy = Utilities.AnonymousUserID,//ToDo
@@ -72,7 +72,7 @@ namespace Duc.Splitt.Service
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-            var otpRequest = await _unitOfWork.ConsumerOtpRequests.GetLatestOtpRequestByMobileNo(request.MobileNo);
+            var otpRequest = await _unitOfWork.OtpRequests.GetLatestOtpRequestByMobileNo(request.MobileNo);
             if (otpRequest == null)
             {
                 return response; // No OTP exists for this mobile number
@@ -93,7 +93,7 @@ namespace Duc.Splitt.Service
             }
             // Check if maximum attempts have been reached
             int maxAttempts = 3; // Define your max attempt limit
-            if (otpRequest.Attempts >= maxAttempts)
+            if (otpRequest.NumberofAttempts >= maxAttempts)
             {
                 otpRequest.Status = "Exceeded max attempts";
                 await _unitOfWork.CompleteAsync();
@@ -129,10 +129,10 @@ namespace Duc.Splitt.Service
                     }
                 }
                
-                var consumerUser = await _unitOfWork.ConsumerUsers.GetConsumerUserByMobileNo(request.MobileNo);
+                var consumerUser = await _unitOfWork.Customers.GetConsumerUserByMobileNo(request.MobileNo);
                 if (consumerUser == null)
                 {
-                    consumerUser = new ConsumerUser
+                    consumerUser = new Customer
                     {
                         MobileNo = request.MobileNo,
                         CreatedAt = (byte)requestHeader.LocationId,
@@ -148,7 +148,7 @@ namespace Duc.Splitt.Service
                             CreatedBy = Utilities.AnonymousUserID,
                         }
                     };
-                    _unitOfWork.ConsumerUsers.AddAsync(consumerUser);
+                    _unitOfWork.Customers.AddAsync(consumerUser);
                 }
                 await _unitOfWork.CompleteAsync();
                 var token = _UtilitiesService.GenerateJwtToken(user);
@@ -160,7 +160,7 @@ namespace Duc.Splitt.Service
             }
             else
             {
-                otpRequest.Attempts += 1; // Increment attempt count
+                otpRequest.NumberofAttempts += 1; // Increment attempt count
                 otpRequest.Status = "Failed";
                 return new ResponseDto<AuthTokens?>
                 {

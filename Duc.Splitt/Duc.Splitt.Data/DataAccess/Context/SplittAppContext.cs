@@ -26,9 +26,9 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<BackOfficeUser> BackOfficeUser { get; set; }
 
-    public virtual DbSet<ConsumerOtpRequest> ConsumerOtpRequest { get; set; }
+    public virtual DbSet<Customer> Customer { get; set; }
 
-    public virtual DbSet<ConsumerUser> ConsumerUser { get; set; }
+    public virtual DbSet<CustomerRegistrationRequest> CustomerRegistrationRequest { get; set; }
 
     public virtual DbSet<DataProtectionKeys> DataProtectionKeys { get; set; }
 
@@ -38,15 +38,31 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<LkCountry> LkCountry { get; set; }
 
+    public virtual DbSet<LkCurrency> LkCurrency { get; set; }
+
+    public virtual DbSet<LkCustomerRegistrationStatus> LkCustomerRegistrationStatus { get; set; }
+
+    public virtual DbSet<LkCustomerStatus> LkCustomerStatus { get; set; }
+
     public virtual DbSet<LkDocumentCategory> LkDocumentCategory { get; set; }
 
     public virtual DbSet<LkDocumentConfiguration> LkDocumentConfiguration { get; set; }
 
+    public virtual DbSet<LkEducationalLevel> LkEducationalLevel { get; set; }
+
+    public virtual DbSet<LkEmploymentSector> LkEmploymentSector { get; set; }
+
+    public virtual DbSet<LkEmploymentStatus> LkEmploymentStatus { get; set; }
+
     public virtual DbSet<LkGender> LkGender { get; set; }
+
+    public virtual DbSet<LkInstallmentType> LkInstallmentType { get; set; }
 
     public virtual DbSet<LkLanguage> LkLanguage { get; set; }
 
     public virtual DbSet<LkLocation> LkLocation { get; set; }
+
+    public virtual DbSet<LkMartialStatus> LkMartialStatus { get; set; }
 
     public virtual DbSet<LkMerchantAnnualSale> LkMerchantAnnualSale { get; set; }
 
@@ -57,6 +73,10 @@ public partial class SplittAppContext : DbContext
     public virtual DbSet<LkMerchantCategory> LkMerchantCategory { get; set; }
 
     public virtual DbSet<LkMerchantStatus> LkMerchantStatus { get; set; }
+
+    public virtual DbSet<LkMidRequestStatus> LkMidRequestStatus { get; set; }
+
+    public virtual DbSet<LkMidRequestType> LkMidRequestType { get; set; }
 
     public virtual DbSet<LkNationality> LkNationality { get; set; }
 
@@ -70,15 +90,39 @@ public partial class SplittAppContext : DbContext
 
     public virtual DbSet<LkNotificationType> LkNotificationType { get; set; }
 
+    public virtual DbSet<LkOtpPurpose> LkOtpPurpose { get; set; }
+
+    public virtual DbSet<LkPaymentBrandType> LkPaymentBrandType { get; set; }
+
+    public virtual DbSet<LkPaymentOption> LkPaymentOption { get; set; }
+
+    public virtual DbSet<LkPaymentRequestType> LkPaymentRequestType { get; set; }
+
+    public virtual DbSet<LkPaymentStatus> LkPaymentStatus { get; set; }
+
     public virtual DbSet<LkRole> LkRole { get; set; }
 
     public virtual DbSet<Merchant> Merchant { get; set; }
 
     public virtual DbSet<MerchantAttachment> MerchantAttachment { get; set; }
 
+    public virtual DbSet<MerchantContact> MerchantContact { get; set; }
+
     public virtual DbSet<MerchantHistory> MerchantHistory { get; set; }
 
-    public virtual DbSet<MerchantUser> MerchantUser { get; set; }
+    public virtual DbSet<MidRequestLog> MidRequestLog { get; set; }
+
+    public virtual DbSet<Order> Order { get; set; }
+
+    public virtual DbSet<OrderItem> OrderItem { get; set; }
+
+    public virtual DbSet<OtpRequest> OtpRequest { get; set; }
+
+    public virtual DbSet<Payment> Payment { get; set; }
+
+    public virtual DbSet<PaymentInstallment> PaymentInstallment { get; set; }
+
+    public virtual DbSet<PrePayment> PrePayment { get; set; }
 
     public virtual DbSet<PushNotification> PushNotification { get; set; }
 
@@ -138,35 +182,54 @@ public partial class SplittAppContext : DbContext
                 .HasConstraintName("FK_BackOfficeUser_User");
         });
 
-        modelBuilder.Entity<ConsumerOtpRequest>(entity =>
-        {
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.ExpiredOn).HasDefaultValueSql("(dateadd(minute,(5),getdate()))");
-        });
-
-        modelBuilder.Entity<ConsumerUser>(entity =>
+        modelBuilder.Entity<Customer>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Email).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.MobileNo).UseCollation("Latin1_General_CI_AS");
-            entity.Property(e => e.NameArabic).UseCollation("Latin1_General_CI_AS");
-            entity.Property(e => e.NameEnglish).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.PaciNameArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.PaciNameEnglish).UseCollation("Latin1_General_CI_AS");
 
-            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.ConsumerUserCreatedAtNavigation)
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.CustomerCreatedAtNavigation)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ConsumerUser_Location");
+                .HasConstraintName("FK_Customer_Location");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ConsumerUserCreatedByNavigation)
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.CustomerCreatedByNavigation)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ConsumerUser_User1");
+                .HasConstraintName("FK_Customer_User1");
 
-            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.ConsumerUserModifiedAtNavigation).HasConstraintName("FK_ConsumerUser_Location1");
+            entity.HasOne(d => d.CustomerRegistrationRequest).WithMany(p => p.Customer).HasConstraintName("FK_Customer_CustomerRegistrationRequest");
 
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ConsumerUserModifiedByNavigation).HasConstraintName("FK_ConsumerUser_User2");
+            entity.HasOne(d => d.CustomerStatus).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkCustomerStatus");
 
-            entity.HasOne(d => d.User).WithOne(p => p.ConsumerUserUser)
+            entity.HasOne(d => d.EducationalLevel).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkEducationalLevel");
+
+            entity.HasOne(d => d.EmploymentSector).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkEmploymentSector");
+
+            entity.HasOne(d => d.EmploymentStatus).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkEmploymentStatus");
+
+            entity.HasOne(d => d.Gender).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkGender");
+
+            entity.HasOne(d => d.MartialStatus).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkMartialStatus");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.CustomerModifiedAtNavigation).HasConstraintName("FK_Customer_Location1");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.CustomerModifiedByNavigation).HasConstraintName("FK_Customer_User2");
+
+            entity.HasOne(d => d.Nationality).WithMany(p => p.Customer).HasConstraintName("FK_Customer_LkNationality");
+
+            entity.HasOne(d => d.User).WithOne(p => p.CustomerUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ConsumerUser_User");
+                .HasConstraintName("FK_Customer_User");
+        });
+
+        modelBuilder.Entity<CustomerRegistrationRequest>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.CustomerRegistrationStatus).WithMany(p => p.CustomerRegistrationRequest).HasConstraintName("FK_CustomerRegistrationRequest_LkCustomerRegistrationStatus");
+
+            entity.HasOne(d => d.OtpRequest).WithMany(p => p.CustomerRegistrationRequest).HasConstraintName("FK_CustomerRegistrationRequest_CustomerRegistrationRequest");
         });
 
         modelBuilder.Entity<DocumentLibrary>(entity =>
@@ -205,6 +268,30 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
+        modelBuilder.Entity<LkCurrency>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkCustomerRegistrationStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkCustomerStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
         modelBuilder.Entity<LkDocumentCategory>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
@@ -229,8 +316,43 @@ public partial class SplittAppContext : DbContext
                 .HasConstraintName("FK_LkDocumentConfiguration_LkDocumentCategory");
         });
 
+        modelBuilder.Entity<LkEducationalLevel>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkEmploymentSector>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkEmploymentStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_LkEmploymentStatus_1");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
         modelBuilder.Entity<LkGender>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkInstallmentType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
@@ -238,6 +360,7 @@ public partial class SplittAppContext : DbContext
 
         modelBuilder.Entity<LkLanguage>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
@@ -245,6 +368,15 @@ public partial class SplittAppContext : DbContext
 
         modelBuilder.Entity<LkLocation>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkMartialStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
@@ -290,8 +422,25 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
+        modelBuilder.Entity<LkMidRequestStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkMidRequestType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
         modelBuilder.Entity<LkNationality>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
             entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
@@ -324,6 +473,46 @@ public partial class SplittAppContext : DbContext
         modelBuilder.Entity<LkNotificationType>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<LkOtpPurpose>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkPaymentBrandType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkPaymentOption>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkPaymentRequestType>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
+        });
+
+        modelBuilder.Entity<LkPaymentStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
         modelBuilder.Entity<LkRole>(entity =>
@@ -410,6 +599,35 @@ public partial class SplittAppContext : DbContext
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.MerchantAttachmentModifiedByNavigation).HasConstraintName("FK_MerchantAttachment_User1");
         });
 
+        modelBuilder.Entity<MerchantContact>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.BusinessEmail).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.MobileNo).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.NameArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.NameEnglish).UseCollation("Latin1_General_CI_AS");
+
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.MerchantContactCreatedAtNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MerchantContact_Location");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.MerchantContactCreatedByNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MerchantContact_User");
+
+            entity.HasOne(d => d.MerchantRequest).WithMany(p => p.MerchantContact)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MerchantContact_Merchant");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.MerchantContactModifiedAtNavigation).HasConstraintName("FK_MerchantContact_Location1");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.MerchantContactModifiedByNavigation).HasConstraintName("FK_MerchantContact_User1");
+
+            entity.HasOne(d => d.User).WithOne(p => p.MerchantContactUser)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MerchantContact_User2");
+        });
+
         modelBuilder.Entity<MerchantHistory>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -432,33 +650,108 @@ public partial class SplittAppContext : DbContext
                 .HasConstraintName("FK_MerchantHistory_LkMerchantStatus");
         });
 
-        modelBuilder.Entity<MerchantUser>(entity =>
+        modelBuilder.Entity<MidRequestLog>(entity =>
+        {
+            entity.HasOne(d => d.CustomerRegistrationRequest).WithMany(p => p.MidRequestLog).HasConstraintName("FK_MidRequestLog_CustomerRegistrationRequest");
+
+            entity.HasOne(d => d.MidRequestStatus).WithMany(p => p.MidRequestLog)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MidRequestLog_LkMidRequestStatus");
+
+            entity.HasOne(d => d.MidRequestType).WithMany(p => p.MidRequestLog)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MidRequestLog_LkMidRequestType");
+        });
+
+        modelBuilder.Entity<Order>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.BusinessEmail).UseCollation("Latin1_General_CI_AS");
-            entity.Property(e => e.MobileNo).UseCollation("Latin1_General_CI_AS");
-            entity.Property(e => e.NameArabic).UseCollation("Latin1_General_CI_AS");
-            entity.Property(e => e.NameEnglish).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.OrderStatusId).IsFixedLength();
 
-            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.MerchantUserCreatedAtNavigation)
+            entity.HasOne(d => d.Customer).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MerchantUser_Location");
+                .HasConstraintName("FK_Order_Customer");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.MerchantUserCreatedByNavigation)
+            entity.HasOne(d => d.Merchant).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MerchantUser_User");
+                .HasConstraintName("FK_Order_Merchant");
 
-            entity.HasOne(d => d.MerchantRequest).WithMany(p => p.MerchantUser)
+            entity.HasOne(d => d.PaymentOption).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MerchantUser_Merchant");
+                .HasConstraintName("FK_Order_LkPaymentOption");
+        });
 
-            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.MerchantUserModifiedAtNavigation).HasConstraintName("FK_MerchantUser_Location1");
+        modelBuilder.Entity<OrderItem>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
-            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.MerchantUserModifiedByNavigation).HasConstraintName("FK_MerchantUser_User1");
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderItem).HasConstraintName("FK_OrderItem_Order");
+        });
 
-            entity.HasOne(d => d.User).WithOne(p => p.MerchantUserUser)
+        modelBuilder.Entity<OtpRequest>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.ExpiredOn).HasDefaultValueSql("(dateadd(minute,(5),getdate()))");
+
+            entity.HasOne(d => d.OtpPurpose).WithMany(p => p.OtpRequest)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MerchantUser_User2");
+                .HasConstraintName("FK_OtpRequest_LkOtpPurpose");
+        });
+
+        modelBuilder.Entity<Payment>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.PaymentRecepitDocumentLibrary).WithMany(p => p.Payment).HasConstraintName("FK_Payment_DocumentLibrary");
+
+            entity.HasOne(d => d.PaymentStatus).WithMany(p => p.Payment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Payment_LkPaymentStatus");
+
+            entity.HasOne(d => d.PrePayment).WithMany(p => p.Payment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Payment_PrePayment");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Payment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Payment_User");
+        });
+
+        modelBuilder.Entity<PaymentInstallment>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.InstallmentAmount).UseCollation("Latin1_General_CI_AS");
+
+            entity.HasOne(d => d.InstallmentType).WithMany(p => p.PaymentInstallment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PaymentInstallment_PaymentInstallment");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.PaymentInstallment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PaymentInstallment_Order1");
+
+            entity.HasOne(d => d.PaymentStatus).WithMany(p => p.PaymentInstallment).HasConstraintName("FK_PaymentInstallment_LkPaymentStatus");
+        });
+
+        modelBuilder.Entity<PrePayment>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.PaymentBrand).WithMany(p => p.PrePayment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PrePayment_LkPaymentBrandType");
+
+            entity.HasOne(d => d.PaymentRequestType).WithMany(p => p.PrePayment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PrePayment_LkPaymentRequestType");
+
+            entity.HasOne(d => d.PaymentStatus).WithMany(p => p.PrePayment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PrePayment_LkPaymentStatus");
+
+            entity.HasOne(d => d.User).WithMany(p => p.PrePayment)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PrePayment_User");
         });
 
         modelBuilder.Entity<SmsNotification>(entity =>

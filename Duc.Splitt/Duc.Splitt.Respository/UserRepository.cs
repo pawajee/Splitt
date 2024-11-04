@@ -16,7 +16,7 @@ namespace Duc.Splitt.Respository.Repository
         }
         public async Task<User?> GetUserById(Guid userId)
         {
-            var obj =await _context.User.Include(t => t.UserType).Include(t => t.MerchantUserUser).Include(t=>t.BackOfficeUserUser).Include(t => t.ConsumerUserUser).Where(t => t.Id == userId).FirstOrDefaultAsync();
+            var obj =await _context.User.Include(t => t.UserType).Include(t => t.MerchantContactUser).Include(t=>t.BackOfficeUserUser).Include(t => t.CustomerUser).Where(t => t.Id == userId).FirstOrDefaultAsync();
             return  obj;
         }
     }

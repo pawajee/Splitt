@@ -110,7 +110,7 @@ namespace Duc.Splitt.Service
                     Errors = new List<string> { $"{request.Identifier} is not available" }
                 };
             }
-            var merchantUser = await _unitOfWork.MerchantUsers.GetMerchantRequestByEmail(user.Email);
+            var merchantUser = await _unitOfWork.MerchantContacts.GetMerchantRequestByEmail(user.Email);
             if (merchantUser == null)
             {
                 return new ResponseDto<AuthTokens?>

@@ -1,7 +1,5 @@
-﻿using Duc.Splitt.Common.Enums;
-using Duc.Splitt.Core.Contracts.Repositories;
+﻿using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Data.DataAccess.Context;
-using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Respository.Repository;
 
 namespace Duc.Splitt.Repository
@@ -33,11 +31,11 @@ namespace Duc.Splitt.Repository
 
         public IUserRepository Users { get; private set; }
 
-        public IBackOfficeUserRepository BackOfficeUsers { get; private set; }      
-        public IConsumerUserRepository ConsumerUsers { get; private set; }
-        public IMerchantUserRepository MerchantUsers { get; private set; }
+        public IBackOfficeUserRepository BackOfficeUsers { get; private set; }
+        public ICustomerRepository Customers { get; private set; }
+        public IMerchantContactRepository MerchantContacts { get; private set; }
 
-        public IConsumerOtpRequestRepository ConsumerOtpRequests { get; private set; }
+        public IOtpRequestRepository OtpRequests { get; private set; }
         public UnitOfWork(SplittAppContext context)
         {
             _context = context;
@@ -63,9 +61,9 @@ namespace Duc.Splitt.Repository
             LkRoles = new LkRoleRepository(_context);
             LkMerchantAnnualSales = new LkMerchantAnnualSaleRepository(_context);
             BackOfficeUsers = new BackOfficeUserRepository(_context);
-            ConsumerOtpRequests = new ConsumerOtpRequestRepository(_context);
-            ConsumerUsers = new ConsumerUserRepository(_context);
-            MerchantUsers = new MerchantUserRepository(_context);
+            OtpRequests = new OtpRequestRepository(_context);
+            Customers = new CustomerRepository(_context);
+            MerchantContacts = new MerchantContactRepository(_context);
 
 
         }

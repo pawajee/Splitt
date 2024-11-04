@@ -25,7 +25,7 @@ public partial class MerchantHistory
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     [ForeignKey("CreatedAt")]
     [InverseProperty("MerchantHistory")]

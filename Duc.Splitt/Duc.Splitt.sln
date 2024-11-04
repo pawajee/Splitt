@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.MerchantApi", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.BackOfficeApi", "Duc.Splitt.BackOfficeApi\Duc.Splitt.BackOfficeApi.csproj", "{A345D572-F149-4764-96F7-57DAD5FF63A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.ConsumerApi", "Duc.Splitt.ConsumerApi\Duc.Splitt.ConsumerApi.csproj", "{1ABF73E9-45C0-48E7-8EF2-882B869C05F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.CustomerApi", "Duc.Splitt.CustomerApi\Duc.Splitt.CustomerApi.csproj", "{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,10 +65,10 @@ Global
 		{A345D572-F149-4764-96F7-57DAD5FF63A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A345D572-F149-4764-96F7-57DAD5FF63A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A345D572-F149-4764-96F7-57DAD5FF63A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1ABF73E9-45C0-48E7-8EF2-882B869C05F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1ABF73E9-45C0-48E7-8EF2-882B869C05F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1ABF73E9-45C0-48E7-8EF2-882B869C05F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1ABF73E9-45C0-48E7-8EF2-882B869C05F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
