@@ -36,6 +36,7 @@ namespace Duc.Splitt.Repository
         public IMerchantContactRepository MerchantContacts { get; private set; }
 
         public IOtpRequestRepository OtpRequests { get; private set; }
+        public IOrderRepository Orders { get; private set; }
         public UnitOfWork(SplittAppContext context)
         {
             _context = context;
@@ -64,7 +65,7 @@ namespace Duc.Splitt.Repository
             OtpRequests = new OtpRequestRepository(_context);
             Customers = new CustomerRepository(_context);
             MerchantContacts = new MerchantContactRepository(_context);
-
+            Orders = new OrderRepository(_context);
 
         }
         public async Task<int> CompleteAsync()

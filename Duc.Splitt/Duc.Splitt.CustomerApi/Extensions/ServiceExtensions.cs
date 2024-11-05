@@ -262,6 +262,7 @@ namespace Duc.Splitt.CustomerApi.Extensions
             builder.Services.AddTransient<ILookupService, LookupService>();
             builder.Services.AddTransient<IAuthConsumerService, AuthConsumerService>();
             builder.Services.AddTransient<IUtilitiesService, UtilitiesService>();
+            builder.Services.AddTransient<IOrderService, OrderService>();
         }
         public static void ConfigureLocalization(this WebApplicationBuilder builder)
         {

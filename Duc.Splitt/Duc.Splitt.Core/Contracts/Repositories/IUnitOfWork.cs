@@ -30,7 +30,7 @@
 
         public IOtpRequestRepository OtpRequests { get; }
 
-       
+        public IOrderRepository Orders { get; }
 
         public Task<int> CompleteAsync();
 
