@@ -1,14 +1,39 @@
-﻿using Duc.Splitt.Core.Contracts.Repositories;
+using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Respository.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Duc.Splitt.Repository
-{
+{//
     public class UnitOfWork : IUnitOfWork
     {
         protected readonly SplittAppContext _context;
 
+        //::Repository Definitions::
+        public IEmailNotificationRepository EmailNotifications { get; private set; }
+        public ICustomerRegistrationRequestRepository CustomerRegistrationRequests { get; private set; }
+        public ISmsNotificationRepository SmsNotifications { get; private set; }
+        public IPrePaymentRepository PrePayments { get; private set; }
+        public IPaymentInstallmentRepository PaymentInstallments { get; private set; }
+        public IPaymentRepository Payments { get; private set; }
+        public IOrderItemRepository OrderItems { get; private set; }
+        public IMidRequestLogRepository MidRequestLogs { get; private set; }
+        public ILkPaymentStatusRepository LkPaymentStatuses { get; private set; }
+        public ILkPaymentRequestTypeRepository LkPaymentRequestTypes { get; private set; }
+        public ILkPaymentOptionRepository LkPaymentOptions { get; private set; }
+        public ILkPaymentBrandTypeRepository LkPaymentBrandTypes { get; private set; }
+        public ILkOtpPurposeRepository LkOtpPurposes { get; private set; }
+        public ILkOrderStatusRepository LkOrderStatuses { get; private set; }
+        public ILkMidRequestTypeRepository LkMidRequestTypes { get; private set; }
+        public ILkMidRequestStatusRepository LkMidRequestStatuses { get; private set; }
+        public ILkMartialStatusRepository LkMartialStatuses { get; private set; }
+        public ILkInstallmentTypeRepository LkInstallmentTypes { get; private set; }
+        public ILkEmploymentStatusRepository LkEmploymentStatuses { get; private set; }
+        public ILkEmploymentSectorRepository LkEmploymentSectors { get; private set; }
+        public ILkEducationalLevelRepository LkEducationalLevels { get; private set; }
 
+        public ILkCustomerStatusRepository LkCustomerStatuses { get; private set; }
+        public ILkCurrencyRepository LkCurrencies { get; private set; }
         public ILkCountryRepository LkCountries { get; private set; }
         public IDocumentLibraryRepository DocumentLibrarys { get; private set; }
         public ILkDocumentConfigurationRepository LkDocumentConfigurations { get; private set; }
@@ -40,7 +65,30 @@ namespace Duc.Splitt.Repository
         public UnitOfWork(SplittAppContext context)
         {
             _context = context;
-
+            //::Declare Repository::
+            EmailNotifications = new EmailNotificationRepository(_context);
+            CustomerRegistrationRequests = new CustomerRegistrationRequestRepository(_context);
+            SmsNotifications = new SmsNotificationRepository(_context);
+            PrePayments = new PrePaymentRepository(_context);
+            PaymentInstallments = new PaymentInstallmentRepository(_context);
+            Payments = new PaymentRepository(_context);
+            OrderItems = new OrderItemRepository(_context);
+            MidRequestLogs = new MidRequestLogRepository(_context);
+            LkPaymentStatuses = new LkPaymentStatusRepository(_context);
+            LkPaymentRequestTypes = new LkPaymentRequestTypeRepository(_context);
+            LkPaymentOptions = new LkPaymentOptionRepository(_context);
+            LkPaymentBrandTypes = new LkPaymentBrandTypeRepository(_context);
+            LkOtpPurposes = new LkOtpPurposeRepository(_context);
+            LkOrderStatuses = new LkOrderStatusRepository(_context);
+            LkMidRequestTypes = new LkMidRequestTypeRepository(_context);
+            LkMidRequestStatuses = new LkMidRequestStatusRepository(_context);
+            LkMartialStatuses = new LkMartialStatusRepository(_context);
+            LkInstallmentTypes = new LkInstallmentTypeRepository(_context);
+            LkEmploymentStatuses = new LkEmploymentStatusRepository(_context);
+            LkEmploymentSectors = new LkEmploymentSectorRepository(_context);
+            LkEducationalLevels = new LkEducationalLevelRepository(_context);
+            LkCustomerStatuses = new LkCustomerStatusRepository(_context);
+            LkCurrencies = new LkCurrencyRepository(_context);
             LkCountries = new LkCountryRepository(_context);
             DocumentLibrarys = new DocumentLibraryRepository(_context);
             LkDocumentConfigurations = new LkDocumentConfigurationRepository(_context);

@@ -9,7 +9,7 @@ namespace Duc.Splitt.Core.Contracts.Services
     public interface IOrderService
     {
 
-        Task<ResponseDto<CreateMerchantResponseDto>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto );
+        Task<ResponseDto<CreateMerchantResponseDto>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto merchant);
 
 
     }

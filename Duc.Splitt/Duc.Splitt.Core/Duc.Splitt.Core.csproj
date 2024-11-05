@@ -13,6 +13,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Contracts\Repositories\ICustomerRegistrationRequestRepository.cs" />
+    <Compile Include="Contracts\Repositories\IEmailNotificationRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkCurrencyRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkCustomerStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkEducationalLevelRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkEmploymentSectorRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkEmploymentStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkInstallmentTypeRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkMartialStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkMidRequestStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkMidRequestTypeRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkOrderStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkOtpPurposeRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkPaymentBrandTypeRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkPaymentOptionRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkPaymentRequestTypeRepository.cs" />
+    <Compile Include="Contracts\Repositories\ILkPaymentStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\IMidRequestLogRepository.cs" />
+    <Compile Include="Contracts\Repositories\IOrderItemRepository.cs" />
     <Compile Include="Contracts\Repositories\IOrderRepository.cs" />
     <Compile Include="Contracts\Repositories\ILocalizationService.cs" />
     <Compile Include="Contracts\Repositories\ILkCountryRepository.cs" />
@@ -32,6 +51,10 @@
     <Compile Include="Contracts\Repositories\IMerchantHistoryRepository.cs" />
     <Compile Include="Contracts\Repositories\IMerchantRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkMerchantStatusRepository.cs" />
+    <Compile Include="Contracts\Repositories\IPaymentInstallmentRepository.cs" />
+    <Compile Include="Contracts\Repositories\IPaymentRepository.cs" />
+    <Compile Include="Contracts\Repositories\IPrePaymentRepository.cs" />
+    <Compile Include="Contracts\Repositories\ISmsNotificationRepository.cs" />
     <Compile Include="Contracts\Repositories\IUserRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkRoleRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkNationalityRepository.cs" />

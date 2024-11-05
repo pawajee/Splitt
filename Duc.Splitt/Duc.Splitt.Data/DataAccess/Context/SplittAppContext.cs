@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Duc.Splitt.Data.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +25,7 @@ public partial class SplittAppContext : DbContext
     public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
 
     public virtual DbSet<BackOfficeUser> BackOfficeUser { get; set; }
+    //::DBSet Definitions::
 
     public virtual DbSet<Customer> Customer { get; set; }
 
@@ -89,6 +90,8 @@ public partial class SplittAppContext : DbContext
     public virtual DbSet<LkNotificationTemplate> LkNotificationTemplate { get; set; }
 
     public virtual DbSet<LkNotificationType> LkNotificationType { get; set; }
+
+    public virtual DbSet<LkOrderStatus> LkOrderStatus { get; set; }
 
     public virtual DbSet<LkOtpPurpose> LkOtpPurpose { get; set; }
 
@@ -473,6 +476,14 @@ public partial class SplittAppContext : DbContext
         modelBuilder.Entity<LkNotificationType>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<LkOrderStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Code).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleArabic).UseCollation("Latin1_General_CI_AS");
+            entity.Property(e => e.TitleEnglish).UseCollation("Latin1_General_CI_AS");
         });
 
         modelBuilder.Entity<LkOtpPurpose>(entity =>
