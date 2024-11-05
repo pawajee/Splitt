@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Data;
 using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
+using static Duc.Splitt.Common.Dtos.Requests.OrderRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
+using static Duc.Splitt.Common.Dtos.Responses.OrderResponseDto;
 
 namespace Duc.Splitt.Service
 {
@@ -26,18 +28,35 @@ namespace Duc.Splitt.Service
             _dapperDBConnection = dapperDBConnection;
         }
 
-        public async Task<ResponseDto<CreateMerchantResponseDto?>> PostMerchant(RequestHeader requestHeader, CreaterMerchantRequestDto requestDto)
+        public async Task<ResponseDto<CreaterOrderResponseDto?>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto requestDto)
         {
 
-            ResponseDto<CreateMerchantResponseDto?> response = new ResponseDto<CreateMerchantResponseDto?>
+            Order order = new Order { };
+            _unitOfWork.Orders.AddAsync(order);
+            await _unitOfWork.CompleteAsync();
+            ResponseDto<CreaterOrderResponseDto?> response = new ResponseDto<CreaterOrderResponseDto?>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-          
-            response.Data = new CreateMerchantResponseDto {  };
+
+            response.Data = null;
             response.Code = ResponseStatusCode.Success;
             return response;
         }
+        public async Task<ResponseDto<GetOrderDetailstResponseDto?>> GetOrderById(RequestHeader requestHeader, GetOrderRequestDetailsDto requestDto)
+        {
 
+            Order order = new Order { };
+            _unitOfWork.Orders.AddAsync(order);
+            await _unitOfWork.CompleteAsync();
+            ResponseDto<GetOrderDetailstResponseDto?> response = new ResponseDto<GetOrderDetailstResponseDto?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+
+            response.Data = null;
+            response.Code = ResponseStatusCode.Success;
+            return response;
+        }
     }
 }
