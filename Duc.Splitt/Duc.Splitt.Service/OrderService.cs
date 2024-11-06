@@ -28,7 +28,7 @@ namespace Duc.Splitt.Service
             _dapperDBConnection = dapperDBConnection;
         }
 
-        public async Task<ResponseDto<CreateOrderResponseDto?>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto requestDto)
+        public async Task<ResponseDto<PostOrderResponseDto?>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto requestDto)
         {
             var webSite = "testMerchant.com";//TODO:
             var NoOfInstallments = 4;
