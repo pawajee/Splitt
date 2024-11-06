@@ -17,9 +17,6 @@ public partial class MidRequestLog
     [StringLength(50)]
     public string DsprefId { get; set; } = null!;
 
-    [StringLength(50)]
-    public string? RequestIdentifier { get; set; }
-
     public int MidRequestStatusId { get; set; }
 
     [Column("MIDPayloadRequest")]

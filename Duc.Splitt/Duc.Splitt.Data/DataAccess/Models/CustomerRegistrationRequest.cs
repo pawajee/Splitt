@@ -24,8 +24,6 @@ public partial class CustomerRegistrationRequest
     [Column("PACINumberofAttempts")]
     public int? PacinumberofAttempts { get; set; }
 
-    public int MaxRetryLimit { get; set; }
-
     [Column("PACIVerifiedOn", TypeName = "datetime")]
     public DateTime? PaciverifiedOn { get; set; }
 
@@ -38,14 +36,14 @@ public partial class CustomerRegistrationRequest
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     public Guid? ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
 
     [InverseProperty("CustomerRegistrationRequest")]
     public virtual ICollection<Customer> Customer { get; set; } = new List<Customer>();

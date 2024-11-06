@@ -13,15 +13,14 @@ public partial class PaymentInstallment
 
     public Guid OrderId { get; set; }
 
-    [StringLength(8)]
-    [Unicode(false)]
-    public string InstallmentAmount { get; set; } = null!;
+    [Column(TypeName = "decimal(10, 3)")]
+    public decimal InstallmentAmount { get; set; }
 
-    [StringLength(12)]
-    [Unicode(false)]
-    public string DueAmount { get; set; } = null!;
+    [Column(TypeName = "decimal(10, 3)")]
+    public decimal DueAmount { get; set; }
 
-    public int? PaymentDate { get; set; }
+    [Column(TypeName = "datetime")]
+    public DateTime? DueDate { get; set; }
 
     [Column("ERPReferenceNumber")]
     [StringLength(15)]
