@@ -54,33 +54,33 @@ namespace Duc.Splitt.CustomerApi.Controllers
             }
         }
 
-        //[HttpPost()]
-        //public async Task<ResponseDto<GetOrderDetailstResponseDto?>> GetOrderById(GetOrderRequestDetailsDto requestDto)
-        //{
-        //    ResponseDto<GetOrderDetailstResponseDto?> response = new ResponseDto<GetOrderDetailstResponseDto?>
-        //    {
-        //        Code = ResponseStatusCode.NoDataFound
-        //    };
+        [HttpPost()]
+        public async Task<ResponseDto<GetOrderResponseDto?>> GetOrderById(GetOrderRequestDto requestDto)
+        {
+            ResponseDto<GetOrderResponseDto?> response = new ResponseDto<GetOrderResponseDto?>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
 
-        //    try
-        //    {
-        //        var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
-        //        if (validateRequest == null)
-        //        {
-        //            response.Code = ResponseStatusCode.InvalidToken;
-        //            return response;
-        //        }
-        //        var obj = await _orderService.GetOrderById(validateRequest, requestDto);
-        //        return obj;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex);
-        //        response.Code = ResponseStatusCode.ServerError;
-        //        response.Errors = _logger.ConvertExceptionToStringList(ex);
-        //        return response;
-        //    }
-        //}
+            try
+            {
+                var validateRequest = await _utilsService.ValidateRequest(this.Request, null);
+                if (validateRequest == null)
+                {
+                    response.Code = ResponseStatusCode.InvalidToken;
+                    return response;
+                }
+                var obj = await _orderService.GetOrderById(validateRequest, requestDto);
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+                response.Code = ResponseStatusCode.ServerError;
+                response.Errors = _logger.ConvertExceptionToStringList(ex);
+                return response;
+            }
+        }
 
     }
 }

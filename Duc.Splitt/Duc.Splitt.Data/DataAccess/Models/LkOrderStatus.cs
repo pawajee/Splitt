@@ -23,4 +23,7 @@ public partial class LkOrderStatus
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("OrderStatus")]
+    public virtual ICollection<Order> Order { get; set; } = new List<Order>();
 }

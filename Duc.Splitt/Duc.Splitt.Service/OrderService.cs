@@ -15,11 +15,14 @@ using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Requests.OrderRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.OrderResponseDto;
 using Duc.Splitt.Data.DataAccess.Models;
+using Duc.Splitt.Common.Extensions;
+using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 
 namespace Duc.Splitt.Service
 {
     public class OrderService : IOrderService
     {
+        
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDapperDBConnection _dapperDBConnection;
         public OrderService(IUnitOfWork unitOfWork, IDapperDBConnection dapperDBConnection)
@@ -55,7 +58,7 @@ namespace Duc.Splitt.Service
             ordReq.CheckoutId = requestDto.CheckoutId;
             ordReq.ExternalRefId = requestDto.ExternalRefId;
             ordReq.OrderNumber = requestDto.OrderNumber;
-            ordReq.OrderStatusId = "1";
+            ordReq.OrderStatusId = 1;
             ordReq.ExpiredAt = DateTime.Now.AddMinutes(30);
             ordReq.CheckoutUrl = $@"https://{webSite}/?OrderId=::OrderId::&CustomerId={requestDto.CustomerId}";
             ordReq.PaymentOptionId = 1;
@@ -115,7 +118,7 @@ namespace Duc.Splitt.Service
                     InstallmentAmount = instAmount,
                     DueDate = dueDate,
                     InstallmentTypeId = instType,
-
+                    PaymentStatusId=1,
                     CreatedBy = Utilities.AnonymousUserID,
                     CreatedOn = DateTime.Now,
                 };
@@ -133,9 +136,76 @@ namespace Duc.Splitt.Service
             return response;
         }
 
-        public async Task<ResponseDto<GetOrderResponseDto?>> GetOrderByOrderId(RequestHeader requestHeader, GetOrderRequestDto requestDto)
+        public async Task<ResponseDto<GetOrderResponseDto?>> GetOrderById(RequestHeader requestHeader, GetOrderRequestDto requestDto)
         {
-            return null;
+
+            ResponseDto<GetOrderResponseDto> response = new ResponseDto<GetOrderResponseDto>
+            {
+                Code = ResponseStatusCode.NoDataFound
+            };
+            var order = await _unitOfWork.Orders.GetOrderRequestByOrderId(requestDto.OrderId);
+
+            if (order == null)
+            {
+                return response;
+            }
+            else
+            {
+                var orderDto = new GetOrderResponseDto
+                {
+                    Id = order.Id,
+                    CustomerId = order.CustomerId,
+                    MerchantId = order.MerchantId,
+                    TotalAmount = order.TotalAmount,
+                    CurrencyId = order.Currency.Id,
+                    CurrencyName = order.Currency.Lang(requestHeader.IsArabic), // Replace this with actual Currency Name lookup if needed
+                    CheckoutId = order.CheckoutId,
+                    ExternalRefId = order.ExternalRefId,
+                    OrderNumber = order.OrderNumber,
+                    OrderStatusId = order.OrderStatus.Id,
+                    OrderStatusName = order.OrderStatus.Lang(), // Replace this with actual logic for OrderStatus
+                    ExpiredAt = order.ExpiredAt,
+                    CheckoutUrl = order.CheckoutUrl.Replace("::OrderId::",order.Id.ToString()),
+                    PaymentOptionId = order.PaymentOptionId,
+                    MerchantUrlSuccess = order.MerchantUrlSuccess,
+                    MerchantUrlFailure = order.MerchantUrlFailure,
+                    MerchantUrlCancel = order.MerchantUrlCancel,
+                    OrderItems = order.OrderItem.Select(oi => new OrderItemResponseDto
+                    {
+                        Id = oi.Id,
+                        OrderId = oi.OrderId,
+                        ItemName = oi.ItemName,
+                        ItemDescription = oi.ItemDescription,
+                        Quantity = oi.Quantity,
+                        Amount = oi.Amount,
+                        ExternalRefId = oi.ExternalRefId,
+                        ItemImageUrl = oi.ItemImageUrl,
+                        ProductUrl = oi.ProductUrl,
+                        BrandName = oi.BrandName,
+                        Sku = oi.Sku,
+                        CreatedBy = oi.CreatedBy,
+                        CreatedOn = oi.CreatedOn
+                    }).ToList(),
+                    PaymentInstallment = order.PaymentInstallment.Select(pi => new GetOrderPaymentInstallmentDto
+                    {
+                        Id = pi.Id,
+                        OrderId = pi.OrderId,
+                        InstallmentAmount = pi.InstallmentAmount,
+                        DueAmount = pi.DueAmount,
+                        DueDate = pi.DueDate,
+                        InstallmentTypeId = pi.InstallmentTypeId,
+                        InstallmentTypeName = pi.InstallmentType.Lang(),
+                        PaymentStatusId = pi.PaymentStatusId,
+                        PaymentStatusName = pi.PaymentStatus.Lang(), // Handle nulls
+                        CreatedBy = pi.CreatedBy,
+                        CreatedOn = pi.CreatedOn
+                    }).ToList()
+                };
+                response.Data = orderDto;
+                response.Code = ResponseStatusCode.Success;
+                return response;
+                //return orderDto;
+            }
         }
 
     }

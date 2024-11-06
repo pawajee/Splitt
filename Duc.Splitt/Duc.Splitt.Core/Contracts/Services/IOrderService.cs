@@ -10,7 +10,7 @@ namespace Duc.Splitt.Core.Contracts.Services
     {
 
         Task<ResponseDto<CreateOrderResponseDto>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto RequestOrder);
-
+        Task<ResponseDto<GetOrderResponseDto>> GetOrderById(RequestHeader requestHeader, GetOrderRequestDto RequestOrder);
 
     }
 }

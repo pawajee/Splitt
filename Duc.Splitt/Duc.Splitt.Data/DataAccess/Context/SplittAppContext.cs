@@ -676,15 +676,16 @@ public partial class SplittAppContext : DbContext
         modelBuilder.Entity<Order>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.OrderStatusId).IsFixedLength();
+            entity.Property(e => e.CurrencyId).HasDefaultValue(1);
+            entity.Property(e => e.OrderStatusId).HasDefaultValue(1);
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Order)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Customer");
+            entity.HasOne(d => d.Currency).WithMany(p => p.Order).HasConstraintName("FK_Order_Customer");
 
             entity.HasOne(d => d.Merchant).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Merchant");
+
+            entity.HasOne(d => d.OrderStatus).WithMany(p => p.Order).HasConstraintName("FK_Order_OLkOrderStatus");
 
             entity.HasOne(d => d.PaymentOption).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)

@@ -184,9 +184,6 @@ public partial class Customer
     [InverseProperty("Customer")]
     public virtual LkNationality? Nationality { get; set; }
 
-    [InverseProperty("Customer")]
-    public virtual ICollection<Order> Order { get; set; } = new List<Order>();
-
     [ForeignKey("UserId")]
     [InverseProperty("CustomerUser")]
     public virtual User User { get; set; } = null!;

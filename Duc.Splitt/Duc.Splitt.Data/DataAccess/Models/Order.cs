@@ -23,7 +23,7 @@ public partial class Order
     [Unicode(false)]
     public string? ErpreferenceNumber { get; set; }
 
-    public int CurrencyId { get; set; }
+    public int? CurrencyId { get; set; }
 
     [StringLength(100)]
     [Unicode(false)]
@@ -37,8 +37,7 @@ public partial class Order
     [Unicode(false)]
     public string OrderNumber { get; set; } = null!;
 
-    [StringLength(10)]
-    public string OrderStatusId { get; set; } = null!;
+    public int? OrderStatusId { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime ExpiredAt { get; set; }
@@ -76,9 +75,9 @@ public partial class Order
 
     public byte? ModifiedAt { get; set; }
 
-    [ForeignKey("CustomerId")]
+    [ForeignKey("CurrencyId")]
     [InverseProperty("Order")]
-    public virtual Customer Customer { get; set; } = null!;
+    public virtual LkCurrency? Currency { get; set; }
 
     [ForeignKey("MerchantId")]
     [InverseProperty("Order")]
@@ -86,6 +85,10 @@ public partial class Order
 
     [InverseProperty("Order")]
     public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
+
+    [ForeignKey("OrderStatusId")]
+    [InverseProperty("Order")]
+    public virtual LkOrderStatus? OrderStatus { get; set; }
 
     [InverseProperty("Order")]
     public virtual ICollection<PaymentInstallment> PaymentInstallment { get; set; } = new List<PaymentInstallment>();

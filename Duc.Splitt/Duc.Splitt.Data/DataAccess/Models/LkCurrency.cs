@@ -25,4 +25,7 @@ public partial class LkCurrency
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("Currency")]
+    public virtual ICollection<Order> Order { get; set; } = new List<Order>();
 }

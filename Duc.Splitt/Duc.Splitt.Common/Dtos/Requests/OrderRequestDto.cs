@@ -38,29 +38,29 @@ namespace Duc.Splitt.Common.Dtos.Requests
             public required Guid OrderId { get; set; }
         }
 
-        public class GetOrderPaymentInstallmentDto
-        {
-            public Guid Id { get; set; }
+        //public class GetOrderPaymentInstallmentDto
+        //{
+        //    public Guid Id { get; set; }
 
-            public Guid OrderId { get; set; }
+        //    public Guid OrderId { get; set; }
 
-            public decimal InstallmentAmount { get; set; }
+        //    public decimal InstallmentAmount { get; set; }
 
-            public decimal DueAmount { get; set; }
+        //    public decimal DueAmount { get; set; }
 
-            public DateTime? DueDate { get; set; }
+        //    public DateTime? DueDate { get; set; }
 
-            public string? ErpreferenceNumber { get; set; }
+        //    public string? ErpreferenceNumber { get; set; }
 
-            public int InstallmentTypeId { get; set; }
+        //    public int InstallmentTypeId { get; set; }
 
-            public int? PaymentStatusId { get; set; }
+        //    public int? PaymentStatusId { get; set; }
 
-            public Guid CreatedBy { get; set; }
+        //    public Guid CreatedBy { get; set; }
 
-            public DateTime CreatedOn { get; set; }
+        //    public DateTime CreatedOn { get; set; }
 
-        }
+        //}
 
     }
 }

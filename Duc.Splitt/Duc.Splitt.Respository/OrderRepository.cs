@@ -15,16 +15,20 @@ namespace Duc.Splitt.Respository.Repository
         {
             _context = context;
         }
-        public async Task<Order?> GetOrderRequest(Guid requestId)
+        public async Task<Order?> GetOrderRequestByOrderId(Guid orderId)
         {
-          //  var obj = _context.Order.
-            //    Include(t => t.OrderItem).
-            //    Include(t => t.PaymentInstallment).
-            //    ThenInclude(pi => pi.InstallmentType).
-            //    ThenInclude(pi => pi.PaymentStatus)
-            //    Where(t => t.Id == requestId);
-            //return await obj.FirstOrDefaultAsync();
-            return null;
+            var obj = _context.Order.
+                Include(t => t.OrderItem).
+                Include(t => t.OrderStatus).
+                Include(t => t.Currency).
+                Include(t => t.PaymentInstallment).
+                ThenInclude(pi => pi.InstallmentType).
+                Include(t => t.PaymentInstallment).
+                ThenInclude(pi => pi.PaymentStatus).
+
+                Where(t => t.Id == orderId);
+            return await obj.FirstOrDefaultAsync();
+          //  return null;
 
         }
     }
