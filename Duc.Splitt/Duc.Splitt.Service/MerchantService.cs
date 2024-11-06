@@ -10,7 +10,6 @@ using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Data;
-using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 

@@ -17,8 +17,18 @@ namespace Duc.Splitt.Respository.Repository
 
         public async Task<OtpRequest?> GetLatestOtpRequestByMobileNo(string mobileNo)
         {
-            var obj = await _context.OtpRequest.Where(t => t.MobileNo == mobileNo).OrderByDescending(t => t.CreatedOn).FirstOrDefaultAsync();
-            return obj;
+            var fiveMinutesAgo = DateTime.UtcNow.AddMinutes(-10);//ToDo
+            var otpRequests = await _context.OtpRequest
+    .Where(t => t.MobileNo == mobileNo && t.CreatedOn >= fiveMinutesAgo)
+    .OrderByDescending(t => t.CreatedOn).FirstOrDefaultAsync();
+            return otpRequests;
+        }
+
+        public async Task<OtpRequest?> GetOtpRequestById(Guid Id)
+        {
+            var fiveMinutesAgo = DateTime.UtcNow.AddMinutes(-10);//ToDo
+            var otpRequests = await _context.OtpRequest.FirstAsync(t => t.Id == Id);
+            return otpRequests;
         }
     }
 }

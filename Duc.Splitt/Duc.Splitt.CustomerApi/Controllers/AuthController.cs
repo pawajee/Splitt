@@ -12,11 +12,11 @@ namespace Duc.Splitt.CustomerApi.Controllers
 
     public class AuthController : BaseAnonymous
     {
-        private readonly IAuthConsumerService _authConsumerService;
+        private readonly IAuthCustomerService _authConsumerService;
         private readonly ILoggerService _logger;
         private IUtilsService _utilsService;
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        public AuthController(ILookupService lookupService, ILoggerService logger, IUtilsService utilsService, IAuthConsumerService authConsumerService)
+        public AuthController(ILookupService lookupService, ILoggerService logger, IUtilsService utilsService, IAuthCustomerService authConsumerService)
         {
 
             _logger = logger;
@@ -25,7 +25,7 @@ namespace Duc.Splitt.CustomerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<bool?>> RequestConsumerUserOTP(AuthConsumerUserDto.RegisterDto requestDto)
+        public async Task<ResponseDto<bool?>> RequestConsumerUserOTP(AuthConsumerUserRequestDto.RegisterDto requestDto)
         {
             ResponseDto<bool?> response = new ResponseDto<bool?>
             {
@@ -40,7 +40,7 @@ namespace Duc.Splitt.CustomerApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                var result = await _authConsumerService.RequestConsumerUserOTP(validateRequest, requestDto);
+                var result = await _authConsumerService.RequestOTP(validateRequest, requestDto);
                 return result;
             }
             catch (Exception ex)
@@ -54,9 +54,9 @@ namespace Duc.Splitt.CustomerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<AuthTokens?>> VerifyConsumerUserOTP(AuthConsumerUserDto.VerifyOtpDto requestDto)
+        public async Task<ResponseDto<VerifyOtpResponse?>> VerifyConsumerUserOTP(AuthConsumerUserRequestDto.VerifyOtpDto requestDto)
         {
-            ResponseDto<AuthTokens?> response = new ResponseDto<AuthTokens?>
+            ResponseDto<VerifyOtpResponse?> response = new ResponseDto<VerifyOtpResponse?>
             {
                 Code = ResponseStatusCode.NoDataFound
             };
@@ -69,7 +69,7 @@ namespace Duc.Splitt.CustomerApi.Controllers
                     response.Code = ResponseStatusCode.InvalidToken;
                     return response;
                 }
-                var obj = await _authConsumerService.VerifyConsumerUserOTP(validateRequest, requestDto);
+                var obj = await _authConsumerService.VerifyOTP(validateRequest, requestDto);
                 return obj;
             }
             catch (Exception ex)

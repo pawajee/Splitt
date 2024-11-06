@@ -1,19 +1,10 @@
-﻿using Dapper;
-using Duc.Splitt.Common.Dtos.Responses;
+﻿using Duc.Splitt.Common.Dtos.Responses;
 using Duc.Splitt.Common.Enums;
-using Duc.Splitt.Common.Helpers;
 using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
-using Duc.Splitt.Core.Helper;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Models;
-using Duc.Splitt.Identity;
-using Microsoft.AspNetCore.Identity;
-using System.Data;
-using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
-using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Requests.OrderRequestDto;
-using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 using static Duc.Splitt.Common.Dtos.Responses.OrderResponseDto;
 
 namespace Duc.Splitt.Service

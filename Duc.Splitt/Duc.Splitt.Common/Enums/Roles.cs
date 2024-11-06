@@ -1,6 +1,6 @@
 ﻿namespace Duc.Splitt.Common.Enums
 {
-    public enum UserTypes
+    public enum Roles
     {
 
         Anonymous = 1,

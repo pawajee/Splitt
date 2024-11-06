@@ -21,7 +21,7 @@ public partial class PaymentInstallment
     [Unicode(false)]
     public string DueAmount { get; set; } = null!;
 
-    public int? PaymentDate { get; set; }
+    public int? DueDate { get; set; }
 
     [Column("ERPReferenceNumber")]
     [StringLength(15)]

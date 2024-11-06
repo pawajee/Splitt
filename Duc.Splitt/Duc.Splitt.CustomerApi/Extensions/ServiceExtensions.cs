@@ -1,8 +1,8 @@
 ﻿using Duc.Splitt.Common.Helpers;
-using Duc.Splitt.CustomerApi.ActionFilters;
-using Duc.Splitt.CustomerApi.Helper;
 using Duc.Splitt.Core.Contracts.Repositories;
 using Duc.Splitt.Core.Contracts.Services;
+using Duc.Splitt.CustomerApi.ActionFilters;
+using Duc.Splitt.CustomerApi.Helper;
 using Duc.Splitt.Data.Dapper;
 using Duc.Splitt.Data.DataAccess.Context;
 using Duc.Splitt.Identity;
@@ -260,9 +260,10 @@ namespace Duc.Splitt.CustomerApi.Extensions
             builder.Services.AddTransient<ILocalizationService, LocalizationService>();
             builder.Services.AddTransient<IUtilsService, UtilsService>();
             builder.Services.AddTransient<ILookupService, LookupService>();
-            builder.Services.AddTransient<IAuthConsumerService, AuthConsumerService>();
+            builder.Services.AddTransient<IAuthCustomerService, AuthCustomerService>();
             builder.Services.AddTransient<IUtilitiesService, UtilitiesService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
+            builder.Services.AddTransient<IMIDServiceAuthenticationService, MIDServiceAuthenticationService>();
         }
         public static void ConfigureLocalization(this WebApplicationBuilder builder)
         {

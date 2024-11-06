@@ -151,7 +151,7 @@ namespace Duc.Splitt.Service
             var userMerchant = new User
             {
                 LoginId = user.Email,
-                UserTypeId = (int)UserTypes.MerchantOwner,
+                UserTypeId = (int)Roles.MerchantOwner,
                 IsActive = true,
                 CreatedAt = (byte)requestHeader.LocationId,
                 CreatedOn = DateTime.Now,

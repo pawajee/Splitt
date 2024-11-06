@@ -294,7 +294,7 @@ namespace Duc.Splitt.MerchantApi.Extensions
             builder.Services.AddTransient<ILookupService, LookupService>();
             builder.Services.AddTransient<IMerchantService, MerchantService>();
             builder.Services.AddTransient<IAuthMerchantService, AuthMerchantService>();
-            builder.Services.AddTransient<IAuthConsumerService, AuthConsumerService>();
+            builder.Services.AddTransient<IAuthCustomerService, AuthCustomerService>();
             builder.Services.AddTransient<IUtilitiesService, UtilitiesService>();
         }
         public static void ConfigureLocalization(this WebApplicationBuilder builder)

@@ -2,7 +2,7 @@
 
 namespace Duc.Splitt.Common.Dtos.Requests
 {
-    public class AuthConsumerUserDto
+    public class AuthConsumerUserRequestDto
     {
         public class RegisterDto
         {
@@ -10,6 +10,17 @@ namespace Duc.Splitt.Common.Dtos.Requests
             [Required(ErrorMessage = "MobileNo is required")]
             public string MobileNo { get; set; } = null!;
 
+        }
+
+        public class CustomerRegistrationRequestDto
+        {
+            public string CivilId { get; set; } = null!;
+            public Guid OtpRequestId { get; set; }
+        }
+        public class CheckMIdRequestStatusDto
+        {
+            public Guid CustomerRegistrationRequestId { get; set; }
+            public int? CustomerRegistrationRequestStatusId { get; set; }
         }
         public class VerifyOtpDto
         {

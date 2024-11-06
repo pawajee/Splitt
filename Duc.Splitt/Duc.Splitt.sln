@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.BackOfficeApi", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.CustomerApi", "Duc.Splitt.CustomerApi\Duc.Splitt.CustomerApi.csproj", "{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.MIDIntegrationService", "Duc.Splitt.MIDIntegrationService\Duc.Splitt.MIDIntegrationService.csproj", "{8D1991C2-8F5B-48F8-B827-3E9EC0D868AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.MIDCallbackAPI", "Duc.Splitt.MIDCallbackAPI\Duc.Splitt.MIDCallbackAPI.csproj", "{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F5DD92F-BFA4-4D84-90F7-7368BADF19CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D1991C2-8F5B-48F8-B827-3E9EC0D868AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D1991C2-8F5B-48F8-B827-3E9EC0D868AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D1991C2-8F5B-48F8-B827-3E9EC0D868AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D1991C2-8F5B-48F8-B827-3E9EC0D868AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Duc.Splitt.Data.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,6 @@ public partial class SplittAppContext : DbContext
     public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
 
     public virtual DbSet<BackOfficeUser> BackOfficeUser { get; set; }
-    //::DBSet Definitions::
 
     public virtual DbSet<Customer> Customer { get; set; }
 
