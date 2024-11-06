@@ -13,7 +13,7 @@ using static Duc.Splitt.Common.Dtos.Responses.MerchantDto;
 namespace Duc.Splitt.MerchantApi.Controllers
 {
 
-    public class MerchantController : BaseAuth
+    public class MerchantController : BaseAnonymous
     {
         private readonly IMerchantService _merchantService;
         private readonly ILoggerService _logger;
