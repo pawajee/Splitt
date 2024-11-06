@@ -10,6 +10,12 @@ namespace Duc.Splitt.Common.Dtos.Responses
     {
         public class CreateOrderResponseDto
         {
+
+            public string OrderId { get; set; } = null!;
+            public string CustomerId { get; set; } = null!;
+        }
+        public class GetOrderResponseDto
+        {
             public Guid Id { get; set; }
             public Guid CustomerId { get; set; }
             public Guid MerchantId { get; set; }

@@ -13,7 +13,7 @@ using System.Data;
 using static Duc.Splitt.Common.Dtos.Requests.AuthMerchantUserDto;
 using static Duc.Splitt.Common.Dtos.Requests.MerchantRequestDto;
 using static Duc.Splitt.Common.Dtos.Requests.OrderRequestDto;
-using static Duc.Splitt.Common.Dtos.Responses.OrderDto;
+using static Duc.Splitt.Common.Dtos.Responses.OrderResponseDto;
 using Duc.Splitt.Data.DataAccess.Models;
 
 namespace Duc.Splitt.Service
@@ -28,7 +28,7 @@ namespace Duc.Splitt.Service
             _dapperDBConnection = dapperDBConnection;
         }
 
-        public async Task<ResponseDto<PostOrderResponseDto?>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto requestDto)
+        public async Task<ResponseDto<CreateOrderResponseDto?>> PostOrder(RequestHeader requestHeader, CreateOrderRequestDto requestDto)
         {
             var webSite = "testMerchant.com";//TODO:
             var NoOfInstallments = 4;
@@ -67,7 +67,8 @@ namespace Duc.Splitt.Service
             ordReq.CreatedOn = DateTime.Now;
             ordReq.CreatedBy = Utilities.AnonymousUserID;
 
-            foreach (var item in requestDto.OrderItems) {
+            foreach (var item in requestDto.OrderItems)
+            {
                 // var ordItem = new OrderItem;
                 //ordItem.ItemName = item.ItemName;
                 //ordItem.ItemDescription = item.ItemDescription;
@@ -85,7 +86,7 @@ namespace Duc.Splitt.Service
                     CreatedBy = Utilities.AnonymousUserID,
                     CreatedOn = DateTime.Now,
                 };
-                    ordReq.OrderItem.Add(ordItem);
+                ordReq.OrderItem.Add(ordItem);
 
                 //ordReq.MerchantStatusId = (int)MerchantRequestStatuses.InProgress;
                 // ordReq.RequestNo = GenerateRequestNumber();
@@ -95,7 +96,7 @@ namespace Duc.Splitt.Service
             }
             var totalAmount = ordReq.TotalAmount;
             var extraAmount = totalAmount % NoOfInstallments;
-              var  devAmount = totalAmount - extraAmount;
+            var devAmount = totalAmount - extraAmount;
             var InstallmentAmount = devAmount / NoOfInstallments;
 
             for (var iLoop = 1; iLoop < (NoOfInstallments + 1); iLoop++)
@@ -103,7 +104,7 @@ namespace Duc.Splitt.Service
                 var instAmount = InstallmentAmount;
                 var dueDate = DateTime.Now.AddMonths(1).AddDays(-1);
                 int instType = 2;
-                    if (iLoop == 1)
+                if (iLoop == 1)
                 {
                     instAmount += extraAmount;
                     instType = 1;
@@ -118,16 +119,24 @@ namespace Duc.Splitt.Service
                     CreatedBy = Utilities.AnonymousUserID,
                     CreatedOn = DateTime.Now,
                 };
-                    ordReq.PaymentInstallment.Add(installment);
+                ordReq.PaymentInstallment.Add(installment);
             }
 
             _unitOfWork.Orders.AddAsync(ordReq);
             await _unitOfWork.CompleteAsync();
-            //response.Data = new CreateMerchantResponseDto { RequestNo = merchantRequest.RequestNo };
+            response.Data = new CreateOrderResponseDto
+            {
+                OrderId = ordReq.Id,
+                CustomerId = ordReq.CustomerId,
+            };
             response.Code = ResponseStatusCode.Success;
             return response;
         }
+
+        public async Task<ResponseDto<GetOrderResponseDto?>> GetOrderByOrderId(RequestHeader requestHeader, GetOrderRequestDto requestDto)
+        {
+            return null;
+        }
+
     }
-
-
 }
