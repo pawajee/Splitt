@@ -25,7 +25,7 @@ namespace Duc.Splitt.CustomerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<bool?>> RequestConsumerUserOTP(AuthConsumerUserRequestDto.RegisterDto requestDto)
+        public async Task<ResponseDto<bool?>> RequestOTP(AuthConsumerUserRequestDto.RegisterDto requestDto)
         {
             ResponseDto<bool?> response = new ResponseDto<bool?>
             {
@@ -54,7 +54,7 @@ namespace Duc.Splitt.CustomerApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDto<VerifyOtpResponse?>> VerifyConsumerUserOTP(AuthConsumerUserRequestDto.VerifyOtpDto requestDto)
+        public async Task<ResponseDto<VerifyOtpResponse?>> VerifyOTP(AuthConsumerUserRequestDto.VerifyOtpDto requestDto)
         {
             ResponseDto<VerifyOtpResponse?> response = new ResponseDto<VerifyOtpResponse?>
             {

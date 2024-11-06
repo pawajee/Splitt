@@ -85,12 +85,13 @@ namespace Duc.Splitt.Service
                 foreach (var x in requestDto.Documents)
                 {
                     var fileGUid = Guid.NewGuid();
+                    var fileName = FileNameGenerator.GenerateFileName(x.MineType, fileGUid);
                     var directoryPath = documentCategories.BaseUrl;
                     if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
                     {
                         Directory.CreateDirectory(directoryPath);
                     }
-                    File.WriteAllBytes(Path.Combine(directoryPath, FileNameGenerator.GenerateFileName(x.MineType, fileGUid)), x.AttachmentByte);
+                    File.WriteAllBytes(Path.Combine(directoryPath, fileName), x.AttachmentByte);
 
                     merchantRequest.MerchantAttachment.Add(
                         new MerchantAttachment
@@ -104,7 +105,7 @@ namespace Duc.Splitt.Service
                                 CreatedOn = DateTime.Now,
                                 CreatedBy = Utilities.AnonymousUserID,
                                 MineType = x.MineType,
-                                FileName = x.FileName,
+                                FileName = fileName,
                             },
                             DocumentConfigurationId = x.DocumentConfigurationId,
                             CreatedAt = (byte)requestHeader.LocationId,
@@ -260,13 +261,15 @@ namespace Duc.Splitt.Service
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-            var attch = await _unitOfWork.DocumentLibrarys.GetAsync(requestDto.AttcahmentId);
+            var attch = await _unitOfWork.DocumentLibrarys.GetDocumentLibrary(requestDto.AttcahmentId);
             if (attch == null)
             {
+
                 return response;
             }
-
-            response.Data = new DownloadAttachmentResponseDto { AttachmentByte = attch.Attachment, MineType = attch.MineType };
+            var fileURL = $"{attch.DocumentCategory.BaseUrl}/{attch.Id}";
+            byte[] bytes = null;
+            response.Data = new DownloadAttachmentResponseDto { AttachmentByte = bytes, MineType = attch.MineType };
             response.Code = ResponseStatusCode.Success;
             return response;
         }
