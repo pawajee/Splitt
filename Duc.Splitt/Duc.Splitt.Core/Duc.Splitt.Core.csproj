@@ -60,10 +60,11 @@
     <Compile Include="Contracts\Repositories\ILkNationalityRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkLocationRepository.cs" />
     <Compile Include="Contracts\Repositories\ILkDocumentCategoryRepository.cs" />
-    <Compile Include="Contracts\Services\IAuthConsumerService.cs" />
+    <Compile Include="Contracts\Services\IAuthCustomerService.cs" />
     <Compile Include="Contracts\Services\IAuthBackOfficeService.cs" />
     <Compile Include="Contracts\Services\IAuthMerchantService.cs" />
     <Compile Include="Contracts\Services\IBackOfficeMerchantService.cs" />
+    <Compile Include="Contracts\Services\IMIDServiceAuthenticationService.cs" />
     <Compile Include="Contracts\Services\IOrderService.cs" />
     <Compile Include="Contracts\Services\IUtilitiesService.cs" />
     <Compile Include="Contracts\Services\IMerchantService.cs" />
@@ -76,6 +77,7 @@
     <ProjectReference Include="..\Duc.Splitt.Common\Duc.Splitt.Common.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Data\Duc.Splitt.Data.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Identity\Duc.Splitt.Identity.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.MIDIntegrationService\Duc.Splitt.MIDIntegrationService.csproj" />
   </ItemGroup>
 
 </Project>

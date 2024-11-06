@@ -4,6 +4,6 @@ namespace Duc.Splitt.Core.Contracts.Repositories
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
-        Task<Customer?> GetConsumerUserByMobileNo(string mobileNo);
+        Task<Customer?> GetCustomerByMobileNo(string mobileNo);
     }
 }

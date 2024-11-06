@@ -140,7 +140,7 @@ namespace Duc.Splitt.Service
                     User = new User
                     {
                         LoginId = merchant.BusinessEmail,
-                        UserTypeId = (int)UserTypes.Consumer,
+                        UserTypeId = (int)Roles.Consumer,
                         IsActive = true,
                         CreatedAt = (byte)requestHeader.LocationId,
                         CreatedOn = DateTime.Now,

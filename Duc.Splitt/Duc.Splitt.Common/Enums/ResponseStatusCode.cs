@@ -55,8 +55,14 @@ namespace Duc.Splitt.Common.Enums
         StratRemoteTransactionCustomMessage = 6010,
 
         OTPExpired = 6233,
-        OTPMaxAttempts = 6234,
-        AlreadyUsed = 6235,
-        EmailNotSent=6236
+        OTPVerifyLimitExceeded = 6234,
+        OTPAlreadyUsed = 6235,
+        OTPRequestLimitExceeded = 5003,
+        OTPRequestNotFound = 6233,
+        OTPVerificationNotCompleted = 6233,
+        EmailNotSent = 6236,
+        MIDAPIIssue = 5001,
+        InvalidPACIData = 5002,
+
     }
 }

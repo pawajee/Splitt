@@ -63,6 +63,7 @@
     <ProjectReference Include="..\Duc.Splitt.Core\Duc.Splitt.Core.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Identity\Duc.Splitt.Identity.csproj" />
     <ProjectReference Include="..\Duc.Splitt.Logger\Duc.Splitt.Logger.csproj" />
+    <ProjectReference Include="..\Duc.Splitt.MIDIntegrationService\Duc.Splitt.MIDIntegrationService.csproj" />
   </ItemGroup>
 
 </Project>
