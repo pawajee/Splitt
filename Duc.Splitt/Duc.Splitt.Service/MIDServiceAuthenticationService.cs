@@ -151,7 +151,7 @@ namespace Duc.Splitt.Service
                     MidRequestLog midRequestLog = new MidRequestLog
                     {
                         CustomerRegistrationRequestId = Guid.Parse(PACIcallback.MIDAuthSignResponse.RequestDetails.AdditionalData),
-                        DspRefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
+                        DsprefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
                         MidpayloadRequest = "",
                         MidpayloadResponse = _logger.ToJson(PACIcallback),
                         MidRequestStatusId = (int)MidRequestStatuses.CallBackProcessSucess,
@@ -169,7 +169,7 @@ namespace Duc.Splitt.Service
                     MidRequestLog midRequestLog = new MidRequestLog
                     {
                         CustomerRegistrationRequestId = Guid.Parse(PACIcallback.MIDAuthSignResponse.RequestDetails.AdditionalData),
-                        DspRefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
+                        DsprefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
                         MidpayloadRequest = "",
                         MidpayloadResponse = _logger.ToJson(PACIcallback),
                         MidRequestStatusId = (int)MidRequestStatuses.Reject,
