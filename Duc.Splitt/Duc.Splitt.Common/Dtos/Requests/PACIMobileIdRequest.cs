@@ -11,9 +11,11 @@ namespace Duc.Splitt.Common.Dtos.Requests
             [Required]
             public string CivilId { get; set; } = null!;
 
+            public Guid RefId { get; set; }
+
             [Required]
             public Guid CustomerRegistrationRequestId { get; set; }
         }
-       
+
     }
 }

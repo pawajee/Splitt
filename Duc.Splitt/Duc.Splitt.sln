@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.MIDIntegrationSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.MIDCallbackAPI", "Duc.Splitt.MIDCallbackAPI\Duc.Splitt.MIDCallbackAPI.csproj", "{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duc.Splitt.ScheduledServices", "Duc.Splitt.ScheduledServices\Duc.Splitt.ScheduledServices.csproj", "{4A5BDFDF-5E09-471A-8E87-72BFD373CE4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A644ED0B-5F9A-41F8-B3F1-55AC1245B2EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A5BDFDF-5E09-471A-8E87-72BFD373CE4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5BDFDF-5E09-471A-8E87-72BFD373CE4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A5BDFDF-5E09-471A-8E87-72BFD373CE4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A5BDFDF-5E09-471A-8E87-72BFD373CE4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

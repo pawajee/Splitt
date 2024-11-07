@@ -211,7 +211,7 @@ namespace Duc.Splitt.Service
                     MidRequestLog midRequestLog = new MidRequestLog
                     {
                         CustomerRegistrationRequestId = customerRegistrationRequestId,
-                        DsprefId = paciresponse.Data.DSPRefNo,
+                        DspRefId = paciresponse.Data.DSPRefNo,
                         MidpayloadRequest = _logger.ToJson(mobileAuthPNRequestDto),
                         MidpayloadResponse = _logger.ToJson(paciresponse),
                         MidRequestStatusId = (int)MidRequestStatuses.InitiateSucess,
@@ -251,7 +251,7 @@ namespace Duc.Splitt.Service
                 MidRequestLog midRequestLog = new MidRequestLog
                 {
                     CustomerRegistrationRequestId = customerRegistrationRequestId,
-                    DsprefId = "",
+                    DspRefId = "",
                     MidpayloadRequest = _logger.ToJson(mobileAuthPNRequestDto),
                     MidpayloadResponse = _logger.ToJson(_logger.ConvertExceptionToStringList(ex)),
                     MidRequestStatusId = (int)MidRequestStatuses.MIDIssue,

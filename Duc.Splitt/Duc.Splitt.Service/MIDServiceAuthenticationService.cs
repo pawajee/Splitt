@@ -8,7 +8,9 @@ using Duc.Splitt.Data.DataAccess.Models;
 using Duc.Splitt.Logger;
 using Duc.Splitt.MIDIntegrationService;
 using Microsoft.Extensions.Configuration;
+using MIDWrapper;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using static Duc.Splitt.Common.Dtos.Requests.PACIMobileIdRequest;
 using static Duc.Splitt.Common.Dtos.Responses.PACIMobileIdResponse;
 
@@ -53,14 +55,31 @@ namespace Duc.Splitt.Service
             {
                 Code = ResponseStatusCode.NoDataFound
             };
-            _logger.LogInfo($"requestDto:{requestDto}");
-            string dynamicUrl = authServiceURL;
-            var endpointAddress = new EndpointAddress(dynamicUrl);
-            var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
-            binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-            var client = new MIDWrapper.MIDWrapperClient(binding, endpointAddress);
-            client.ChannelFactory.Credentials.UserName.UserName = username;
-            client.ChannelFactory.Credentials.UserName.Password = password;
+            _logger.LogInfo($"requestDto:{_logger.ToJson(requestDto)}");
+            _logger.LogInfo($"authServiceURL:{authServiceURL}");
+            var binding = new BasicHttpsBinding
+            {
+                CloseTimeout = TimeSpan.FromSeconds(40),
+                OpenTimeout = TimeSpan.FromSeconds(40),
+                ReceiveTimeout = TimeSpan.FromSeconds(40),
+                SendTimeout = TimeSpan.FromSeconds(40),
+                MaxBufferPoolSize = int.MaxValue,
+                MaxBufferSize = int.MaxValue,
+                MaxReceivedMessageSize = int.MaxValue,
+                MessageEncoding = WSMessageEncoding.Mtom,
+                Security = new BasicHttpsSecurity
+                {
+                    Mode = BasicHttpsSecurityMode.Transport,
+                    Transport = new HttpTransportSecurity
+                    {
+                        ClientCredentialType = HttpClientCredentialType.Basic
+                    }
+                }
+            };
+            var midWrapperServiceEndpoint = new EndpointAddress(authServiceURL);
+            var midWrapperClient = new MIDWrapperClient(binding, midWrapperServiceEndpoint);
+            midWrapperClient.ClientCredentials.UserName.UserName = username;
+            midWrapperClient.ClientCredentials.UserName.Password = password;
             try
             {
                 string refID = Guid.NewGuid().ToString();
@@ -71,20 +90,21 @@ namespace Duc.Splitt.Service
                 auth.ServiceDescriptionAR = authServiceDescriptionAR;
                 auth.ServiceDescriptionEN = authServiceDescriptionEN;
                 auth.SPCallbackURL = sPCallbackURLPN;
-                auth.RefId = requestDto.CustomerRegistrationRequestId.ToString();
+                auth.RefId = requestDto.RefId.ToString();
                 auth.Challenge = "";
+                auth.AdditionalData = requestDto.CustomerRegistrationRequestId.ToString();
                 auth.RequestUserDetails = true;
-                _logger.LogInfo($"RequestDto:{auth}");
+                _logger.LogInfo($"RequestDto:{_logger.ToJson(auth)}");
                 MIDWrapper.MIDAssuranceLevel mIDAssuranceLevel = MIDWrapper.MIDAssuranceLevel.High;
                 if (mIDAssuranceLevel_AUTH == "20")
                 {
                     mIDAssuranceLevel = MIDWrapper.MIDAssuranceLevel.Medium;
                 }
-                _logger.LogInfo($"mIDAssuranceLevel:{mIDAssuranceLevel}");
+                _logger.LogInfo($"mIDAssuranceLevel:{_logger.ToJson(mIDAssuranceLevel)}");
 
-                var resposnePACI = await client.InitiateAuthRequestPNAsync(auth);
-                client.Close();
-                _logger.LogInfo($"resposne:{resposnePACI}");
+                var resposnePACI = await midWrapperClient.InitiateAuthRequestPNWithAssuranceLevelAsync(auth, mIDAssuranceLevel);
+
+                _logger.LogInfo($"resposne:{_logger.ToJson(resposnePACI)}");
                 if (resposnePACI != null && !string.IsNullOrEmpty(resposnePACI.Data))
                 {
                     response.Data = new MobileAuthPNResponseDto { DSPRefNo = resposnePACI?.Data };
@@ -103,8 +123,13 @@ namespace Duc.Splitt.Service
             }
             catch
             {
-                client.Abort();
+                midWrapperClient.Abort();
                 throw;
+            }
+            finally
+            {
+                midWrapperClient.Close();
+                await midWrapperClient.CloseAsync();
             }
         }
 
@@ -114,6 +139,7 @@ namespace Duc.Splitt.Service
             {
                 Code = ResponseStatusCode.NoDataFound
             };
+            _logger.LogInfo($"PACIcallback:{_logger.ToJson(PACIcallback)}");
             if (PACIcallback != null && PACIcallback.MIDAuthSignResponse != null && PACIcallback.MIDAuthSignResponse.RequestDetails != null)
 
             {
@@ -122,14 +148,34 @@ namespace Duc.Splitt.Service
                                  && Convert.ToInt32(PACIcallback.MIDAuthSignResponse.ResultDetails.ResultCode) == (int)ResultCode.Authenticated
                                        && Convert.ToInt32(PACIcallback.MIDAuthSignResponse.ResultDetails.UserAction) == (int)UserAction.AuthenticateAccept)
                 {
+                    MidRequestLog midRequestLog = new MidRequestLog
+                    {
+                        CustomerRegistrationRequestId = Guid.Parse(PACIcallback.MIDAuthSignResponse.RequestDetails.AdditionalData),
+                        DspRefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
+                        MidpayloadRequest = "",
+                        MidpayloadResponse = _logger.ToJson(PACIcallback),
+                        MidRequestStatusId = (int)MidRequestStatuses.CallBackProcessSucess,
+                        MidRequestTypeId = (int)MidRequestTypes.AuthenticationPN,
+                    };
+                    _unitOfWork.MidRequestLogs.AddAsync(midRequestLog);
+                    await _unitOfWork.CompleteAsync();
+
                     response.Code = ResponseStatusCode.Success;
                     response.Errors = new List<string> { };
                     return response;
                 }
                 else if (Convert.ToInt32(PACIcallback.MIDAuthSignResponse.ResultDetails.UserAction) == (int)UserAction.Decline)
                 {
-                    MidRequestLog log = new MidRequestLog { };
-                    _unitOfWork.MidRequestLogs.AddAsync(log);
+                    MidRequestLog midRequestLog = new MidRequestLog
+                    {
+                        CustomerRegistrationRequestId = Guid.Parse(PACIcallback.MIDAuthSignResponse.RequestDetails.AdditionalData),
+                        DspRefId = PACIcallback.MIDAuthSignResponse.RequestDetails.RequestID,
+                        MidpayloadRequest = "",
+                        MidpayloadResponse = _logger.ToJson(PACIcallback),
+                        MidRequestStatusId = (int)MidRequestStatuses.Reject,
+                        MidRequestTypeId = (int)MidRequestTypes.AuthenticationPN,
+                    };
+                    _unitOfWork.MidRequestLogs.AddAsync(midRequestLog);
                     await _unitOfWork.CompleteAsync();
                     response.Code = ResponseStatusCode.Success;
                     response.Errors = new List<string> { };
@@ -150,10 +196,7 @@ namespace Duc.Splitt.Service
             }
 
         }
-        public interface IMIDServiceAuthenticationService
-        {
-            Task<ResponseDto<MobileAuthPNResponseDto?>> InitiateAuthRequestPN(RequestHeader requestHeader, MobileAuthPNRequestDto requestDto);
-        }
+
 
     }
     public enum ResultCode
@@ -170,4 +213,5 @@ namespace Duc.Splitt.Service
         Decline = 2,
 
     }
+
 }
