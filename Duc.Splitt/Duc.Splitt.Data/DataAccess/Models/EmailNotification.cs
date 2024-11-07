@@ -50,6 +50,10 @@ public partial class EmailNotification
     [InverseProperty("EmailNotificationCreatedAtNavigation")]
     public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
 
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("EmailNotificationCreatedByNavigation")]
+    public virtual User? CreatedByNavigation { get; set; }
+
     [ForeignKey("LanguageId")]
     [InverseProperty("EmailNotification")]
     public virtual LkLanguage Language { get; set; } = null!;
@@ -57,6 +61,10 @@ public partial class EmailNotification
     [ForeignKey("ModifiedAt")]
     [InverseProperty("EmailNotificationModifiedAtNavigation")]
     public virtual LkLocation? ModifiedAtNavigation { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("EmailNotificationModifiedByNavigation")]
+    public virtual User? ModifiedByNavigation { get; set; }
 
     [ForeignKey("NotificationCategoryId")]
     [InverseProperty("EmailNotification")]

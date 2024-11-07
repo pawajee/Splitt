@@ -60,8 +60,20 @@ public partial class User
     [InverseProperty("ModifiedByNavigation")]
     public virtual ICollection<Customer> CustomerModifiedByNavigation { get; set; } = new List<Customer>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<CustomerRegistrationRequest> CustomerRegistrationRequestCreatedByNavigation { get; set; } = new List<CustomerRegistrationRequest>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<CustomerRegistrationRequest> CustomerRegistrationRequestModifiedByNavigation { get; set; } = new List<CustomerRegistrationRequest>();
+
     [InverseProperty("User")]
     public virtual Customer? CustomerUser { get; set; }
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<EmailNotification> EmailNotificationCreatedByNavigation { get; set; } = new List<EmailNotification>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<EmailNotification> EmailNotificationModifiedByNavigation { get; set; } = new List<EmailNotification>();
 
     [InverseProperty("CreatedByNavigation")]
     public virtual ICollection<User> InverseCreatedByNavigation { get; set; } = new List<User>();
@@ -101,11 +113,35 @@ public partial class User
     [InverseProperty("InverseModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<Order> OrderCreatedByNavigation { get; set; } = new List<Order>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<Order> OrderModifiedByNavigation { get; set; } = new List<Order>();
+
     [InverseProperty("User")]
     public virtual ICollection<Payment> Payment { get; set; } = new List<Payment>();
 
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<PaymentInstallment> PaymentInstallmentCreatedByNavigation { get; set; } = new List<PaymentInstallment>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<PaymentInstallment> PaymentInstallmentModifiedByNavigation { get; set; } = new List<PaymentInstallment>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<PrePayment> PrePaymentCreatedByNavigation { get; set; } = new List<PrePayment>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<PrePayment> PrePaymentModifiedByNavigation { get; set; } = new List<PrePayment>();
+
     [InverseProperty("User")]
-    public virtual ICollection<PrePayment> PrePayment { get; set; } = new List<PrePayment>();
+    public virtual ICollection<PrePayment> PrePaymentUser { get; set; } = new List<PrePayment>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<SmsNotification> SmsNotificationCreatedByNavigation { get; set; } = new List<SmsNotification>();
+
+    [InverseProperty("ModifiedByNavigation")]
+    public virtual ICollection<SmsNotification> SmsNotificationModifiedByNavigation { get; set; } = new List<SmsNotification>();
 
     [ForeignKey("UserTypeId")]
     [InverseProperty("User")]

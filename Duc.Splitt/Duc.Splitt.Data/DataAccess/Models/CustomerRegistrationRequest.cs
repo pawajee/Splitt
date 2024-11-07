@@ -45,6 +45,14 @@ public partial class CustomerRegistrationRequest
 
     public int? ModifiedAt { get; set; }
 
+    [ForeignKey("CreatedAt")]
+    [InverseProperty("CustomerRegistrationRequestCreatedAtNavigation")]
+    public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("CustomerRegistrationRequestCreatedByNavigation")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
+
     [InverseProperty("CustomerRegistrationRequest")]
     public virtual ICollection<Customer> Customer { get; set; } = new List<Customer>();
 
@@ -54,6 +62,14 @@ public partial class CustomerRegistrationRequest
 
     [InverseProperty("CustomerRegistrationRequest")]
     public virtual ICollection<MidRequestLog> MidRequestLog { get; set; } = new List<MidRequestLog>();
+
+    [ForeignKey("ModifiedAt")]
+    [InverseProperty("CustomerRegistrationRequestModifiedAtNavigation")]
+    public virtual LkLocation? ModifiedAtNavigation { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("CustomerRegistrationRequestModifiedByNavigation")]
+    public virtual User? ModifiedByNavigation { get; set; }
 
     [ForeignKey("OtpRequestId")]
     [InverseProperty("CustomerRegistrationRequest")]

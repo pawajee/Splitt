@@ -39,6 +39,12 @@ public partial class LkLocation
     public virtual ICollection<Customer> CustomerModifiedAtNavigation { get; set; } = new List<Customer>();
 
     [InverseProperty("CreatedAtNavigation")]
+    public virtual ICollection<CustomerRegistrationRequest> CustomerRegistrationRequestCreatedAtNavigation { get; set; } = new List<CustomerRegistrationRequest>();
+
+    [InverseProperty("ModifiedAtNavigation")]
+    public virtual ICollection<CustomerRegistrationRequest> CustomerRegistrationRequestModifiedAtNavigation { get; set; } = new List<CustomerRegistrationRequest>();
+
+    [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<EmailNotification> EmailNotificationCreatedAtNavigation { get; set; } = new List<EmailNotification>();
 
     [InverseProperty("ModifiedAtNavigation")]
@@ -66,7 +72,16 @@ public partial class LkLocation
     public virtual ICollection<Merchant> MerchantModifiedAtNavigation { get; set; } = new List<Merchant>();
 
     [InverseProperty("CreatedAtNavigation")]
-    public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
+    public virtual ICollection<Order> OrderCreatedAtNavigation { get; set; } = new List<Order>();
+
+    [InverseProperty("ModifiedAtNavigation")]
+    public virtual ICollection<Order> OrderModifiedAtNavigation { get; set; } = new List<Order>();
+
+    [InverseProperty("CreatedAtNavigation")]
+    public virtual ICollection<SmsNotification> SmsNotificationCreatedAtNavigation { get; set; } = new List<SmsNotification>();
+
+    [InverseProperty("ModifiedAtNavigation")]
+    public virtual ICollection<SmsNotification> SmsNotificationModifiedAtNavigation { get; set; } = new List<SmsNotification>();
 
     [InverseProperty("CreatedAtNavigation")]
     public virtual ICollection<User> UserCreatedAtNavigation { get; set; } = new List<User>();

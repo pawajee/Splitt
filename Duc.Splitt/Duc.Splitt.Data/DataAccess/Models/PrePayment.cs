@@ -54,14 +54,22 @@ public partial class PrePayment
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
-    public Guid? ModifiedBy { get; set; }
+    public Guid ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
-    public DateTime? ModifiedOn { get; set; }
+    public DateTime ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int ModifiedAt { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("PrePaymentCreatedByNavigation")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("PrePaymentModifiedByNavigation")]
+    public virtual User ModifiedByNavigation { get; set; } = null!;
 
     [InverseProperty("PrePayment")]
     public virtual ICollection<Payment> Payment { get; set; } = new List<Payment>();
@@ -79,6 +87,6 @@ public partial class PrePayment
     public virtual LkPaymentStatus PaymentStatus { get; set; } = null!;
 
     [ForeignKey("UserId")]
-    [InverseProperty("PrePayment")]
+    [InverseProperty("PrePaymentUser")]
     public virtual User User { get; set; } = null!;
 }

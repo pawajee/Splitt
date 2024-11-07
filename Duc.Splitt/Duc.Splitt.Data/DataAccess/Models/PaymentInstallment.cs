@@ -36,18 +36,26 @@ public partial class PaymentInstallment
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
-    public Guid? ModifiedBy { get; set; }
+    public Guid ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
-    public DateTime? ModifiedOn { get; set; }
+    public DateTime ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int ModifiedAt { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("PaymentInstallmentCreatedByNavigation")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
 
     [ForeignKey("InstallmentTypeId")]
     [InverseProperty("PaymentInstallment")]
     public virtual LkInstallmentType InstallmentType { get; set; } = null!;
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("PaymentInstallmentModifiedByNavigation")]
+    public virtual User ModifiedByNavigation { get; set; } = null!;
 
     [ForeignKey("OrderId")]
     [InverseProperty("PaymentInstallment")]

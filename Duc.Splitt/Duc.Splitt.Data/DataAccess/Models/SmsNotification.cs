@@ -29,26 +29,38 @@ public partial class SmsNotification
     public DateTime CreatedOn { get; set; }
 
     [Column(TypeName = "smalldatetime")]
-    public DateTime? ModifiedOn { get; set; }
+    public DateTime ModifiedOn { get; set; }
 
-    public Guid? CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
 
-    public Guid? ModifiedBy { get; set; }
+    public Guid ModifiedBy { get; set; }
 
     public int CreatedAt { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int ModifiedAt { get; set; }
 
     [StringLength(50)]
     public string? ReferenceId { get; set; }
 
     [ForeignKey("CreatedAt")]
-    [InverseProperty("SmsNotification")]
+    [InverseProperty("SmsNotificationCreatedAtNavigation")]
     public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("SmsNotificationCreatedByNavigation")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
 
     [ForeignKey("LanguageId")]
     [InverseProperty("SmsNotification")]
     public virtual LkLanguage Language { get; set; } = null!;
+
+    [ForeignKey("ModifiedAt")]
+    [InverseProperty("SmsNotificationModifiedAtNavigation")]
+    public virtual LkLocation ModifiedAtNavigation { get; set; } = null!;
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("SmsNotificationModifiedByNavigation")]
+    public virtual User ModifiedByNavigation { get; set; } = null!;
 
     [ForeignKey("PriorityId")]
     [InverseProperty("SmsNotification")]

@@ -66,14 +66,22 @@ public partial class Order
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public byte CreatedAt { get; set; }
+    public int CreatedAt { get; set; }
 
     public Guid? ModifiedBy { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? ModifiedOn { get; set; }
 
-    public byte? ModifiedAt { get; set; }
+    public int? ModifiedAt { get; set; }
+
+    [ForeignKey("CreatedAt")]
+    [InverseProperty("OrderCreatedAtNavigation")]
+    public virtual LkLocation CreatedAtNavigation { get; set; } = null!;
+
+    [ForeignKey("CreatedBy")]
+    [InverseProperty("OrderCreatedByNavigation")]
+    public virtual User CreatedByNavigation { get; set; } = null!;
 
     [ForeignKey("CurrencyId")]
     [InverseProperty("Order")]
@@ -82,6 +90,14 @@ public partial class Order
     [ForeignKey("MerchantId")]
     [InverseProperty("Order")]
     public virtual Merchant Merchant { get; set; } = null!;
+
+    [ForeignKey("ModifiedAt")]
+    [InverseProperty("OrderModifiedAtNavigation")]
+    public virtual LkLocation? ModifiedAtNavigation { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    [InverseProperty("OrderModifiedByNavigation")]
+    public virtual User? ModifiedByNavigation { get; set; }
 
     [InverseProperty("Order")]
     public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();

@@ -30,12 +30,16 @@ public partial class MidRequestLog
     [Column(TypeName = "datetime")]
     public DateTime CreatedOn { get; set; }
 
-    public short CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
+
+    public int CreatedAt { get; set; }
 
     [Column(TypeName = "smalldatetime")]
     public DateTime? ModifiedOn { get; set; }
 
-    public short? ModifiedBy { get; set; }
+    public Guid ModifiedBy { get; set; }
+
+    public int ModifiedAt { get; set; }
 
     public bool? IsDeleted { get; set; }
 

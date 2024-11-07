@@ -229,6 +229,10 @@ public partial class SplittAppContext : DbContext
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.CustomerRegistrationRequestCreatedAtNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.CustomerRegistrationRequestCreatedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
             entity.HasOne(d => d.CustomerRegistrationStatus).WithMany(p => p.CustomerRegistrationRequest).HasConstraintName("FK_CustomerRegistrationRequest_LkCustomerRegistrationStatus");
 
             entity.HasOne(d => d.OtpRequest).WithMany(p => p.CustomerRegistrationRequest).HasConstraintName("FK_CustomerRegistrationRequest_CustomerRegistrationRequest");
@@ -679,11 +683,23 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.CurrencyId).HasDefaultValue(1);
             entity.Property(e => e.OrderStatusId).HasDefaultValue(1);
 
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.OrderCreatedAtNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_LkLocation");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OrderCreatedByNavigation)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_User");
+
             entity.HasOne(d => d.Currency).WithMany(p => p.Order).HasConstraintName("FK_Order_Customer");
 
             entity.HasOne(d => d.Merchant).WithMany(p => p.Order)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Merchant");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.OrderModifiedAtNavigation).HasConstraintName("FK_Order_LkLocation1");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.OrderModifiedByNavigation).HasConstraintName("FK_Order_User1");
 
             entity.HasOne(d => d.OrderStatus).WithMany(p => p.Order).HasConstraintName("FK_Order_OLkOrderStatus");
 
@@ -732,9 +748,13 @@ public partial class SplittAppContext : DbContext
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PaymentInstallmentCreatedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
             entity.HasOne(d => d.InstallmentType).WithMany(p => p.PaymentInstallment)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_PaymentInstallment_PaymentInstallment");
+                .HasConstraintName("FK_PaymentInstallment_InstallmentType");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PaymentInstallmentModifiedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.Order).WithMany(p => p.PaymentInstallment)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -746,6 +766,10 @@ public partial class SplittAppContext : DbContext
         modelBuilder.Entity<PrePayment>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PrePaymentCreatedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.PrePaymentModifiedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.PaymentBrand).WithMany(p => p.PrePayment)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -759,20 +783,26 @@ public partial class SplittAppContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PrePayment_LkPaymentStatus");
 
-            entity.HasOne(d => d.User).WithMany(p => p.PrePayment)
+            entity.HasOne(d => d.User).WithMany(p => p.PrePaymentUser)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PrePayment_User");
         });
 
         modelBuilder.Entity<SmsNotification>(entity =>
         {
-            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.SmsNotification)
+            entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.SmsNotificationCreatedAtNavigation)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SmsNotification_LkLocation");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SmsNotificationCreatedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.Language).WithMany(p => p.SmsNotification)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SmsNotification_LkLanguage");
+
+            entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.SmsNotificationModifiedAtNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SmsNotificationModifiedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.Priority).WithMany(p => p.SmsNotification).HasConstraintName("FK_SmsNotification_LkPriority");
         });
