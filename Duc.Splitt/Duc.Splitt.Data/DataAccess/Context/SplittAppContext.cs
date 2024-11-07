@@ -261,7 +261,9 @@ public partial class SplittAppContext : DbContext
 
             entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.EmailNotificationModifiedAtNavigation).HasConstraintName("FK_EmailNotification_LkLocation1");
 
-            entity.HasOne(d => d.NotificationCategory).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkNotificationCategory");
+            entity.HasOne(d => d.NotificationStatus).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkNotificationStatus");
+
+            entity.HasOne(d => d.NotificationTemplate).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkNotificationTemplate");
 
             entity.HasOne(d => d.Priority).WithMany(p => p.EmailNotification).HasConstraintName("FK_EmailNotification_LkPriority");
         });
@@ -474,6 +476,10 @@ public partial class SplittAppContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
 
             entity.HasOne(d => d.NotificationCategory).WithMany(p => p.LkNotificationTemplate).HasConstraintName("FK_LkNotificationTemplate_LkNotificationCategory");
+
+            entity.HasOne(d => d.NotificationType).WithMany(p => p.LkNotificationTemplate)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LkNotificationTemplate_LkNotificationType");
         });
 
         modelBuilder.Entity<LkNotificationType>(entity =>
@@ -788,6 +794,19 @@ public partial class SplittAppContext : DbContext
                 .HasConstraintName("FK_PrePayment_User");
         });
 
+        modelBuilder.Entity<PushNotification>(entity =>
+        {
+            entity.HasOne(d => d.NotificationStatus).WithMany(p => p.PushNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PushNotification_LkNotificationStatus");
+
+            entity.HasOne(d => d.NotificationTemplate).WithMany(p => p.PushNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PushNotification_LkNotificationTemplate");
+
+            entity.HasOne(d => d.Priority).WithMany(p => p.PushNotification).HasConstraintName("FK_PushNotification_LkNotificationPriority");
+        });
+
         modelBuilder.Entity<SmsNotification>(entity =>
         {
             entity.HasOne(d => d.CreatedAtNavigation).WithMany(p => p.SmsNotificationCreatedAtNavigation)
@@ -803,6 +822,14 @@ public partial class SplittAppContext : DbContext
             entity.HasOne(d => d.ModifiedAtNavigation).WithMany(p => p.SmsNotificationModifiedAtNavigation).OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.SmsNotificationModifiedByNavigation).OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.NotificationStatus).WithMany(p => p.SmsNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SmsNotification_LkNotificationStatus");
+
+            entity.HasOne(d => d.NotificationTemplate).WithMany(p => p.SmsNotification)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SmsNotification_LkNotificationTemplate");
 
             entity.HasOne(d => d.Priority).WithMany(p => p.SmsNotification).HasConstraintName("FK_SmsNotification_LkPriority");
         });

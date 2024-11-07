@@ -23,4 +23,13 @@ public partial class LkNotificationStatus
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("NotificationStatus")]
+    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
+
+    [InverseProperty("NotificationStatus")]
+    public virtual ICollection<PushNotification> PushNotification { get; set; } = new List<PushNotification>();
+
+    [InverseProperty("NotificationStatus")]
+    public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
 }

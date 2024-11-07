@@ -15,7 +15,7 @@ public partial class MidRequestLog
 
     [Column("DSPRefId")]
     [StringLength(50)]
-    public string DspRefId { get; set; } = null!;
+    public string DsprefId { get; set; } = null!;
 
     public int MidRequestStatusId { get; set; }
 

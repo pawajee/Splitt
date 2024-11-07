@@ -25,8 +25,5 @@ public partial class LkNotificationCategory
     public bool? IsDeleted { get; set; }
 
     [InverseProperty("NotificationCategory")]
-    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
-
-    [InverseProperty("NotificationCategory")]
     public virtual ICollection<LkNotificationTemplate> LkNotificationTemplate { get; set; } = new List<LkNotificationTemplate>();
 }

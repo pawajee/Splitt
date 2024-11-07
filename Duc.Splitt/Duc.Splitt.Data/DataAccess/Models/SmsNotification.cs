@@ -19,9 +19,11 @@ public partial class SmsNotification
 
     public int LanguageId { get; set; }
 
-    public byte NotificationStatusId { get; set; }
+    public int NotificationStatusId { get; set; }
 
     public int? PriorityId { get; set; }
+
+    public int NotificationTemplateId { get; set; }
 
     public bool? IsDeleted { get; set; }
 
@@ -61,6 +63,14 @@ public partial class SmsNotification
     [ForeignKey("ModifiedBy")]
     [InverseProperty("SmsNotificationModifiedByNavigation")]
     public virtual User ModifiedByNavigation { get; set; } = null!;
+
+    [ForeignKey("NotificationStatusId")]
+    [InverseProperty("SmsNotification")]
+    public virtual LkNotificationStatus NotificationStatus { get; set; } = null!;
+
+    [ForeignKey("NotificationTemplateId")]
+    [InverseProperty("SmsNotification")]
+    public virtual LkNotificationTemplate NotificationTemplate { get; set; } = null!;
 
     [ForeignKey("PriorityId")]
     [InverseProperty("SmsNotification")]

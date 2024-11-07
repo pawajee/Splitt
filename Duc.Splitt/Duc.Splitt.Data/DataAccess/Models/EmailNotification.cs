@@ -21,7 +21,7 @@ public partial class EmailNotification
 
     public int LanguageId { get; set; }
 
-    public byte NotificationStatusId { get; set; }
+    public int? NotificationStatusId { get; set; }
 
     public int? PriorityId { get; set; }
 
@@ -41,7 +41,7 @@ public partial class EmailNotification
 
     public int? ModifiedAt { get; set; }
 
-    public int? NotificationCategoryId { get; set; }
+    public int? NotificationTemplateId { get; set; }
 
     [StringLength(50)]
     public string? ReferenceId { get; set; }
@@ -66,9 +66,13 @@ public partial class EmailNotification
     [InverseProperty("EmailNotificationModifiedByNavigation")]
     public virtual User? ModifiedByNavigation { get; set; }
 
-    [ForeignKey("NotificationCategoryId")]
+    [ForeignKey("NotificationStatusId")]
     [InverseProperty("EmailNotification")]
-    public virtual LkNotificationCategory? NotificationCategory { get; set; }
+    public virtual LkNotificationStatus? NotificationStatus { get; set; }
+
+    [ForeignKey("NotificationTemplateId")]
+    [InverseProperty("EmailNotification")]
+    public virtual LkNotificationTemplate? NotificationTemplate { get; set; }
 
     [ForeignKey("PriorityId")]
     [InverseProperty("EmailNotification")]

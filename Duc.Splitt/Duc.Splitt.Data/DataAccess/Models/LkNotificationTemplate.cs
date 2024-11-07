@@ -13,7 +13,7 @@ public partial class LkNotificationTemplate
 
     public int? NotificationCategoryId { get; set; }
 
-    public byte NotificationTypeId { get; set; }
+    public int NotificationTypeId { get; set; }
 
     [StringLength(60)]
     public string MessageCode { get; set; } = null!;
@@ -30,7 +30,20 @@ public partial class LkNotificationTemplate
 
     public bool? IsDeleted { get; set; }
 
+    [InverseProperty("NotificationTemplate")]
+    public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
+
     [ForeignKey("NotificationCategoryId")]
     [InverseProperty("LkNotificationTemplate")]
     public virtual LkNotificationCategory? NotificationCategory { get; set; }
+
+    [ForeignKey("NotificationTypeId")]
+    [InverseProperty("LkNotificationTemplate")]
+    public virtual LkNotificationType NotificationType { get; set; } = null!;
+
+    [InverseProperty("NotificationTemplate")]
+    public virtual ICollection<PushNotification> PushNotification { get; set; } = new List<PushNotification>();
+
+    [InverseProperty("NotificationTemplate")]
+    public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
 }

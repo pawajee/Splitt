@@ -23,4 +23,7 @@ public partial class LkNotificationType
     public byte? SortOrder { get; set; }
 
     public bool? IsDeleted { get; set; }
+
+    [InverseProperty("NotificationType")]
+    public virtual ICollection<LkNotificationTemplate> LkNotificationTemplate { get; set; } = new List<LkNotificationTemplate>();
 }

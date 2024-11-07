@@ -35,6 +35,8 @@ public partial class PushNotification
 
     public string? Details { get; set; }
 
+    public int NotificationTemplateId { get; set; }
+
     public bool? IsDeleted { get; set; }
 
     [Column(TypeName = "smalldatetime")]
@@ -58,4 +60,16 @@ public partial class PushNotification
     public DateTime? ReadOn { get; set; }
 
     public Guid? TokenId { get; set; }
+
+    [ForeignKey("NotificationStatusId")]
+    [InverseProperty("PushNotification")]
+    public virtual LkNotificationStatus NotificationStatus { get; set; } = null!;
+
+    [ForeignKey("NotificationTemplateId")]
+    [InverseProperty("PushNotification")]
+    public virtual LkNotificationTemplate NotificationTemplate { get; set; } = null!;
+
+    [ForeignKey("PriorityId")]
+    [InverseProperty("PushNotification")]
+    public virtual LkNotificationPriority? Priority { get; set; }
 }

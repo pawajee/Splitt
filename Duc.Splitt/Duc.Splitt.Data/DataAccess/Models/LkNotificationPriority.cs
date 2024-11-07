@@ -28,5 +28,8 @@ public partial class LkNotificationPriority
     public virtual ICollection<EmailNotification> EmailNotification { get; set; } = new List<EmailNotification>();
 
     [InverseProperty("Priority")]
+    public virtual ICollection<PushNotification> PushNotification { get; set; } = new List<PushNotification>();
+
+    [InverseProperty("Priority")]
     public virtual ICollection<SmsNotification> SmsNotification { get; set; } = new List<SmsNotification>();
 }
